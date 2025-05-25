@@ -103,21 +103,34 @@ Game >> move: aShip [
 	(shipAuxiliaryPosition hasCompleted: laps) ifTrue: [ self finish ].
 	shipFinalPosition := board moveIfWormHoleAt: shipAuxiliaryPosition.
 	squaresTraveled := shipInitialPosition
-		                   squaresAwayFrom: shipFinalPosition
+		                   squaresAwayFrom: shipAuxiliaryPosition
 		                   with: board length.
 	aShip moveTo: shipFinalPosition.
 	[ aShip consumeFuel: squaresTraveled ]
 		on: Error
-		do: [ aShip moveTo: shipInitialPosition ]
+		do: [
+			aShip moveTo: shipInitialPosition.
+			aShip losesTwoTurns.
+			aShip fuel: (self class maximumRoll: dices) * 2 ]
 ]
 
 { #category : 'action' }
-Game >> nextTurn [
+Game >> nextTurnPass [
 
 	| shipToMove |
 	self canStillPlay.
 	shipToMove := ships removeFirst.
-	self move: shipToMove.
+	shipToMove fuel: (self class maximumRoll: dices) * 2.
+	ships add: shipToMove.
+]
+
+{ #category : 'action' }
+Game >> nextTurnPlay [
+
+	| shipToMove |
+	self canStillPlay.
+	shipToMove := ships removeFirst.
+	shipToMove canPlay ifTrue: [ self move: shipToMove].
 	ships add: shipToMove.
 	finished ifTrue: [ winner := shipToMove ]
 ]

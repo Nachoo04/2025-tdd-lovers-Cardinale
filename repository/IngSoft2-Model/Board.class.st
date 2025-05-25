@@ -26,12 +26,6 @@ Board class >> validate: aWormHole fallsInto: aLength [
 ]
 
 { #category : 'validation' }
-Board class >> validate: aLength isNotEqualToTheEndOf: aWormHole [
-
-	aWormHole endsAt: aLength
-]
-
-{ #category : 'validation' }
 Board class >> validate: aLength isSmallerThanTheEndingOf: aWormHole [
 
 	aWormHole endsBefore: aLength
@@ -43,7 +37,6 @@ Board class >> with: aLength and: aWormHole [
 	self lengthIsValid: aLength.
 	self validate: aWormHole fallsInto: aLength.
 	self validate: aLength isSmallerThanTheEndingOf: aWormHole.
-	self validate: aLength isNotEqualToTheEndOf: aWormHole.
 	^ self new initializeWith: aLength and: aWormHole
 ]
 

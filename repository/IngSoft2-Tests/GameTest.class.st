@@ -40,9 +40,9 @@ GameTest >> testWhenAPlayerTryToRollTheDicesWhenTheGameHasFinishedThenItFails [
 		         and: someShips
 		         and: someDices.
 
-	aGame nextTurn.
+	aGame nextTurnPlay.
 	self
-		should: [ aGame nextTurn ]
+		should: [ aGame nextTurnPlay ]
 		raise: Error
 		withMessageText: 'The game has finished.'
 ]
@@ -74,7 +74,7 @@ GameTest >> testWhenAShipMakesOneLapOnTheBoardThenThePositionChangesAccordingly 
 		         and: someShips
 		         and: someDices.
 
-	aGame nextTurn.
+	aGame nextTurnPlay.
 
 	self assert: (aBlueShip currentPosition equals: expectedPosition)
 ]
@@ -108,7 +108,7 @@ GameTest >> testWhenAShipMovesOneSquareThenTheBoardIsPrintedCorrectly [
 	                   , 'BlackShip: Lap: 1 Square: 0' , String cr , 'BlueShip: Lap: 1 Square: 1'
 	                   , String cr.
 
-	aGame nextTurn.
+	aGame nextTurnPlay.
 
 	self assert: aGame printBoard equals: expectedDetails
 ]
@@ -138,9 +138,9 @@ GameTest >> testWhenAShipReachesTheFinalSquareThenTheGameEnds [
 		         and: someShips
 		         and: someDices.
 
-	aGame nextTurn.
-	aGame nextTurn.
-	aGame nextTurn.
+	aGame nextTurnPlay.
+	aGame nextTurnPlay.
+	aGame nextTurnPlay.
 
 	self assert: aGame hasFinished
 ]
@@ -173,9 +173,9 @@ GameTest >> testWhenTheGameEndsThenTheWinnerIsShownOnTheLeaderBoard [
 	expectedDetails := 'Winner: BlueShip' , String cr , 'BlackShip: Lap: 1 Square: 2'
 	                   , String cr , 'BlueShip: Lap: 2 Square: 0' , String cr.
 
-	aGame nextTurn.
-	aGame nextTurn.
-	aGame nextTurn.
+	aGame nextTurnPlay.
+	aGame nextTurnPlay.
+	aGame nextTurnPlay.
 
 	self assert: aGame printBoard equals: expectedDetails
 ]
@@ -274,9 +274,9 @@ GameTest >> testWhenTheGameWithMultipleLapsEndsThenTheWinnerIsShownOnTheLeaderBo
 	                   , 'BlackShip: Lap: 3 Square: 0' , String cr
 	                   , 'BlueShip: Lap: 5 Square: 0' , String cr.
 
-	aGame nextTurn.
-	aGame nextTurn.
-	aGame nextTurn.
+	aGame nextTurnPlay.
+	aGame nextTurnPlay.
+	aGame nextTurnPlay.
 
 	self assert: aGame printBoard equals: expectedDetails
 ]

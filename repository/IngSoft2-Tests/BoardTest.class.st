@@ -29,19 +29,6 @@ BoardTest >> testWhenABoardIsCreatedAndEndsBeforeTheEndingOfItsWormHoleThenInval
 ]
 
 { #category : 'tests' }
-BoardTest >> testWhenABoardIsCreatedAndItsWormHoleEndsAtTheLastSquareThenInvalid [
-
-	| twentySquares aBlackHole |
-	twentySquares := 20.
-	aBlackHole := WormHole between: 15 and: 20.
-	self
-		should: [ Board with: twentySquares and: aBlackHole ]
-		raise: Error
-		withMessageText:
-		'A Worm Hole cannot end at the end of its Board'
-]
-
-{ #category : 'tests' }
 BoardTest >> testWhenABoardIsCreatedAndTheWormHoleFallsOutsideOfTheDimentionThenInvalid [
 
 	| twentySquares aWormHole |

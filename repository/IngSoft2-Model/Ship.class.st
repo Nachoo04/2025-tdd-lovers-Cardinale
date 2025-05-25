@@ -7,7 +7,8 @@ Class {
 	#instVars : [
 		'position',
 		'name',
-		'fuel'
+		'fuel',
+		'turnsLeftToWait'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -17,6 +18,15 @@ Class {
 Ship class >> called: aName [
 
 	^ self new initializeCalled: aName
+]
+
+{ #category : 'testing' }
+Ship >> canPlay [
+
+	turnsLeftToWait > 0 ifTrue: [
+		self reducePenalty.
+		^ false ].
+	^ true
 ]
 
 { #category : 'update' }
@@ -69,6 +79,13 @@ Ship >> initializeCalled: aName [
 	name := aName.
 	position := Position at: 0 in: 1.
 	fuel := 0.
+	turnsLeftToWait := 0.
+]
+
+{ #category : 'penalty' }
+Ship >> losesTwoTurns [
+
+	turnsLeftToWait := 2
 ]
 
 { #category : 'update' }
@@ -86,4 +103,10 @@ Ship >> moveTo: aPosition [
 { #category : 'accessing' }
 Ship >> name [
 	^ name
+]
+
+{ #category : 'penalty' }
+Ship >> reducePenalty [
+
+	turnsLeftToWait := turnsLeftToWait - 1
 ]
