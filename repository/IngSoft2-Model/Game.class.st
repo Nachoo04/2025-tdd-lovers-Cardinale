@@ -92,12 +92,31 @@ Game >> initializeWith: aBoard for: someLaps and: someShips and: someDices [
 ]
 
 { #category : 'action' }
+Game >> move: aShip [
+
+	| rolledNumber shipInitialPosition shipAuxiliaryPosition shipFinalPosition squaresTraveled |
+	rolledNumber := self rollDices.
+	shipInitialPosition := aShip actualPosition.
+	shipAuxiliaryPosition := board
+		                         update: shipInitialPosition
+		                         with: rolledNumber.
+	(shipAuxiliaryPosition hasCompleted: laps) ifTrue: [ self finish ].
+	shipFinalPosition := board moveIfWormHoleAt: shipAuxiliaryPosition.
+	squaresTraveled := shipInitialPosition
+		                   squaresAwayFrom: shipFinalPosition
+		                   with: board length.
+	aShip moveTo: shipFinalPosition.
+	[ aShip consumeFuel: squaresTraveled ] onErrorDo: [
+		aShip moveTo: shipInitialPosition ]
+]
+
+{ #category : 'action' }
 Game >> nextTurn [
 
 	| shipToMove |
 	self canStillPlay.
 	shipToMove := ships removeFirst.
-	self simulateMove: shipToMove.
+	self move: shipToMove.
 	ships add: shipToMove.
 	finished ifTrue: [ winner := shipToMove ]
 ]
@@ -123,22 +142,4 @@ Game >> rollDices [
 	rolledNumber := dices sum: [ :aDice | aDice roll ].
 
 	^ rolledNumber
-]
-
-{ #category : 'action' }
-Game >> simulateMove: aShip [
-
-	| rolledNumber shipInitialPosition shipFinalPosition shipNewPosition squaresTraveled |
-	rolledNumber := self rollDices.
-	shipInitialPosition := aShip actualPosition.
-	shipFinalPosition := board
-		                     update: shipInitialPosition
-		                     with: rolledNumber.
-	(shipFinalPosition hasCompleted: laps) ifTrue: [ self finish ].
-	shipNewPosition := board moveIfWormHoleAt: shipFinalPosition.
-	squaresTraveled := shipInitialPosition
-		                   squaresAwayFrom: shipNewPosition
-		                   with: board length.
-	aShip consumeFuel: squaresTraveled.
-	aShip moveTo: shipNewPosition
 ]

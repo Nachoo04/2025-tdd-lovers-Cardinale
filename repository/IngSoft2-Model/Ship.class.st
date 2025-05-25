@@ -33,7 +33,8 @@ Ship >> actualSquare [
 
 { #category : 'update' }
 Ship >> consumeFuel: squaresTraveled [
-
+	
+	self hasEnoughFuelToTravel: squaresTraveled.
 	fuel := fuel - squaresTraveled
 ]
 
@@ -53,6 +54,13 @@ Ship >> fuel: aFuelQuantity [
 Ship >> fuelLeft [
 
 	^ fuel
+]
+
+{ #category : 'testing' }
+Ship >> hasEnoughFuelToTravel: squaresToTravel [
+
+	fuel < squaresToTravel ifTrue: [
+		Error signal: 'Ship does not have enough fuel to move.' ]
 ]
 
 { #category : 'initialization' }

@@ -150,7 +150,7 @@ GameTest >> testWhenTheGameEndsThenTheWinnerIsShownOnTheLeaderBoard [
 
 	| fiveSquares aWormHole aGame expectedDetails sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices oneLap |
 	fiveSquares := 5.
-	sideToRoll := 2.
+	sideToRoll := 3.
 	oneLap := 1.
 
 	aWormHole := WormHole between: 2 and: 3.
@@ -170,7 +170,7 @@ GameTest >> testWhenTheGameEndsThenTheWinnerIsShownOnTheLeaderBoard [
 		         and: someShips
 		         and: someDices.
 
-	expectedDetails := 'Winner: BlueShip' , String cr , 'BlackShip: Lap: 1 Square: 3'
+	expectedDetails := 'Winner: BlueShip' , String cr , 'BlackShip: Lap: 1 Square: 2'
 	                   , String cr , 'BlueShip: Lap: 2 Square: 0' , String cr.
 
 	aGame nextTurn.
@@ -181,7 +181,7 @@ GameTest >> testWhenTheGameEndsThenTheWinnerIsShownOnTheLeaderBoard [
 ]
 
 { #category : 'tests' }
-GameTest >> testWhenTheGameIsCreatdesWithOneDiceThenAllTheShipsFuelEqualsTheMaximumRolledNumberTimesTwo [
+GameTest >> testWhenTheGameIsCreatedWithOneDiceThenAllTheShipsFuelEqualsToTheMaximumRolledNumberTimesTwo [
 
 	| fiveSquares aWormHole aBlueShip aBoard someShips someDices oneLap twoSides aTwoSidedDice aBlackShip maximumRolledNumber |
 	fiveSquares := 5.
@@ -212,7 +212,7 @@ GameTest >> testWhenTheGameIsCreatdesWithOneDiceThenAllTheShipsFuelEqualsTheMaxi
 ]
 
 { #category : 'tests' }
-GameTest >> testWhenTheGameIsCreatdesWithTwoDicesThenAllTheShipsFuelEqualsTheMaximumRolledNumberTimesTwo [
+GameTest >> testWhenTheGameIsCreatedWithTwoDicesThenAllTheShipsFuelEqualsToTheMaximumRolledNumberTimesTwo [
 
 	| fiveSquares aWormHole aBlueShip aBoard someShips someDices oneLap twoSides aTwoSidedDice aFourSidedDice fourSides aBlackShip maximumRolledNumber |
 	fiveSquares := 5.
