@@ -40,9 +40,9 @@ GameTest >> testWhenAPlayerTryToRollTheDicesWhenTheGameHasFinishedThenItFails [
 		         and: someShips
 		         and: someDices.
 
-	aGame nextTurn.
+	aGame nextTurnPlay.
 	self
-		should: [ aGame nextTurn ]
+		should: [ aGame nextTurnPlay ]
 		raise: Error
 		withMessageText: 'The game has finished.'
 ]
@@ -74,9 +74,9 @@ GameTest >> testWhenAShipMakesOneLapOnTheBoardThenThePositionChangesAccordingly 
 		         and: someShips
 		         and: someDices.
 
-	aGame nextTurn.
+	aGame nextTurnPlay.
 
-	self assert: (aBlueShip actualPosition equals: expectedPosition)
+	self assert: (aBlueShip currentPosition equals: expectedPosition)
 ]
 
 { #category : 'tests' }
@@ -105,10 +105,10 @@ GameTest >> testWhenAShipMovesOneSquareThenTheBoardIsPrintedCorrectly [
 		         and: someDices.
 
 	expectedDetails := 'Winner: There is not a winner yet' , String cr
-	                   , 'BlackShip: Lap: 1 Square: 0' , String cr , 'BlueShip: Lap: 1 Square: 1'
-	                   , String cr.
+	                   , 'BlueShip: Lap: 1 Square: 1' , String cr
+	                   , 'BlackShip: Lap: 1 Square: 0'.
 
-	aGame nextTurn.
+	aGame nextTurnPlay.
 
 	self assert: aGame printBoard equals: expectedDetails
 ]
@@ -138,9 +138,9 @@ GameTest >> testWhenAShipReachesTheFinalSquareThenTheGameEnds [
 		         and: someShips
 		         and: someDices.
 
-	aGame nextTurn.
-	aGame nextTurn.
-	aGame nextTurn.
+	aGame nextTurnPlay.
+	aGame nextTurnPlay.
+	aGame nextTurnPlay.
 
 	self assert: aGame hasFinished
 ]
@@ -150,7 +150,7 @@ GameTest >> testWhenTheGameEndsThenTheWinnerIsShownOnTheLeaderBoard [
 
 	| fiveSquares aWormHole aGame expectedDetails sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices oneLap |
 	fiveSquares := 5.
-	sideToRoll := 2.
+	sideToRoll := 3.
 	oneLap := 1.
 
 	aWormHole := WormHole between: 2 and: 3.
@@ -170,14 +170,80 @@ GameTest >> testWhenTheGameEndsThenTheWinnerIsShownOnTheLeaderBoard [
 		         and: someShips
 		         and: someDices.
 
-	expectedDetails := 'Winner: BlueShip' , String cr , 'BlackShip: Lap: 1 Square: 3'
-	                   , String cr , 'BlueShip: Lap: 2 Square: 0' , String cr.
+	expectedDetails := 'Winner: BlueShip' , String cr
+	                   , 'BlueShip: Lap: 2 Square: 0' , String cr
+	                   , 'BlackShip: Lap: 1 Square: 2'.
 
-	aGame nextTurn.
-	aGame nextTurn.
-	aGame nextTurn.
+	aGame nextTurnPlay.
+	aGame nextTurnPlay.
+	aGame nextTurnPlay.
 
 	self assert: aGame printBoard equals: expectedDetails
+]
+
+{ #category : 'tests' }
+GameTest >> testWhenTheGameIsCreatedWithOneDiceThenAllTheShipsFuelEqualsToTheMaximumRolledNumberTimesTwo [
+
+	| fiveSquares aWormHole aBlueShip aBoard someShips someDices oneLap twoSides aTwoSidedDice aBlackShip maximumRolledNumber |
+	fiveSquares := 5.
+	twoSides := 2.
+	oneLap := 1.
+	maximumRolledNumber := twoSides.
+
+	aWormHole := WormHole between: 1 and: 2.
+
+	aBlueShip := Ship called: 'BlueShip'.
+	aBlackShip := Ship called: 'BlackShip'.
+	aTwoSidedDice := Dice with: twoSides.
+	aBoard := Board with: fiveSquares and: aWormHole.
+
+	someShips := OrderedCollection new.
+	someDices := OrderedCollection new.
+	someShips add: aBlueShip.
+	someShips add: aBlackShip.
+	someDices add: aTwoSidedDice.
+	Game
+		with: aBoard
+		for: oneLap
+		and: someShips
+		and: someDices.
+
+	self assert: aBlueShip fuelLeft equals: maximumRolledNumber * 2.
+	self assert: aBlackShip fuelLeft equals: maximumRolledNumber * 2
+]
+
+{ #category : 'tests' }
+GameTest >> testWhenTheGameIsCreatedWithTwoDicesThenAllTheShipsFuelEqualsToTheMaximumRolledNumberTimesTwo [
+
+	| fiveSquares aWormHole aBlueShip aBoard someShips someDices oneLap twoSides aTwoSidedDice aFourSidedDice fourSides aBlackShip maximumRolledNumber |
+	fiveSquares := 5.
+	twoSides := 2.
+	fourSides := 4.
+	oneLap := 1.
+	maximumRolledNumber := twoSides + fourSides.
+
+	aWormHole := WormHole between: 1 and: 2.
+
+	aBlueShip := Ship called: 'BlueShip'.
+	aBlackShip := Ship called: 'BlackShip'.
+	aTwoSidedDice := Dice with: twoSides.
+	aFourSidedDice := Dice with: fourSides.
+	aBoard := Board with: fiveSquares and: aWormHole.
+
+	someShips := OrderedCollection new.
+	someDices := OrderedCollection new.
+	someShips add: aBlueShip.
+	someShips add: aBlackShip.
+	someDices add: aTwoSidedDice.
+	someDices add: aFourSidedDice.
+	Game
+		with: aBoard
+		for: oneLap
+		and: someShips
+		and: someDices.
+
+	self assert: aBlueShip fuelLeft equals: maximumRolledNumber * 2.
+	self assert: aBlackShip fuelLeft equals: maximumRolledNumber * 2
 ]
 
 { #category : 'tests' }
@@ -205,12 +271,13 @@ GameTest >> testWhenTheGameWithMultipleLapsEndsThenTheWinnerIsShownOnTheLeaderBo
 		         and: someShips
 		         and: someDices.
 
-	expectedDetails := 'Winner: BlueShip' , String cr , 'BlackShip: Lap: 3 Square: 0'
-	                   , String cr , 'BlueShip: Lap: 5 Square: 0' , String cr.
+	expectedDetails := 'Winner: BlueShip' , String cr
+	                   , 'BlueShip: Lap: 5 Square: 0' , String cr
+	                   , 'BlackShip: Lap: 3 Square: 0'.
 
-	aGame nextTurn.
-	aGame nextTurn.
-	aGame nextTurn.
+	aGame nextTurnPlay.
+	aGame nextTurnPlay.
+	aGame nextTurnPlay.
 
 	self assert: aGame printBoard equals: expectedDetails
 ]

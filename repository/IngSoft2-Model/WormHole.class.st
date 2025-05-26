@@ -32,7 +32,7 @@ WormHole class >> between: aBeginning and: anEnd [
 { #category : 'validation' }
 WormHole class >> cannotBeginInANegative: anEnd [
 
-	anEnd <= 0 ifTrue: [
+	anEnd < 0 ifTrue: [
 		Error signal: 'A Worm Hole cannot begin in a negative square' ]
 ]
 
@@ -41,14 +41,6 @@ WormHole class >> cannotEndInANegative: anEnd [
 
 	anEnd <= 0 ifTrue: [
 		Error signal: 'A Worm Hole cannot end in a negative square' ]
-]
-
-{ #category : 'validation' }
-WormHole >> endsAt: aLength [
-
-	end == aLength ifTrue: [
-		Error signal:
-			'A Worm Hole cannot end at the end of its Board' ]
 ]
 
 { #category : 'validation' }

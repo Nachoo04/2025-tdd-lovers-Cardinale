@@ -18,10 +18,10 @@ Position class >> at: aSquare in: aLap [
 	^ self new initializeAt: aSquare in: aLap
 ]
 
-{ #category : 'compare' }
-Position >> actualSquare [
+{ #category : 'comparing' }
+Position >> actualLap [
 
-	^ square
+	^ lap
 ]
 
 { #category : 'adding' }
@@ -61,6 +61,12 @@ Position >> asString [
 ]
 
 { #category : 'comparing' }
+Position >> currentSquare [
+
+	^ square
+]
+
+{ #category : 'comparing' }
 Position >> equals: aPosition [
 
 	^(aPosition squareEquals: square) and: (aPosition lapsEquals: lap)
@@ -72,21 +78,31 @@ Position >> hasCompleted: someLaps [
 	^ someLaps < lap
 ]
 
-{ #category : 'accessing' }
+{ #category : 'initialization' }
 Position >> initializeAt: aSquare in: aLap [
 
 	square := aSquare.
 	lap := aLap
 ]
 
-{ #category : 'compare' }
+{ #category : 'comparing' }
 Position >> lapsEquals: aLap [
 
 	^ lap = aLap
 ]
 
-{ #category : 'compeare' }
+{ #category : 'comparing' }
 Position >> squareEquals: aSquare [
 
 	^ square = aSquare
+]
+
+{ #category : 'comparing' }
+Position >> squaresAwayFrom: aPosition with: aBoardLength [
+
+	| squaresTraveled |
+	squaresTraveled := ((aPosition actualLap - 1) * aBoardLength
+	                    + aPosition currentSquare
+	                    - ((lap - 1) * aBoardLength + square)) abs.
+	^ squaresTraveled
 ]
