@@ -17,12 +17,15 @@ Class {
 Board class >> generateSquaresfrom: aDistribution with: aLength and: aWormHole [
 
 	| generatedSquares |
-	generatedSquares := (0 to: aLength - 1) collect: [ :aSquare | (aWormHole hasEndAt: aSquare) ifTrue: [ PlainSquare new ] ifFalse: [  
-		                    (aDistribution
-			                     atRandom: Random new
-			                     weighting: [ :aSquarePossibility |
-			                     aSquarePossibility value ]) key value]].
-	
+	generatedSquares := (0 to: aLength - 1) collect: [ :aSquare |
+		                    (aWormHole hasEndAt: aSquare)
+			                    ifTrue: [ PlainSquare new ]
+			                    ifFalse: [
+				                    (aDistribution
+					                     atRandom: Random new
+					                     weighting: [ :aSquareProbability |
+					                     aSquareProbability value ]) key value ] ].
+
 	^ generatedSquares
 ]
 
@@ -74,6 +77,15 @@ Board >> length [
 Board >> moveIfWormHoleAt: aPosition [
 
 	^ wormHole moveIfEndPointAt: aPosition
+]
+
+{ #category : 'accessing' }
+Board >> showDistribution [
+	
+	| squares |
+	squares := String cr join: (distribution collect: [ :aSquare| aSquare asString ]).
+
+	^ squares
 ]
 
 { #category : 'updating' }
