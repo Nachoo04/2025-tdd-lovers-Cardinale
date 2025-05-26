@@ -18,11 +18,29 @@ BoardTest >> should: anErrorBlock raise: anErrorClass withMessageText: anErrorMe
 { #category : 'tests' }
 BoardTest >> testWhenABoardIsCreatedAndEndsBeforeTheEndingOfItsWormHoleThenInvalid [
 
-	| twentySquares aWormHole |
+	| twentySquares aWormHole plainSquarePossibility blackHoleSquarePossibility hyperGravitySquarePossibility moonWalkSquarePossibility hyperJumpSquarePossibility atomicBombSquarePossibility aDistribution |
 	twentySquares := 20.
 	aWormHole := WormHole between: 15 and: 30.
+	plainSquarePossibility := 1.
+	blackHoleSquarePossibility := 0.
+	hyperGravitySquarePossibility := 0.
+	moonWalkSquarePossibility := 0.
+	hyperJumpSquarePossibility := 0.
+	atomicBombSquarePossibility := 0.
+	aDistribution := {
+		                 ([ PlainSquare new ] -> plainSquarePossibility).
+		                 ([ BlackHoleSquare new ]
+		                  -> blackHoleSquarePossibility).
+		                 ([ HyperGravitySquare new ]
+		                  -> hyperGravitySquarePossibility).
+		                 ([ MoonWalkSquare new ]
+		                  -> moonWalkSquarePossibility).
+		                 ([ HyperJumpSquare new ]
+		                  -> hyperJumpSquarePossibility).
+		                 ([ AtomicBombSquare new ]
+		                  -> atomicBombSquarePossibility) }.
 	self
-		should: [ Board with: twentySquares and: aWormHole ]
+		should: [ Board with: twentySquares and: aWormHole distributedBy: aDistribution]
 		raise: Error
 		withMessageText:
 		'A Board cannot end before the ending of its Worm Hole'
@@ -31,11 +49,29 @@ BoardTest >> testWhenABoardIsCreatedAndEndsBeforeTheEndingOfItsWormHoleThenInval
 { #category : 'tests' }
 BoardTest >> testWhenABoardIsCreatedAndTheWormHoleFallsOutsideOfTheDimentionThenInvalid [
 
-	| twentySquares aWormHole |
+	| twentySquares aWormHole plainSquarePossibility blackHoleSquarePossibility hyperGravitySquarePossibility moonWalkSquarePossibility hyperJumpSquarePossibility atomicBombSquarePossibility aDistribution |
 	twentySquares := 20.
 	aWormHole := WormHole between: 25 and: 30.
+	plainSquarePossibility := 1.
+	blackHoleSquarePossibility := 0.
+	hyperGravitySquarePossibility := 0.
+	moonWalkSquarePossibility := 0.
+	hyperJumpSquarePossibility := 0.
+	atomicBombSquarePossibility := 0.
+	aDistribution := {
+		                 ([ PlainSquare new ] -> plainSquarePossibility).
+		                 ([ BlackHoleSquare new ]
+		                  -> blackHoleSquarePossibility).
+		                 ([ HyperGravitySquare new ]
+		                  -> hyperGravitySquarePossibility).
+		                 ([ MoonWalkSquare new ]
+		                  -> moonWalkSquarePossibility).
+		                 ([ HyperJumpSquare new ]
+		                  -> hyperJumpSquarePossibility).
+		                 ([ AtomicBombSquare new ]
+		                  -> atomicBombSquarePossibility) }.
 	self
-		should: [ Board with: twentySquares and: aWormHole ]
+		should: [ Board with: twentySquares and: aWormHole distributedBy: aDistribution]
 		raise: Error
 		withMessageText:
 		'A Worm Hole cannot fall outside of its Boards length'
@@ -44,11 +80,29 @@ BoardTest >> testWhenABoardIsCreatedAndTheWormHoleFallsOutsideOfTheDimentionThen
 { #category : 'tests' }
 BoardTest >> testWhenABoardIsCreatedWithLessThanTwoSquaresThenInvalid [
 
-	| aLength aWormHole |
+	| aLength aWormHole plainSquarePossibility blackHoleSquarePossibility hyperGravitySquarePossibility moonWalkSquarePossibility hyperJumpSquarePossibility atomicBombSquarePossibility aDistribution |
 	aLength := -1.
 	aWormHole := WormHole between: 1 and: 2.
+	plainSquarePossibility := 1.
+	blackHoleSquarePossibility := 0.
+	hyperGravitySquarePossibility := 0.
+	moonWalkSquarePossibility := 0.
+	hyperJumpSquarePossibility := 0.
+	atomicBombSquarePossibility := 0.
+	aDistribution := {
+		                 ([ PlainSquare new ] -> plainSquarePossibility).
+		                 ([ BlackHoleSquare new ]
+		                  -> blackHoleSquarePossibility).
+		                 ([ HyperGravitySquare new ]
+		                  -> hyperGravitySquarePossibility).
+		                 ([ MoonWalkSquare new ]
+		                  -> moonWalkSquarePossibility).
+		                 ([ HyperJumpSquare new ]
+		                  -> hyperJumpSquarePossibility).
+		                 ([ AtomicBombSquare new ]
+		                  -> atomicBombSquarePossibility) }.
 	self
-		should: [ Board with: aLength and: aWormHole ]
+		should: [ Board with: aLength and: aWormHole distributedBy: aDistribution]
 		raise: Error
 		withMessageText: 'Board must have at least two squares'
 ]

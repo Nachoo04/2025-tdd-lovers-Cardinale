@@ -6,11 +6,25 @@ Class {
 	#superclass : 'Object',
 	#instVars : [
 		'length',
-		'wormHole'
+		'wormHole',
+		'distribution'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
+
+{ #category : 'creation' }
+Board class >> generateSquaresfrom: aDistribution with: aLength and: aWormHole [
+
+	| generatedSquares |
+	generatedSquares := (0 to: aLength - 1) collect: [ :aSquare | (aWormHole hasEndAt: aSquare) ifTrue: [ PlainSquare new ] ifFalse: [  
+		                    (aDistribution
+			                     atRandom: Random new
+			                     weighting: [ :aSquarePossibility |
+			                     aSquarePossibility value ]) key value]].
+	
+	^ generatedSquares
+]
 
 { #category : 'validation' }
 Board class >> lengthIsValid: aLength [
@@ -32,19 +46,22 @@ Board class >> validate: aLength isSmallerThanTheEndingOf: aWormHole [
 ]
 
 { #category : 'creation' }
-Board class >> with: aLength and: aWormHole [
-
+Board class >> with: aLength and: aWormHole distributedBy: aDistribution [
+ 
+	| generatedSquares |
 	self lengthIsValid: aLength.
 	self validate: aWormHole fallsInto: aLength.
 	self validate: aLength isSmallerThanTheEndingOf: aWormHole.
-	^ self new initializeWith: aLength and: aWormHole
+	generatedSquares := self generateSquaresfrom: aDistribution with: aLength and: aWormHole.
+	^ self new initializeWith: aLength and: aWormHole distributedBy: generatedSquares
 ]
 
 { #category : 'initialization' }
-Board >> initializeWith: aLength and: aWormHole [
+Board >> initializeWith: aLength and: aWormHole distributedBy: aDistribution [ 
 
 	length := aLength.
-	wormHole := aWormHole
+	wormHole := aWormHole.
+	distribution := aDistribution
 ]
 
 { #category : 'accessing' }

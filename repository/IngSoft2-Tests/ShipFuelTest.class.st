@@ -8,7 +8,7 @@ Class {
 { #category : 'tests' }
 ShipFuelTest >> testWhenAShipDecideToPassThenItsFuellsToppedUp [
 
-	| fiveSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices oneLap expectedFuelLeft |
+	| fiveSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices oneLap expectedFuelLeft plainSquarePossibility blackHoleSquarePossibility hyperGravitySquarePossibility moonWalkSquarePossibility hyperJumpSquarePossibility atomicBombSquarePossibility aDistribution |
 	fiveSquares := 10.
 	sideToRoll := 1.
 	oneLap := 1.
@@ -18,7 +18,25 @@ ShipFuelTest >> testWhenAShipDecideToPassThenItsFuellsToppedUp [
 	aBlueShip := Ship called: 'BlueShip'.
 	aBlackShip := Ship called: 'BlackShip'.
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
-	aBoard := Board with: fiveSquares and: aWormHole.
+	plainSquarePossibility := 1.
+	blackHoleSquarePossibility := 0.
+	hyperGravitySquarePossibility := 0.
+	moonWalkSquarePossibility := 0.
+	hyperJumpSquarePossibility := 0.
+	atomicBombSquarePossibility := 0.
+	aDistribution := {
+		                 ([ PlainSquare new ] -> plainSquarePossibility).
+		                 ([ BlackHoleSquare new ]
+		                  -> blackHoleSquarePossibility).
+		                 ([ HyperGravitySquare new ]
+		                  -> hyperGravitySquarePossibility).
+		                 ([ MoonWalkSquare new ]
+		                  -> moonWalkSquarePossibility).
+		                 ([ HyperJumpSquare new ]
+		                  -> hyperJumpSquarePossibility).
+		                 ([ AtomicBombSquare new ]
+		                  -> atomicBombSquarePossibility) }.
+	aBoard := Board with: fiveSquares and: aWormHole distributedBy: aDistribution.
 
 	someShips := OrderedCollection new.
 	someDices := OrderedCollection new.
@@ -44,7 +62,7 @@ ShipFuelTest >> testWhenAShipDecideToPassThenItsFuellsToppedUp [
 { #category : 'tests' }
 ShipFuelTest >> testWhenAShipIsNoLongerPenalisedThenItsFuelIsToppedUp [
 
-	| fiveSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices oneLap expectedFuelLeft |
+	| fiveSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices oneLap expectedFuelLeft plainSquarePossibility blackHoleSquarePossibility hyperGravitySquarePossibility moonWalkSquarePossibility hyperJumpSquarePossibility atomicBombSquarePossibility aDistribution |
 	fiveSquares := 10.
 	sideToRoll := 1.
 	oneLap := 1.
@@ -54,7 +72,25 @@ ShipFuelTest >> testWhenAShipIsNoLongerPenalisedThenItsFuelIsToppedUp [
 	aBlueShip := Ship called: 'BlueShip'.
 	aBlackShip := Ship called: 'BlackShip'.
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
-	aBoard := Board with: fiveSquares and: aWormHole.
+	plainSquarePossibility := 1.
+	blackHoleSquarePossibility := 0.
+	hyperGravitySquarePossibility := 0.
+	moonWalkSquarePossibility := 0.
+	hyperJumpSquarePossibility := 0.
+	atomicBombSquarePossibility := 0.
+	aDistribution := {
+		                 ([ PlainSquare new ] -> plainSquarePossibility).
+		                 ([ BlackHoleSquare new ]
+		                  -> blackHoleSquarePossibility).
+		                 ([ HyperGravitySquare new ]
+		                  -> hyperGravitySquarePossibility).
+		                 ([ MoonWalkSquare new ]
+		                  -> moonWalkSquarePossibility).
+		                 ([ HyperJumpSquare new ]
+		                  -> hyperJumpSquarePossibility).
+		                 ([ AtomicBombSquare new ]
+		                  -> atomicBombSquarePossibility) }.
+	aBoard := Board with: fiveSquares and: aWormHole distributedBy: aDistribution.
 
 	someShips := OrderedCollection new.
 	someDices := OrderedCollection new.
@@ -84,7 +120,7 @@ ShipFuelTest >> testWhenAShipIsNoLongerPenalisedThenItsFuelIsToppedUp [
 { #category : 'tests' }
 ShipFuelTest >> testWhenAShipMovesAfterPassItsTurnMovesAccordingly [
 
-	| fiveSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices oneLap expectedPosition |
+	| fiveSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices oneLap expectedPosition plainSquarePossibility blackHoleSquarePossibility hyperGravitySquarePossibility moonWalkSquarePossibility hyperJumpSquarePossibility atomicBombSquarePossibility aDistribution |
 	fiveSquares := 10.
 	sideToRoll := 1.
 	oneLap := 1.
@@ -94,7 +130,25 @@ ShipFuelTest >> testWhenAShipMovesAfterPassItsTurnMovesAccordingly [
 	aBlueShip := Ship called: 'BlueShip'.
 	aBlackShip := Ship called: 'BlackShip'.
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
-	aBoard := Board with: fiveSquares and: aWormHole.
+	plainSquarePossibility := 1.
+	blackHoleSquarePossibility := 0.
+	hyperGravitySquarePossibility := 0.
+	moonWalkSquarePossibility := 0.
+	hyperJumpSquarePossibility := 0.
+	atomicBombSquarePossibility := 0.
+	aDistribution := {
+		                 ([ PlainSquare new ] -> plainSquarePossibility).
+		                 ([ BlackHoleSquare new ]
+		                  -> blackHoleSquarePossibility).
+		                 ([ HyperGravitySquare new ]
+		                  -> hyperGravitySquarePossibility).
+		                 ([ MoonWalkSquare new ]
+		                  -> moonWalkSquarePossibility).
+		                 ([ HyperJumpSquare new ]
+		                  -> hyperJumpSquarePossibility).
+		                 ([ AtomicBombSquare new ]
+		                  -> atomicBombSquarePossibility) }.
+	aBoard := Board with: fiveSquares and: aWormHole distributedBy: aDistribution.
 
 	someShips := OrderedCollection new.
 	someDices := OrderedCollection new.
@@ -122,7 +176,7 @@ ShipFuelTest >> testWhenAShipMovesAfterPassItsTurnMovesAccordingly [
 { #category : 'tests' }
 ShipFuelTest >> testWhenAShipMovesOneSquareThenItsFuelDecreasesAccordingly [
 
-| fiveSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices oneLap expectedFuelLeft |
+| fiveSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices oneLap expectedFuelLeft plainSquarePossibility blackHoleSquarePossibility hyperGravitySquarePossibility moonWalkSquarePossibility hyperJumpSquarePossibility atomicBombSquarePossibility aDistribution |
 	fiveSquares := 5.
 	sideToRoll := 1.
 	oneLap := 1.
@@ -132,7 +186,25 @@ ShipFuelTest >> testWhenAShipMovesOneSquareThenItsFuelDecreasesAccordingly [
 	aBlueShip := Ship called: 'BlueShip'.
 	aBlackShip := Ship called: 'BlackShip'.
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
-	aBoard := Board with: fiveSquares and: aWormHole.
+	plainSquarePossibility := 1.
+	blackHoleSquarePossibility := 0.
+	hyperGravitySquarePossibility := 0.
+	moonWalkSquarePossibility := 0.
+	hyperJumpSquarePossibility := 0.
+	atomicBombSquarePossibility := 0.
+	aDistribution := {
+		                 ([ PlainSquare new ] -> plainSquarePossibility).
+		                 ([ BlackHoleSquare new ]
+		                  -> blackHoleSquarePossibility).
+		                 ([ HyperGravitySquare new ]
+		                  -> hyperGravitySquarePossibility).
+		                 ([ MoonWalkSquare new ]
+		                  -> moonWalkSquarePossibility).
+		                 ([ HyperJumpSquare new ]
+		                  -> hyperJumpSquarePossibility).
+		                 ([ AtomicBombSquare new ]
+		                  -> atomicBombSquarePossibility) }.
+	aBoard := Board with: fiveSquares and: aWormHole distributedBy: aDistribution.
 
 	someShips := OrderedCollection new.
 	someDices := OrderedCollection new.
@@ -153,7 +225,7 @@ ShipFuelTest >> testWhenAShipMovesOneSquareThenItsFuelDecreasesAccordingly [
 { #category : 'tests' }
 ShipFuelTest >> testWhenAShipMovesThroughAWormHoleThenItsFuelDecreasesAccordingly [
 
-| fiveSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices oneLap expectedFuelLeft |
+| fiveSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices oneLap expectedFuelLeft plainSquarePossibility blackHoleSquarePossibility hyperGravitySquarePossibility moonWalkSquarePossibility hyperJumpSquarePossibility atomicBombSquarePossibility aDistribution |
 	fiveSquares := 5.
 	sideToRoll := 1.
 	oneLap := 1.
@@ -163,7 +235,25 @@ ShipFuelTest >> testWhenAShipMovesThroughAWormHoleThenItsFuelDecreasesAccordingl
 	aBlueShip := Ship called: 'BlueShip'.
 	aBlackShip := Ship called: 'BlackShip'.
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
-	aBoard := Board with: fiveSquares and: aWormHole.
+	plainSquarePossibility := 1.
+	blackHoleSquarePossibility := 0.
+	hyperGravitySquarePossibility := 0.
+	moonWalkSquarePossibility := 0.
+	hyperJumpSquarePossibility := 0.
+	atomicBombSquarePossibility := 0.
+	aDistribution := {
+		                 ([ PlainSquare new ] -> plainSquarePossibility).
+		                 ([ BlackHoleSquare new ]
+		                  -> blackHoleSquarePossibility).
+		                 ([ HyperGravitySquare new ]
+		                  -> hyperGravitySquarePossibility).
+		                 ([ MoonWalkSquare new ]
+		                  -> moonWalkSquarePossibility).
+		                 ([ HyperJumpSquare new ]
+		                  -> hyperJumpSquarePossibility).
+		                 ([ AtomicBombSquare new ]
+		                  -> atomicBombSquarePossibility) }.
+	aBoard := Board with: fiveSquares and: aWormHole distributedBy: aDistribution.
 
 	someShips := OrderedCollection new.
 	someDices := OrderedCollection new.
@@ -184,7 +274,7 @@ ShipFuelTest >> testWhenAShipMovesThroughAWormHoleThenItsFuelDecreasesAccordingl
 { #category : 'tests' }
 ShipFuelTest >> testWhenAShipTriesToMoveMoreSquaresThanItsRemainingFuelThenItDoesNotMove [
 
-	| fiveSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices oneLap expectedPosition |
+	| fiveSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices oneLap expectedPosition plainSquarePossibility blackHoleSquarePossibility hyperGravitySquarePossibility moonWalkSquarePossibility hyperJumpSquarePossibility atomicBombSquarePossibility aDistribution |
 	fiveSquares := 5.
 	sideToRoll := 1.
 	oneLap := 1.
@@ -194,7 +284,25 @@ ShipFuelTest >> testWhenAShipTriesToMoveMoreSquaresThanItsRemainingFuelThenItDoe
 	aBlueShip := Ship called: 'BlueShip'.
 	aBlackShip := Ship called: 'BlackShip'.
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
-	aBoard := Board with: fiveSquares and: aWormHole.
+	plainSquarePossibility := 1.
+	blackHoleSquarePossibility := 0.
+	hyperGravitySquarePossibility := 0.
+	moonWalkSquarePossibility := 0.
+	hyperJumpSquarePossibility := 0.
+	atomicBombSquarePossibility := 0.
+	aDistribution := {
+		                 ([ PlainSquare new ] -> plainSquarePossibility).
+		                 ([ BlackHoleSquare new ]
+		                  -> blackHoleSquarePossibility).
+		                 ([ HyperGravitySquare new ]
+		                  -> hyperGravitySquarePossibility).
+		                 ([ MoonWalkSquare new ]
+		                  -> moonWalkSquarePossibility).
+		                 ([ HyperJumpSquare new ]
+		                  -> hyperJumpSquarePossibility).
+		                 ([ AtomicBombSquare new ]
+		                  -> atomicBombSquarePossibility) }.
+	aBoard := Board with: fiveSquares and: aWormHole distributedBy: aDistribution.
 
 	someShips := OrderedCollection new.
 	someDices := OrderedCollection new.
@@ -219,7 +327,7 @@ ShipFuelTest >> testWhenAShipTriesToMoveMoreSquaresThanItsRemainingFuelThenItDoe
 { #category : 'tests' }
 ShipFuelTest >> testWhenAShipTriesToMoveMoreSquaresThanItsRemainingFuelThenLosesTwoTurns [
 
-	| fiveSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices oneLap expectedPosition |
+	| fiveSquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices oneLap expectedPosition plainSquarePossibility blackHoleSquarePossibility hyperGravitySquarePossibility moonWalkSquarePossibility hyperJumpSquarePossibility atomicBombSquarePossibility aDistribution |
 	fiveSquares := 10.
 	sideToRoll := 1.
 	oneLap := 1.
@@ -229,7 +337,25 @@ ShipFuelTest >> testWhenAShipTriesToMoveMoreSquaresThanItsRemainingFuelThenLoses
 	aBlueShip := Ship called: 'BlueShip'.
 	aBlackShip := Ship called: 'BlackShip'.
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
-	aBoard := Board with: fiveSquares and: aWormHole.
+	plainSquarePossibility := 1.
+	blackHoleSquarePossibility := 0.
+	hyperGravitySquarePossibility := 0.
+	moonWalkSquarePossibility := 0.
+	hyperJumpSquarePossibility := 0.
+	atomicBombSquarePossibility := 0.
+	aDistribution := {
+		                 ([ PlainSquare new ] -> plainSquarePossibility).
+		                 ([ BlackHoleSquare new ]
+		                  -> blackHoleSquarePossibility).
+		                 ([ HyperGravitySquare new ]
+		                  -> hyperGravitySquarePossibility).
+		                 ([ MoonWalkSquare new ]
+		                  -> moonWalkSquarePossibility).
+		                 ([ HyperJumpSquare new ]
+		                  -> hyperJumpSquarePossibility).
+		                 ([ AtomicBombSquare new ]
+		                  -> atomicBombSquarePossibility) }.
+	aBoard := Board with: fiveSquares and: aWormHole distributedBy: aDistribution.
 
 	someShips := OrderedCollection new.
 	someDices := OrderedCollection new.

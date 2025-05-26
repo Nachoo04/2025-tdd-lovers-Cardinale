@@ -18,10 +18,28 @@ WormHoleTest >> should: anErrorBlock raise: anErrorClass withMessageText: anErro
 { #category : 'tests' }
 WormHoleTest >> testWhenAShipLandsOnTheBeginningOfAWormHoleThenItEndsUpAtTheEndOfIt [
 
-	| aBoard aShip twentySquares aSetDice aWormHole sideToRoll |
+	| aBoard aShip twentySquares aSetDice aWormHole sideToRoll plainSquarePossibility blackHoleSquarePossibility hyperGravitySquarePossibility moonWalkSquarePossibility hyperJumpSquarePossibility atomicBombSquarePossibility aDistribution |
 	twentySquares := 20.
 	aWormHole := WormHole between: 2 and: 10.
-	aBoard := Board with: twentySquares and: aWormHole.
+	plainSquarePossibility := 1.
+	blackHoleSquarePossibility := 0.
+	hyperGravitySquarePossibility := 0.
+	moonWalkSquarePossibility := 0.
+	hyperJumpSquarePossibility := 0.
+	atomicBombSquarePossibility := 0.
+	aDistribution := {
+		                 ([ PlainSquare new ] -> plainSquarePossibility).
+		                 ([ BlackHoleSquare new ]
+		                  -> blackHoleSquarePossibility).
+		                 ([ HyperGravitySquare new ]
+		                  -> hyperGravitySquarePossibility).
+		                 ([ MoonWalkSquare new ]
+		                  -> moonWalkSquarePossibility).
+		                 ([ HyperJumpSquare new ]
+		                  -> hyperJumpSquarePossibility).
+		                 ([ AtomicBombSquare new ]
+		                  -> atomicBombSquarePossibility) }.
+	aBoard := Board with: twentySquares and: aWormHole distributedBy: aDistribution.
 	aShip := Ship called: 'BlueShip'.
 	sideToRoll := 2.
 	aSetDice := LoadedDice toRoll: sideToRoll.
@@ -33,10 +51,28 @@ WormHoleTest >> testWhenAShipLandsOnTheBeginningOfAWormHoleThenItEndsUpAtTheEndO
 { #category : 'tests' }
 WormHoleTest >> testWhenAShipLandsOnTheEndOfAWormHoleThenItEndsUpAtTheBeginningOfIt [
 
-	| aBoard aShip twentySquares aSetDice aWormHole sideToRoll |
+	| aBoard aShip twentySquares aSetDice aWormHole sideToRoll plainSquarePossibility blackHoleSquarePossibility hyperGravitySquarePossibility moonWalkSquarePossibility hyperJumpSquarePossibility atomicBombSquarePossibility aDistribution |
 	twentySquares := 20.
 	aWormHole := WormHole between: 2 and: 5.
-	aBoard := Board with: twentySquares and: aWormHole.
+	plainSquarePossibility := 1.
+	blackHoleSquarePossibility := 0.
+	hyperGravitySquarePossibility := 0.
+	moonWalkSquarePossibility := 0.
+	hyperJumpSquarePossibility := 0.
+	atomicBombSquarePossibility := 0.
+	aDistribution := {
+		                 ([ PlainSquare new ] -> plainSquarePossibility).
+		                 ([ BlackHoleSquare new ]
+		                  -> blackHoleSquarePossibility).
+		                 ([ HyperGravitySquare new ]
+		                  -> hyperGravitySquarePossibility).
+		                 ([ MoonWalkSquare new ]
+		                  -> moonWalkSquarePossibility).
+		                 ([ HyperJumpSquare new ]
+		                  -> hyperJumpSquarePossibility).
+		                 ([ AtomicBombSquare new ]
+		                  -> atomicBombSquarePossibility) }.
+	aBoard := Board with: twentySquares and: aWormHole distributedBy: aDistribution.
 	aShip := Ship called: 'BlueShip'.
 	sideToRoll := 5.
 	aSetDice := LoadedDice toRoll: sideToRoll.
