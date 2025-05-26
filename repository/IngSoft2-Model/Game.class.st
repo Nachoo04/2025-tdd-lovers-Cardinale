@@ -141,14 +141,15 @@ Game >> nextTurnPlay [
 { #category : 'printing' }
 Game >> printBoard [
 
-	| positions results winnerShip |
-	
-	winnerShip := 'Winner: ', winner name , String cr.
-	positions := ships
-		             inject: ''
-		             into: [ :result :aShip |
-		             result , aShip details , String cr ].
-	results:= winnerShip , positions.
+	| positions results winnerShip sortedPositions |
+	winnerShip := 'Winner: ' , winner name , String cr.
+	sortedPositions := ships sorted: [ :aShip |
+		                   aShip currentPosition
+			                   squaresAwayFrom: (Position at: 0 in: 1)
+			                   with: board length ] descending.
+	positions := String cr join: (sortedPositions collect: [ :aShip | aShip details ]).
+		            
+	results := winnerShip , positions.
 	^ results
 ]
 

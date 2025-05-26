@@ -105,8 +105,8 @@ GameTest >> testWhenAShipMovesOneSquareThenTheBoardIsPrintedCorrectly [
 		         and: someDices.
 
 	expectedDetails := 'Winner: There is not a winner yet' , String cr
-	                   , 'BlackShip: Lap: 1 Square: 0' , String cr , 'BlueShip: Lap: 1 Square: 1'
-	                   , String cr.
+	                   , 'BlueShip: Lap: 1 Square: 1' , String cr
+	                   , 'BlackShip: Lap: 1 Square: 0'.
 
 	aGame nextTurnPlay.
 
@@ -170,8 +170,9 @@ GameTest >> testWhenTheGameEndsThenTheWinnerIsShownOnTheLeaderBoard [
 		         and: someShips
 		         and: someDices.
 
-	expectedDetails := 'Winner: BlueShip' , String cr , 'BlackShip: Lap: 1 Square: 2'
-	                   , String cr , 'BlueShip: Lap: 2 Square: 0' , String cr.
+	expectedDetails := 'Winner: BlueShip' , String cr
+	                   , 'BlueShip: Lap: 2 Square: 0' , String cr
+	                   , 'BlackShip: Lap: 1 Square: 2'.
 
 	aGame nextTurnPlay.
 	aGame nextTurnPlay.
@@ -271,8 +272,8 @@ GameTest >> testWhenTheGameWithMultipleLapsEndsThenTheWinnerIsShownOnTheLeaderBo
 		         and: someDices.
 
 	expectedDetails := 'Winner: BlueShip' , String cr
-	                   , 'BlackShip: Lap: 3 Square: 0' , String cr
-	                   , 'BlueShip: Lap: 5 Square: 0' , String cr.
+	                   , 'BlueShip: Lap: 5 Square: 0' , String cr
+	                   , 'BlackShip: Lap: 3 Square: 0'.
 
 	aGame nextTurnPlay.
 	aGame nextTurnPlay.
