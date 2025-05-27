@@ -1,3 +1,6 @@
+"
+This class represents a set hyper gravity square
+"
 Class {
 	#name : 'SetHyperGravitySquare',
 	#superclass : 'Object',
