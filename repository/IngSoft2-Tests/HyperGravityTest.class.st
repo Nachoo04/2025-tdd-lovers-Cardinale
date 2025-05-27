@@ -8,8 +8,8 @@ Class {
 { #category : 'tests' }
 HyperGravityTest >> testWhenAPlayerFallsIntoAHyperGravitySquareAndRolledTheNecesaryNumberThenContinue [
 
-	| aDistribution hyperGravitySquarePossibility fiveSquares sideToRoll oneLap expectedPosition aWormHole aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aGame |
-	fiveSquares := 10.
+	| aDistribution hyperGravitySquarePossibility tenSquares sideToRoll oneLap expectedPosition aWormHole aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aGame |
+	tenSquares := 10.
 	sideToRoll := 1.
 	oneLap := 1.
 	expectedPosition := Position at: 2 in: 1.
@@ -27,7 +27,7 @@ HyperGravityTest >> testWhenAPlayerFallsIntoAHyperGravitySquareAndRolledTheNeces
 		                 ([ SetHyperGravitySquare with: 1 ]
 		                  -> hyperGravitySquarePossibility).}.
 	aBoard := Board
-		          with: fiveSquares
+		          with: tenSquares
 		          and: aWormHole
 		          distributedBy: aDistribution.
 
@@ -50,8 +50,8 @@ HyperGravityTest >> testWhenAPlayerFallsIntoAHyperGravitySquareAndRolledTheNeces
 { #category : 'tests' }
 HyperGravityTest >> testWhenAPlayerFallsIntoAHyperGravitySquareThenNeedsARolledNumberGreaterThenTwoToContinue [
 
-	| aDistribution hyperGravitySquarePossibility fiveSquares sideToRoll oneLap expectedPosition aWormHole aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aGame |
-	fiveSquares := 10.
+	| aDistribution hyperGravitySquarePossibility tenSquares sideToRoll oneLap expectedPosition aWormHole aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aGame |
+	tenSquares := 10.
 	sideToRoll := 1.
 	oneLap := 1.
 	expectedPosition := Position at: 1 in: 1.
@@ -69,7 +69,7 @@ HyperGravityTest >> testWhenAPlayerFallsIntoAHyperGravitySquareThenNeedsARolledN
 		                 ([ SetHyperGravitySquare with: 2 ]
 		                  -> hyperGravitySquarePossibility).}.
 	aBoard := Board
-		          with: fiveSquares
+		          with: tenSquares
 		          and: aWormHole
 		          distributedBy: aDistribution.
 
