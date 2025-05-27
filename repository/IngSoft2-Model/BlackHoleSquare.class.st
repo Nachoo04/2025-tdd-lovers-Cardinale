@@ -7,3 +7,13 @@ Class {
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
+
+{ #category : 'as yet unclassified' }
+BlackHoleSquare >> applyOn: aShip and: aPosition in: aGame [
+
+	^ aPosition goBackfourPlacesIn: aGame boardLength
+]
+
+{ #category : 'as yet unclassified' }
+BlackHoleSquare >> assigned: someDices [ 
+]
