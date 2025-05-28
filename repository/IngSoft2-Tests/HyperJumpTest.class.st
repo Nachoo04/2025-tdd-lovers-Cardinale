@@ -146,6 +146,50 @@ HyperJumpTest >> testWhenAllTheParsecHasBeenTakenThenTheNextShipTakeTheFistParse
 ]
 
 { #category : 'tests' }
+HyperJumpTest >> testWhenThereAShipTakesAHiperJumpSquareAndAfterJumpItsTheWinner [
+
+	| tenSquares aWormHole aBlueShip aBoard someShips someDices aLoadedDice sideToRoll oneLap aBlackShip aDistribution hyperJumpSquareProbability aCollectionofParsecs aGame aRatio |
+	tenSquares := 10.
+	sideToRoll := 7.
+	oneLap := 1.
+	aRatio := 1.
+
+	aWormHole := WormHole between: 3 and: 4.
+	aBlueShip := Ship called: 'BlueShip'.
+	aBlackShip := Ship called: 'BlackShip'.
+	aLoadedDice := LoadedDice toRoll: sideToRoll.
+
+	hyperJumpSquareProbability := 1.
+
+	aCollectionofParsecs := #( 5 3 2 ) asOrderedCollection.
+
+	aDistribution := { ([
+	                  HyperJumpSquare
+		                  with: aCollectionofParsecs
+		                  and: aRatio ] -> hyperJumpSquareProbability) }.
+	aBoard := Board
+		          with: tenSquares
+		          and: aWormHole
+		          distributedBy: aDistribution.
+
+	someShips := OrderedCollection new.
+	someDices := OrderedCollection new.
+	someShips add: aBlueShip.
+	someShips add: aBlackShip.
+	someDices add: aLoadedDice.
+
+	aGame := Game
+		         with: aBoard
+		         for: oneLap
+		         and: someShips
+		         and: someDices.
+
+	aGame nextTurnPlay.
+
+	self assert: aGame hasFinished
+]
+
+{ #category : 'tests' }
 HyperJumpTest >> testWhenThereAShipTakesAHiperJumpSquareAndIncrementALap [
 
 	| tenSquares aWormHole aBlueShip aBoard someShips someDices aLoadedDice sideToRoll threeLap aBlackShip aDistribution hyperJumpSquareProbability aCollectionofParsecs aGame expectedPosition aRatio |
@@ -189,6 +233,52 @@ HyperJumpTest >> testWhenThereAShipTakesAHiperJumpSquareAndIncrementALap [
 	aGame nextTurnPlay.
 
 	self assert: (aBlueShip currentPositionEquals: expectedPosition)
+]
+
+{ #category : 'tests' }
+HyperJumpTest >> testWhenThereAShipTakesAHiperJumpSquareItsFuellsConsumesCorrectly [
+
+	| twentySquares aWormHole aBlueShip aBoard someShips someDices aLoadedDice sideToRoll oneLap aBlackShip aDistribution hyperJumpSquareProbability aCollectionofParsecs aGame expectedPosition aRatio |
+	twentySquares := 20.
+	sideToRoll := 7.
+	oneLap := 1.
+	aRatio := 1.
+	expectedPosition := Position at: 13 in: 1.
+
+	aWormHole := WormHole between: 17 and: 18.
+	aBlueShip := Ship called: 'BlueShip'.
+	aBlackShip := Ship called: 'BlackShip'.
+	aLoadedDice := LoadedDice toRoll: sideToRoll.
+
+	hyperJumpSquareProbability := 1.
+
+	aCollectionofParsecs := #( 5 4 6 5 ) asOrderedCollection.
+
+	aDistribution := { ([
+	                  HyperJumpSquare
+		                  with: aCollectionofParsecs
+		                  and: aRatio ] -> hyperJumpSquareProbability) }.
+	aBoard := Board
+		          with: twentySquares
+		          and: aWormHole
+		          distributedBy: aDistribution.
+
+	someShips := OrderedCollection new.
+	someDices := OrderedCollection new.
+	someShips add: aBlueShip.
+	someShips add: aBlackShip.
+	someDices add: aLoadedDice.
+
+	aGame := Game
+		         with: aBoard
+		         for: oneLap
+		         and: someShips
+		         and: someDices.
+
+	aGame nextTurnPlay.
+	aGame nextTurnPlay.
+
+	self assert: (aBlueShip fuelEquals: 1)
 ]
 
 { #category : 'tests' }
