@@ -399,12 +399,54 @@ GameTest >> testWhenThereAreNotAnyDicesThenTheGameIsInvalid [
 ]
 
 { #category : 'tests' }
+GameTest >> testWhenThereIsAHiperGravitySquareWithACorrectMagnitudeThenIsValid [
+
+	| fiveSquares aWormHole aBlueShip aBoard someShips someDices aDice twoSides oneLap aBlackShip aDistribution hyperGravitySquareProbability expectedPosition aGame |
+	fiveSquares := 10.
+	twoSides := 2.
+	oneLap := 1.
+	expectedPosition := Position at: 4 in: 1.
+
+	aWormHole := WormHole between: 7 and: 8.
+	aBlueShip := Ship called: 'BlueShip'.
+	aBlackShip := Ship called: 'BlackShip'.
+	aDice := Dice with: twoSides.
+
+	hyperGravitySquareProbability := 1.
+
+	aDistribution := { ([ HyperGravitySquare between: 1 and: 2 ]
+	                  -> hyperGravitySquareProbability) }.
+	aBoard := Board
+		          with: fiveSquares
+		          and: aWormHole
+		          distributedBy: aDistribution.
+
+	someShips := OrderedCollection new.
+	someDices := OrderedCollection new.
+	someShips add: aBlueShip.
+	someShips add: aBlackShip.
+	someDices add: aDice.
+
+	aGame := Game
+		         with: aBoard
+		         for: oneLap
+		         and: someShips
+		         and: someDices.
+
+	aGame nextTurnPlay.
+	aGame nextTurnPlay.
+	aGame nextTurnPlay.
+
+	self assert: (aBlueShip currentPosition equals: expectedPosition)
+]
+
+{ #category : 'tests' }
 GameTest >> testWhenThereIsAHiperGravitySquareWithMagnitudeGreaterThanTheMaximumRollThenInvalid [
 
-	| fiveSquares aWormHole aBlueShip aBoard someShips someDices aDice twoSides zeroLaps aBlackShip aDistribution hyperGravitySquareProbability |
+	| fiveSquares aWormHole aBlueShip aBoard someShips someDices aDice twoSides oneLap aBlackShip aDistribution hyperGravitySquareProbability |
 	fiveSquares := 5.
 	twoSides := 2.
-	zeroLaps := 1.
+	oneLap := 1.
 
 	aWormHole := WormHole between: 1 and: 2.
 	aBlueShip := Ship called: 'BlueShip'.
@@ -430,7 +472,7 @@ GameTest >> testWhenThereIsAHiperGravitySquareWithMagnitudeGreaterThanTheMaximum
 		should: [
 			Game
 				with: aBoard
-				for: zeroLaps
+				for: oneLap
 				and: someShips
 				and: someDices ]
 		raise: Error
