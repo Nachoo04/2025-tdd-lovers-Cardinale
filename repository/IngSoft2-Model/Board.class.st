@@ -6,11 +6,28 @@ Class {
 	#superclass : 'Object',
 	#instVars : [
 		'length',
-		'wormHole'
+		'wormHole',
+		'distribution'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
+
+{ #category : 'creation' }
+Board class >> generateSquaresfrom: aDistribution with: aLength and: aWormHole [
+
+	| generatedSquares |
+	generatedSquares := (0 to: aLength - 1) collect: [ :aSquare |
+		                    (aWormHole hasEndAt: aSquare)
+			                    ifTrue: [ PlainSquare new ]
+			                    ifFalse: [
+				                    (aDistribution
+					                     atRandom: Random new
+					                     weighting: [ :aSquareProbability |
+					                     aSquareProbability value ]) key value ] ].
+
+	^ generatedSquares asOrderedCollection 
+]
 
 { #category : 'validation' }
 Board class >> lengthIsValid: aLength [
@@ -26,43 +43,78 @@ Board class >> validate: aWormHole fallsInto: aLength [
 ]
 
 { #category : 'validation' }
-Board class >> validate: aLength isNotEqualToTheEndOf: aWormHole [
-
-	aWormHole endsAt: aLength
-]
-
-{ #category : 'validation' }
 Board class >> validate: aLength isSmallerThanTheEndingOf: aWormHole [
 
 	aWormHole endsBefore: aLength
 ]
 
 { #category : 'creation' }
-Board class >> with: aLength and: aWormHole [
-
+Board class >> with: aLength and: aWormHole distributedBy: aDistribution [
+ 
+	| generatedSquares |
 	self lengthIsValid: aLength.
 	self validate: aWormHole fallsInto: aLength.
 	self validate: aLength isSmallerThanTheEndingOf: aWormHole.
-	self validate: aLength isNotEqualToTheEndOf: aWormHole.
-	^ self new initializeWith: aLength and: aWormHole
+	generatedSquares := self generateSquaresfrom: aDistribution with: aLength and: aWormHole.
+	^ self new initializeWith: aLength and: aWormHole distributedBy: generatedSquares
 ]
 
-{ #category : 'validation' }
-Board >> hasReachTheFinalSquare: aPosition [
+{ #category : 'action' }
+Board >> calculateDistanceBetween: aPosition and: anotherPostion [
 
-	aPosition >= length ifTrue: [ ^ true ].
-	^ false
+	^ aPosition squaresAwayFrom: anotherPostion with: length
+]
+
+{ #category : 'compare' }
+Board >> distributionEquals: aDistribution [ 
+	| squares |
+	squares := String cr join: (distribution collect: [ :aSquare| aSquare asString ]).
+	^ squares = aDistribution 
+]
+
+{ #category : 'accessing' }
+Board >> effectIn: aSquare [
+
+	^ distribution at: aSquare
+]
+
+{ #category : 'action' }
+Board >> goBackFourSquares: aShip from: aPosition [ 
+	
+	^ aPosition goBackFourSquaresIn: length 
 ]
 
 { #category : 'initialization' }
-Board >> initializeWith: aLength and: aWormHole [
+Board >> initializeWith: aLength and: aWormHole distributedBy: aDistribution [ 
 
 	length := aLength.
-	wormHole := aWormHole
+	wormHole := aWormHole.
+	distribution := aDistribution
+]
+
+{ #category : 'action' }
+Board >> jump: squaresToJump from: aPosition [ 
+	
+	^ aPosition add: squaresToJump with: length 
 ]
 
 { #category : 'accessing' }
 Board >> moveIfWormHoleAt: aPosition [
 
 	^ wormHole moveIfEndPointAt: aPosition
+]
+
+{ #category : 'updating' }
+Board >> update: aPosition with: aRolledNumber [
+
+	| newPosition |
+	newPosition := aPosition add: aRolledNumber with: length.
+	^ newPosition
+]
+
+{ #category : 'validation' }
+Board >> validateSquaresWith: aMaximumRoll [
+
+	distribution do: [ :aSquare |
+		aSquare validateMagnitudeWith: aMaximumRoll and: length ]
 ]

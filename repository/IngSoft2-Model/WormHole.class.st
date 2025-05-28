@@ -32,7 +32,7 @@ WormHole class >> between: aBeginning and: anEnd [
 { #category : 'validation' }
 WormHole class >> cannotBeginInANegative: anEnd [
 
-	anEnd <= 0 ifTrue: [
+	anEnd < 0 ifTrue: [
 		Error signal: 'A Worm Hole cannot begin in a negative square' ]
 ]
 
@@ -41,14 +41,6 @@ WormHole class >> cannotEndInANegative: anEnd [
 
 	anEnd <= 0 ifTrue: [
 		Error signal: 'A Worm Hole cannot end in a negative square' ]
-]
-
-{ #category : 'validation' }
-WormHole >> endsAt: aLength [
-
-	end == aLength ifTrue: [
-		Error signal:
-			'A Worm Hole cannot end at the end of its Board' ]
 ]
 
 { #category : 'validation' }
@@ -67,6 +59,12 @@ WormHole >> fallsInto: aLength [
 			'A Worm Hole cannot fall outside of its Boards length' ]
 ]
 
+{ #category : 'accessing' }
+WormHole >> hasEndAt: aSquare [
+
+	^ aSquare = beginning or: aSquare = end
+]
+
 { #category : 'initialization' }
 WormHole >> initializeBetween: aBeginning and: anEnd [
 
@@ -77,8 +75,9 @@ WormHole >> initializeBetween: aBeginning and: anEnd [
 { #category : 'comparing' }
 WormHole >> moveIfEndPointAt: aPosition [
 
-	aPosition == beginning ifTrue: [ ^ end ].
-	aPosition == end ifTrue: [ ^ beginning ].
+
+	(aPosition squareEquals: beginning) ifTrue: [^ aPosition adjustSquare: end ].
+	(aPosition squareEquals: end) ifTrue: [ ^ aPosition adjustSquare: beginning ].
 
 	^ aPosition
 ]

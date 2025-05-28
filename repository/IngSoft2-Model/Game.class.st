@@ -9,17 +9,31 @@ Class {
 		'ships',
 		'dices',
 		'finished',
-		'winner'
+		'winner',
+		'laps'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }
+
+{ #category : 'creation' }
+Game class >> fuel: someShips with: aFuelQuantity [
+
+	someShips do: [ :aShip | aShip fuel: aFuelQuantity ]
+]
 
 { #category : 'validation' }
 Game class >> hasDices: someDices [
 
 	someDices size < 1 ifTrue: [
 		Error signal: 'The Game needs at least one dice to start.' ]
+]
+
+{ #category : 'validation' }
+Game class >> hasLaps: someLaps [
+
+	someLaps < 1 ifTrue: [
+		Error signal: 'The Game needs at least one lap to start.' ]
 ]
 
 { #category : 'validation' }
@@ -30,11 +44,43 @@ Game class >> hasShips: someShips [
 ]
 
 { #category : 'creation' }
-Game class >> with: aBoard and: someShips and: someDices [
+Game class >> maximumRoll: someDices [
+
+	| rolledNumber |
+	rolledNumber := someDices sum: [ :aDice | aDice rollMaximum ].
+	^ rolledNumber
+]
+
+{ #category : 'validation' }
+Game class >> validateSquaresFrom: aBoard with: someDices [
+
+	aBoard validateSquaresWith: (self maximumRoll: someDices)
+]
+
+{ #category : 'creation' }
+Game class >> with: aBoard for: someLaps and: someShips and: someDices [
 
 	self hasDices: someDices.
 	self hasShips: someShips.
-	^ self new initializeWith: aBoard and: someShips and: someDices
+	self hasLaps: someLaps.
+	self fuel: someShips with: (self maximumRoll: someDices) * 2. 
+	self validateSquaresFrom: aBoard with: someDices.
+	^ self new initializeWith: aBoard for: someLaps and: someShips and: someDices
+]
+
+{ #category : 'action' }
+Game >> applyEffectOn: aShip with: aPosition [
+
+	| effect |
+	effect := board effectIn: aPosition currentSquare + 1.
+
+	^ effect applyOn: aShip and: aPosition in: self
+]
+
+{ #category : 'action' }
+Game >> calculateDistanceBetween: aPosition and: anotherPosition [
+
+	^ board calculateDistanceBetween: aPosition and: anotherPosition
 ]
 
 { #category : 'validation' }
@@ -49,6 +95,12 @@ Game >> finish [
 	finished := true
 ]
 
+{ #category : 'action' }
+Game >> goBackFourSquares: aShip from: aPosition [ 
+	
+	^ board goBackFourSquares: aShip from: aPosition 
+]
+
 { #category : 'testing' }
 Game >> hasFinished [
 
@@ -56,27 +108,105 @@ Game >> hasFinished [
 ]
 
 { #category : 'initialization' }
-Game >> initializeWith: aBoard and: someShips and: someDices [
+Game >> initializeWith: aBoard for: someLaps and: someShips and: someDices [
 
 	board := aBoard.
 	ships := someShips.
 	dices := someDices.
+	laps := someLaps.
 	finished := false.
 	winner := NullShip new.
 ]
 
 { #category : 'action' }
-Game >> nextTurn [
+Game >> jump: squaresToJump from: aPosition [ 
+	
+	^ board jump: squaresToJump from: aPosition 
+]
 
-	| shipToMove rolledNumber shipNewPosition shipInitialPosition shipFinalPosition |
+{ #category : 'action' }
+Game >> move: aShip with: rolledNumber [
+
+	| shipInitialPosition  squaresTraveled shipPositionBeforeWormHole shipPositionAfterWormHole shipPositionAfterSquareEffect squaresTraveledWithDice squaresTraveledWithSquareEffect |
+	shipInitialPosition := aShip currentPosition.
+
+	shipPositionBeforeWormHole := board
+		                              update: shipInitialPosition
+		                              with: rolledNumber.
+
+	squaresTraveledWithDice := board calculateDistanceBetween: shipInitialPosition and: shipPositionBeforeWormHole.
+
+	shipPositionAfterWormHole := board moveIfWormHoleAt:
+		                             shipPositionBeforeWormHole.
+
+	shipPositionAfterSquareEffect := self
+		                         applyEffectOn: aShip
+		                         with: shipPositionAfterWormHole.
+
+	squaresTraveledWithSquareEffect := board calculateDistanceBetween: shipPositionAfterWormHole and: shipPositionAfterSquareEffect.
+		                                  
+
+	squaresTraveled := squaresTraveledWithDice
+	                   + squaresTraveledWithSquareEffect.
+
+	aShip moveTo: shipPositionAfterSquareEffect.
+	[ aShip consumeFuel: squaresTraveled ]
+		on: Error
+		do: [
+			aShip moveTo: shipInitialPosition.
+			aShip losesTwoTurns.
+			aShip fuel: (self class maximumRoll: dices) * 2 ].
+
+	(shipPositionAfterSquareEffect hasCompleted: laps) ifTrue: [ self finish ]
+]
+
+{ #category : 'action' }
+Game >> moveShipsBackwards: aMagnitude [
+
+	| shipInitialPosition shipNewPosition squaresTraveled |
+	ships do: [ :aShip |
+		shipInitialPosition := aShip currentPosition.
+		shipNewPosition := board
+			                   update: shipInitialPosition
+			                   with: aMagnitude negated.
+
+		squaresTraveled := board
+			                   calculateDistanceBetween: shipInitialPosition
+			                   and: shipNewPosition.
+
+		aShip moveTo: shipNewPosition.
+		[ aShip consumeFuel: squaresTraveled ]
+			on: Error
+			do: [
+				aShip moveTo: shipInitialPosition.
+				aShip losesTwoTurns.
+				aShip fuel: (self class maximumRoll: dices) * 2 ] ]
+]
+
+{ #category : 'action' }
+Game >> moveShipsToSquareZero [
+	
+	ships do: [ :aShip | aShip moveTo: (aShip currentPosition adjustSquare: 0) ]
+]
+
+{ #category : 'action' }
+Game >> nextTurnPass [
+
+	| shipToMove |
+	self canStillPlay.
+	shipToMove := ships removeFirst.
+	shipToMove fuel: (self class maximumRoll: dices) * 2.
+	ships add: shipToMove.
+]
+
+{ #category : 'action' }
+Game >> nextTurnPlay [
+
+	| shipToMove rolledNumber |
 	self canStillPlay.
 	shipToMove := ships removeFirst.
 	rolledNumber := self rollDices.
-	shipInitialPosition := shipToMove actualPosition.
-	shipFinalPosition := shipInitialPosition + rolledNumber.
-	(board hasReachTheFinalSquare: shipFinalPosition) ifTrue: [ self finish ].
-	shipNewPosition := board moveIfWormHoleAt: shipFinalPosition.
-	shipToMove moveTo: shipNewPosition.
+	(shipToMove canPlay: rolledNumber) ifTrue: [ self move: shipToMove with: rolledNumber ].
 	ships add: shipToMove.
 	finished ifTrue: [ winner := shipToMove ]
 ]
@@ -84,14 +214,16 @@ Game >> nextTurn [
 { #category : 'printing' }
 Game >> printBoard [
 
-	| positions results winnerShip |
-	
-	winnerShip := 'Winner: ', winner name , String cr.
-	positions := ships
-		             inject: ''
-		             into: [ :result :aShip |
-		             result , aShip details , String cr ].
-	results:= winnerShip , positions.
+	| positions results winnerShip sortedPositions |
+	winnerShip := 'Winner: ' , winner name , String cr.
+	sortedPositions := ships sorted: [ :aShip |
+		                   board
+			                   calculateDistanceBetween: (Position at: 0 in: 1)
+			                   and: aShip currentPosition ] descending.
+	positions := String cr join:
+		             (sortedPositions collect: [ :aShip | aShip details ]).
+
+	results := winnerShip , positions.
 	^ results
 ]
 

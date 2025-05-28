@@ -18,50 +18,83 @@ BoardTest >> should: anErrorBlock raise: anErrorClass withMessageText: anErrorMe
 { #category : 'tests' }
 BoardTest >> testWhenABoardIsCreatedAndEndsBeforeTheEndingOfItsWormHoleThenInvalid [
 
-	| twentySquares aWormHole |
+	| twentySquares aWormHole aDistributionBuilder aDefaultDistribution |
 	twentySquares := 20.
 	aWormHole := WormHole between: 15 and: 30.
+
+	aDistributionBuilder := DistributionBuilder new.
+	aDefaultDistribution := aDistributionBuilder build.
 	self
-		should: [ Board with: twentySquares and: aWormHole ]
+		should: [
+			Board
+				with: twentySquares
+				and: aWormHole
+				distributedBy: aDefaultDistribution ]
 		raise: Error
 		withMessageText:
 		'A Board cannot end before the ending of its Worm Hole'
 ]
 
 { #category : 'tests' }
-BoardTest >> testWhenABoardIsCreatedAndItsWormHoleEndsAtTheLastSquareThenInvalid [
-
-	| twentySquares aBlackHole |
-	twentySquares := 20.
-	aBlackHole := WormHole between: 15 and: 20.
-	self
-		should: [ Board with: twentySquares and: aBlackHole ]
-		raise: Error
-		withMessageText:
-		'A Worm Hole cannot end at the end of its Board'
-]
-
-{ #category : 'tests' }
 BoardTest >> testWhenABoardIsCreatedAndTheWormHoleFallsOutsideOfTheDimentionThenInvalid [
 
-	| twentySquares aWormHole |
+	| twentySquares aWormHole aDistributionBuilder aDefaultDistribution |
 	twentySquares := 20.
 	aWormHole := WormHole between: 25 and: 30.
+
+	aDistributionBuilder := DistributionBuilder new.
+	aDefaultDistribution := aDistributionBuilder build.
 	self
-		should: [ Board with: twentySquares and: aWormHole ]
+		should: [
+			Board
+				with: twentySquares
+				and: aWormHole
+				distributedBy: aDefaultDistribution ]
 		raise: Error
 		withMessageText:
 		'A Worm Hole cannot fall outside of its Boards length'
 ]
 
 { #category : 'tests' }
+BoardTest >> testWhenABoardIsCreatedWithACertainDistributionThenTheSquaresWhereThereIsAWormHoleIsAPlainSquare [
+
+	| aWormHole fiveSquares aBoard expectedDistribution aDistributionBuilder aDistribution |
+	fiveSquares := 5.
+	aWormHole := WormHole between: 1 and: 2.
+	expectedDistribution := 'a BlackHoleSquare' , String cr
+	                        , 'a PlainSquare' , String cr
+	                        , 'a PlainSquare' , String cr
+	                        , 'a BlackHoleSquare' , String cr
+	                        , 'a BlackHoleSquare'.
+
+	aDistributionBuilder := DistributionBuilder new.
+	aDistributionBuilder plainSquareProbabilityIs: 0.
+	aDistributionBuilder blackHoleProbabilityIs: 1.
+	aDistribution := aDistributionBuilder build.
+
+	aBoard := Board
+		          with: fiveSquares
+		          and: aWormHole
+		          distributedBy: aDistribution.
+	self assert: (aBoard distributionEquals: expectedDistribution)
+]
+
+{ #category : 'tests' }
 BoardTest >> testWhenABoardIsCreatedWithLessThanTwoSquaresThenInvalid [
 
-	| aLength aWormHole |
+	| aLength aWormHole aDistributionBuilder aDefaultDistribution |
 	aLength := -1.
 	aWormHole := WormHole between: 1 and: 2.
+
+	aDistributionBuilder := DistributionBuilder new.
+	aDefaultDistribution := aDistributionBuilder build.
+	
 	self
-		should: [ Board with: aLength and: aWormHole ]
+		should: [
+			Board
+				with: aLength
+				and: aWormHole
+				distributedBy: aDefaultDistribution ]
 		raise: Error
 		withMessageText: 'Board must have at least two squares'
 ]
