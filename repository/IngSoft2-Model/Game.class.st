@@ -203,7 +203,7 @@ Game >> nextTurnPlay [
 	self canStillPlay.
 	shipToMove := ships removeFirst.
 	rolledNumber := self rollDices.
-	(shipToMove canPlay: rolledNumber) ifTrue: [ self move: shipToMove with: rolledNumber ].
+	shipToMove playTurnWith: rolledNumber in: self.
 	ships add: shipToMove.
 	finished ifTrue: [ winner := shipToMove ]
 ]

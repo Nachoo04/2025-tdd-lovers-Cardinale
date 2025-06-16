@@ -13,22 +13,6 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'creation' }
-Board class >> generateSquaresfrom: aDistribution with: aLength and: aWormHole [
-
-	| generatedSquares |
-	generatedSquares := (0 to: aLength - 1) collect: [ :aSquare |
-		                    (aWormHole hasEndAt: aSquare)
-			                    ifTrue: [ PlainSquare new ]
-			                    ifFalse: [
-				                    (aDistribution
-					                     atRandom: Random new
-					                     weighting: [ :aSquareProbability |
-					                     aSquareProbability value ]) key value ] ].
-
-	^ generatedSquares asOrderedCollection 
-]
-
 { #category : 'validation' }
 Board class >> lengthIsValid: aLength [
 
@@ -55,7 +39,8 @@ Board class >> with: aLength and: aWormHole distributedBy: aDistribution [
 	self lengthIsValid: aLength.
 	self validate: aWormHole fallsInto: aLength.
 	self validate: aLength isSmallerThanTheEndingOf: aWormHole.
-	generatedSquares := self generateSquaresfrom: aDistribution with: aLength and: aWormHole.
+	"generatedSquares := self generateSquaresfrom: aDistribution with: aLength and: aWormHole."
+	generatedSquares := SquareFactory with: aLength and: aWormHole and: aDistribution.
 	^ self new initializeWith: aLength and: aWormHole distributedBy: generatedSquares
 ]
 
