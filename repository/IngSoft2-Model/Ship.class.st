@@ -38,9 +38,10 @@ Ship >> canPlay: rolledNumber [
 
 	turnsLeftToWait > 0 ifTrue: [
 		self reducePenalty.
-		^ false ].
-	gravityPenalty > rolledNumber ifTrue: [ ^ false ].
-	^ true
+		Error signal: 'The ship has a penalty of movement' ].
+	gravityPenalty > rolledNumber ifTrue: [
+		Error signal:
+			'The number rolled is not enought to pass the gravity penalty' ]
 ]
 
 { #category : 'update' }
@@ -118,13 +119,6 @@ Ship >> moveTo: aPosition [
 { #category : 'accessing' }
 Ship >> name [
 	^ name
-]
-
-{ #category : 'move' }
-Ship >> playTurnWith: aRolledNumber in: aGame [
-
-	(self canPlay: aRolledNumber) ifTrue: [
-		aGame move: self with: aRolledNumber ]
 ]
 
 { #category : 'penalty' }
