@@ -62,13 +62,13 @@ WormHole >> fallsInto: aLength [
 { #category : 'accessing' }
 WormHole >> hasBeginningAt: aSquare [
 
-	^ beginning = aSquare 
+	^ beginning in: aSquare 
 ]
 
 { #category : 'accessing' }
 WormHole >> hasEndingAt: aSquare [
 
-	^ end = aSquare 
+	^ end in: aSquare 
 ]
 
 { #category : 'initialization' }
@@ -82,8 +82,8 @@ WormHole >> initializeBetween: aBeginning and: anEnd [
 WormHole >> moveIfEndPointAt: aPosition [
 
 
-	(aPosition squareEquals: beginning) ifTrue: [^ aPosition adjustSquare: end ].
-	(aPosition squareEquals: end) ifTrue: [ ^ aPosition adjustSquare: beginning ].
+	(aPosition squareEquals: beginning) ifTrue: [^ aPosition adjustSquare: end position ].
+	(aPosition squareEquals: end) ifTrue: [ ^ aPosition adjustSquare: beginning position ].
 
 	^ aPosition
 ]

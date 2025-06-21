@@ -8,7 +8,7 @@ Class {
 { #category : 'tests' }
 BlackHoleTest >> testWhenAShipLandsOnABlackHoleAndDoesNotHaveEnoughFuelThenItGoesBackToItsInitialPosition [
 
-	| aDistribution tenSquares sideToRoll oneLap expectedPosition aWormHole aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aGame aDistributionBuilder aFuelQuantity |
+	| aDistribution tenSquares sideToRoll oneLap expectedPosition aWormHole aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aGame aDistributionBuilder aFuelQuantity anBlackHoleSquare aProbability anAtomicBombProbabilisticEvent |
 	tenSquares := 10.
 	sideToRoll := 2.
 	oneLap := 1.
@@ -21,9 +21,13 @@ BlackHoleTest >> testWhenAShipLandsOnABlackHoleAndDoesNotHaveEnoughFuelThenItGoe
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
 	aDistributionBuilder := DistributionBuilder new.
-	aDistributionBuilder plainSquareProbabilityIs: 0.
-	aDistributionBuilder blackHoleProbabilityIs: 1.
-	aDistribution := aDistributionBuilder build.
+	anBlackHoleSquare := BlackHoleSquare new.
+	aProbability := 1.
+	anAtomicBombProbabilisticEvent := ProbabilisticEvent
+		                                  for: anBlackHoleSquare
+		                                  with: aProbability.
+	aDistributionBuilder add: anAtomicBombProbabilisticEvent.
+	aDistribution := aDistributionBuilder buildFor: tenSquares.
 
 	aBoard := Board
 		          with: tenSquares
@@ -55,7 +59,7 @@ BlackHoleTest >> testWhenAShipLandsOnABlackHoleAndDoesNotHaveEnoughFuelThenItGoe
 { #category : 'tests' }
 BlackHoleTest >> testWhenAShipLandsOnABlackHoleAndHasEnoughFuelThenItGoesBackFourSquares [
 
-	| aDistribution tenSquares sideToRoll oneLap expectedPosition aWormHole aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aGame aDistributionBuilder aFuelQuantity |
+	| aDistribution tenSquares sideToRoll oneLap expectedPosition aWormHole aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aGame aDistributionBuilder aFuelQuantity anBlackHoleSquare aProbability anAtomicBombProbabilisticEvent |
 	tenSquares := 10.
 	sideToRoll := 4.
 	oneLap := 1.
@@ -68,9 +72,13 @@ BlackHoleTest >> testWhenAShipLandsOnABlackHoleAndHasEnoughFuelThenItGoesBackFou
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
 	aDistributionBuilder := DistributionBuilder new.
-	aDistributionBuilder plainSquareProbabilityIs: 0.
-	aDistributionBuilder blackHoleProbabilityIs: 1.
-	aDistribution := aDistributionBuilder build.
+	anBlackHoleSquare := BlackHoleSquare new.
+	aProbability := 1.
+	anAtomicBombProbabilisticEvent := ProbabilisticEvent
+		                                  for: anBlackHoleSquare
+		                                  with: aProbability.
+	aDistributionBuilder add: anAtomicBombProbabilisticEvent.
+	aDistribution := aDistributionBuilder buildFor: tenSquares.
 
 	aBoard := Board
 		          with: tenSquares
@@ -100,7 +108,7 @@ BlackHoleTest >> testWhenAShipLandsOnABlackHoleAndHasEnoughFuelThenItGoesBackFou
 { #category : 'tests' }
 BlackHoleTest >> testWhenAShipLandsOnABlackHoleOnTheFirstThreeSquaresOfALapThenItGoesBackALapAndToTheAccordingSquare [
 
-	| aDistribution tenSquares sideToRoll oneLap expectedPosition aWormHole aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aGame aDistributionBuilder aFuelQuantity |
+	| aDistribution tenSquares sideToRoll oneLap expectedPosition aWormHole aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aGame aDistributionBuilder aFuelQuantity anBlackHoleSquare aProbability anAtomicBombProbabilisticEvent |
 	tenSquares := 10.
 	sideToRoll := 4.
 	oneLap := 1.
@@ -113,9 +121,13 @@ BlackHoleTest >> testWhenAShipLandsOnABlackHoleOnTheFirstThreeSquaresOfALapThenI
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
 	aDistributionBuilder := DistributionBuilder new.
-	aDistributionBuilder plainSquareProbabilityIs: 0.
-	aDistributionBuilder blackHoleProbabilityIs: 1.
-	aDistribution := aDistributionBuilder build.
+	anBlackHoleSquare := BlackHoleSquare new.
+	aProbability := 1.
+	anAtomicBombProbabilisticEvent := ProbabilisticEvent
+		                                  for: anBlackHoleSquare
+		                                  with: aProbability.
+	aDistributionBuilder add: anAtomicBombProbabilisticEvent.
+	aDistribution := aDistributionBuilder buildFor: tenSquares.
 
 	aBoard := Board
 		          with: tenSquares
@@ -149,7 +161,7 @@ BlackHoleTest >> testWhenAShipLandsOnABlackHoleOnTheFirstThreeSquaresOfALapThenI
 { #category : 'tests' }
 BlackHoleTest >> testWhenAShipLandsOnABlackHoleOnTheFirstThreeSquaresOfTheFirstLapItStaysOnTheFirstLap [
 
-	| aDistribution tenSquares sideToRoll oneLap expectedPosition aWormHole aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aGame aDistributionBuilder aFuelQuantity |
+	| aDistribution tenSquares sideToRoll oneLap expectedPosition aWormHole aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aGame aDistributionBuilder aFuelQuantity anBlackHoleSquare aProbability anAtomicBombProbabilisticEvent |
 	tenSquares := 10.
 	sideToRoll := 2.
 	oneLap := 1.
@@ -162,9 +174,13 @@ BlackHoleTest >> testWhenAShipLandsOnABlackHoleOnTheFirstThreeSquaresOfTheFirstL
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
 	aDistributionBuilder := DistributionBuilder new.
-	aDistributionBuilder plainSquareProbabilityIs: 0.
-	aDistributionBuilder blackHoleProbabilityIs: 1.
-	aDistribution := aDistributionBuilder build.
+	anBlackHoleSquare := BlackHoleSquare new.
+	aProbability := 1.
+	anAtomicBombProbabilisticEvent := ProbabilisticEvent
+		                                  for: anBlackHoleSquare
+		                                  with: aProbability.
+	aDistributionBuilder add: anAtomicBombProbabilisticEvent.
+	aDistribution := aDistributionBuilder buildFor: tenSquares.
 
 	aBoard := Board
 		          with: tenSquares

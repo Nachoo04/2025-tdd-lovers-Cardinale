@@ -2,7 +2,8 @@ Class {
 	#name : 'WormHoleEndpoint',
 	#superclass : 'Object',
 	#instVars : [
-		'position'
+		'position',
+		'index'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -23,13 +24,32 @@ WormHoleEndpoint >> = aPosition [
 { #category : 'comparing' }
 WormHoleEndpoint >> > aLength [
 
-	^ position > aLength
+	^ index > aLength
+]
+
+{ #category : 'effect' }
+WormHoleEndpoint >> applyOn: aShip and: aPosition in: aGame [
+
+	^ aPosition
+]
+
+{ #category : 'evaluating' }
+WormHoleEndpoint >> in: aPosition [
+
+	^ index = aPosition
 ]
 
 { #category : 'accessing' }
 WormHoleEndpoint >> initializeAt: aPosition [
 
-	position := aPosition
+	position := aPosition.
+	index := aPosition + 1
+]
+
+{ #category : 'accessing' }
+WormHoleEndpoint >> position [
+
+	^ position
 ]
 
 { #category : 'validation' }
