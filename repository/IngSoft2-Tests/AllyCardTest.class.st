@@ -16,11 +16,13 @@ AllyCardTest >> should: anErrorBlock raise: anErrorClass withMessageText: anErro
 ]
 
 { #category : 'tests' }
-AllyCardTest >> testWhenAShipPlaysAnAllyCardAndNeitherHaveEnoughFuelForOneOfThemToMoveThenThePenaltyAppliesToBothOfThem [
+AllyCardTest >> testWhenAShipPlaysAnAllyCardAndNeitherOfTheShipsHaveenoughFuelThenBothArePenalized [
 
-	| twentySquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aDistributionManager aDistribution aProbabilityOfOne aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent aPlainSquare aPlainSquareProbabilisticEvent |
+	| twentySquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aDistributionManager aDistribution aProbabilityOfOne aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent aPlainSquare aPlainSquareProbabilisticEvent expectedPosition |
 	twentySquares := 20.
 	sideToRoll := 1.
+
+	expectedPosition := Position at: 3 in: 1.
 
 	aWormHole := WormHole between: 18 and: 19.
 	aBlueShip := Ship called: 'BlueShip'.
@@ -74,11 +76,10 @@ AllyCardTest >> testWhenAShipPlaysAnAllyCardAndNeitherHaveEnoughFuelForOneOfThem
 	aGame nextTurnPlay.
 	aGame nextTurnPlay.
 	aGame nextTurnPlay.
-	aGame nextTurnPlay.
+	aGame nextTurnPass.
 	aGame nextTurnPlay.
 
-	self assert: aBlueShip hasAFuelPenalty.
-	self assert: aBlackShip hasAFuelPenalty
+	self assert: (aBlueShip currentPositionEquals: expectedPosition)
 ]
 
 { #category : 'tests' }
