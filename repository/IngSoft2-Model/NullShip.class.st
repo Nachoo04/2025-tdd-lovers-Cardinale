@@ -8,6 +8,12 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
+{ #category : 'update' }
+NullShip >> consumeFuel: squaresTraveled [
+
+	Error signal: 'Ship does not have enough fuel to move.'
+]
+
 { #category : 'accessing' }
 NullShip >> name [
 

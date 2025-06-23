@@ -19,10 +19,10 @@ Class {
 }
 
 { #category : 'creation' }
-Game class >> assignCardsTo: someShips from: aCardsManager [ 
-	
+Game class >> assignCardsTo: someShips from: aCardsManager [
+
 	| someCards |
-	someCards:= aCardsManager generateFor: 2.
+	someCards := aCardsManager generateFor: 2.
 	someShips do: [ :aShip | aShip addCards: someCards ]
 ]
 
@@ -263,6 +263,13 @@ Game >> nextTurnPlay [
 	finished ifTrue: [ winner := shipToMove ]
 ]
 
+{ #category : 'action' }
+Game >> play: aCard by: aPlayingShip for: anAfectedShip [
+	"CHEQUEAR SI TENGO LA CARTA"
+
+	aCard bePlayedBy: aPlayingShip for: anAfectedShip in: self
+]
+
 { #category : 'printing' }
 Game >> printBoard [
 
@@ -286,4 +293,12 @@ Game >> rollDices [
 	rolledNumber := dices sum: [ :aDice | aDice roll ].
 
 	^ rolledNumber
+]
+
+{ #category : 'validation' }
+Game >> validateNextPlayer: aShip [
+
+	((ships at: 1) equals: aShip) ifFalse: [
+		Error signal:
+			'A permanent card cannot be played when it is not your turn.' ]
 ]

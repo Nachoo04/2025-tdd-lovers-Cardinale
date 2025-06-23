@@ -11,7 +11,8 @@ Class {
 		'turnsLeftToWait',
 		'gravityPenalty',
 		'maximumFuel',
-		'cards'
+		'cards',
+		'ally'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -60,8 +61,14 @@ Ship >> cards [
 
 { #category : 'update' }
 Ship >> consumeFuel: squaresTraveled [
-	
-	self hasEnoughFuelToTravel: squaresTraveled.
+
+	| fuelNeededToTravel |
+	[ self hasEnoughFuelToTravel: squaresTraveled ]
+		on: Error
+		do: [
+			fuelNeededToTravel := squaresTraveled - fuel.
+			ally consumeFuel: fuelNeededToTravel.
+			fuel := 0 ].
 	fuel := fuel - squaresTraveled
 ]
 
@@ -83,6 +90,18 @@ Ship >> details [
 	^ name , ': ' , position asString
 ]
 
+{ #category : 'comparing' }
+Ship >> equals: aShip [
+
+	^ name == aShip name
+]
+
+{ #category : 'update' }
+Ship >> formAllianceWith: aShip [
+
+	ally := aShip
+]
+
 { #category : 'accessing' }
 Ship >> fuel: aFuelQuantity [
 
@@ -95,6 +114,12 @@ Ship >> fuel: aFuelQuantity [
 Ship >> fuelEquals: aFuelQuantity [ 
 	
 	^ fuel = aFuelQuantity 
+]
+
+{ #category : 'testing' }
+Ship >> hasAFuelPenalty [
+
+	^ turnsLeftToWait > 0
 ]
 
 { #category : 'testing' }
@@ -119,6 +144,7 @@ Ship >> initializeCalled: aName [
 	turnsLeftToWait := 0.
 	gravityPenalty := 0.
 	cards := OrderedCollection new.
+	ally := NullShip new.
 ]
 
 { #category : 'penalty' }
@@ -142,6 +168,17 @@ Ship >> name [
 Ship >> reducePenalty [
 
 	turnsLeftToWait := turnsLeftToWait - 1
+]
+
+{ #category : 'removing' }
+Ship >> remove: aCard [
+
+	| indexOfCard |
+	indexOfCard := cards
+		               indexOf: aCard
+		               ifAbsent: [ Error signal: 'Card is not in hand.' ].
+
+	cards removeIndex: indexOfCard
 ]
 
 { #category : 'accessing' }
