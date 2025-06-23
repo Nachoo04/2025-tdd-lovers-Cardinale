@@ -264,7 +264,8 @@ Game >> nextTurnPlay [
 
 { #category : 'action' }
 Game >> play: aCard by: aPlayingShip for: anAfectedShip [
-	"CHEQUEAR SI TENGO LA CARTA"
+	
+	aPlayingShip validateCard: aCard.
 
 	aCard bePlayedBy: aPlayingShip for: anAfectedShip in: self
 ]

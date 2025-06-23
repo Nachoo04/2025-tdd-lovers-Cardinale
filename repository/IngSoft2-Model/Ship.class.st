@@ -205,10 +205,7 @@ Ship >> reducePenalty [
 Ship >> remove: aCard [
 
 	| indexOfCard |
-	indexOfCard := cards
-		               indexOf: aCard
-		               ifAbsent: [ Error signal: 'Card is not in hand.' ].
-
+	indexOfCard := cards indexOf: aCard.
 	cards removeIndex: indexOfCard
 ]
 
