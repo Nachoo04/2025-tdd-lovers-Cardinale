@@ -162,7 +162,9 @@ Game >> move: aShip with: rolledNumber [
 
 	| shipInitialPosition squaresTraveled shipPositionBeforeWormHole shipPositionAfterWormHole shipPositionAfterSquareEffect squaresTraveledWithDice squaresTraveledWithSquareEffect |
 	aShip canPlay: rolledNumber.
-
+	
+	self applyRewardTo: aShip for: rolledNumber.
+	
 	shipInitialPosition := aShip currentPosition.
 
 	shipPositionBeforeWormHole := board
@@ -219,7 +221,7 @@ Game >> moveShipsBackwards: aMagnitude [
 			do: [
 				aShip moveTo: shipInitialPosition.
 				aShip losesTwoTurns.
-				aShip fuel: (self class maximumRoll: dices) * 2 ] ]
+				aShip restoreFuel ] ]
 ]
 
 { #category : 'action' }
@@ -234,7 +236,7 @@ Game >> nextTurnPass [
 	| shipToMove |
 	self canStillPlay.
 	shipToMove := ships removeFirst.
-	shipToMove fuel: (self class maximumRoll: dices) * 2.
+	shipToMove restoreFuel.
 	ships add: shipToMove.
 ]
 
@@ -246,7 +248,6 @@ Game >> nextTurnPlay [
 	shipToMove := ships removeFirst.
 	rolledNumber := self rollDices.
 	shipInitialPosition := shipToMove currentPosition.
-	self applyRewardTo: shipToMove for: rolledNumber.
 	[ self move: shipToMove with: rolledNumber ]
 		on: Error
 		do: [

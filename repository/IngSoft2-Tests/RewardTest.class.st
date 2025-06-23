@@ -12,7 +12,7 @@ RewardTest >> testWhenAPlayerRolledTheMaximumRollThenItsRewardIsAnIncreseOfOneIn
 	fiveSquares := 5.
 	sideToRoll := 1.
 
-	expectedFuelLeft := 7.
+	expectedFuelLeft := 3.
 
 	aWormHole := WormHole between: 0 and: 3.
 	aBlueShip := Ship called: 'BlueShip'.
@@ -58,15 +58,8 @@ RewardTest >> testWhenAPlayerRolledTheMaximumRollThenItsRewardIsAnIncreseOfOneIn
 	aGame := aGameBuilder build.
 
 	aGame nextTurnPlay.
-	aGame nextTurnPlay.
-	aGame nextTurnPlay.
-	aGame nextTurnPlay.
-	aGame nextTurnPlay.
-	aGame nextTurnPlay.
-	aGame nextTurnPlay.
-	aGame nextTurnPlay.
-	aGame nextTurnPlay.
-	aGame nextTurnPlay.
+	aGame nextTurnPass.
+	aGame nextTurnPass.
 
 	self assert: (aBlueShip fuelEquals: expectedFuelLeft)
 ]
