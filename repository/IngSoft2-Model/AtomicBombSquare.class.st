@@ -19,7 +19,7 @@ AtomicBombSquare >> applyOn: aShip and: aPosition in: aGame [
 	^ shipNewPosition 
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'effect' }
 AtomicBombSquare >> repeatEffectFor: aShip on: aPosition in: aGame [
 
 	| shipNewPosition squaresTraveled |

@@ -32,7 +32,7 @@ HyperGravitySquare >> initializeBetween: aMinimumMagnitude and: aMaximumMagnitud
 	rollToContinue := (aMinimumMagnitude to: aMaximumMagnitude) atRandom
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'effect' }
 HyperGravitySquare >> repeatEffectFor: aShip on: aPosition in: aGame [
 
 	^ self applyOn: aShip and: aPosition in: aGame

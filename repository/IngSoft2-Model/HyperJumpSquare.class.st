@@ -46,7 +46,7 @@ HyperJumpSquare >> normalize: aParsec [
 	^ aParsec * ratio
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'effect' }
 HyperJumpSquare >> repeatEffectFor: aShip on: aPosition in: aGame [
 
 	^ self applyOn: aShip and: aPosition in: aGame
