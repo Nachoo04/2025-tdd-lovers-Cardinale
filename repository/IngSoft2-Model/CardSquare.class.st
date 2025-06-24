@@ -15,3 +15,9 @@ CardSquare >> applyOn: aShip and: aPosition in: aGame [
 	aShip addCards: (aGame generateCard).
 	^ aPosition.
 ]
+
+{ #category : 'as yet unclassified' }
+CardSquare >> repeatEffectFor: aShip on: aPosition in: aGame [
+
+	^ self applyOn: aShip and: aPosition in: aGame
+]
