@@ -100,6 +100,12 @@ Game >> applyRewardTo: aShip for: aRolledNumber [
 ]
 
 { #category : 'action' }
+Game >> applyRollPenalty: aPenalty [
+
+	ships do: [ :aShip | aShip applyRollPenalty: aPenalty ]
+]
+
+{ #category : 'action' }
 Game >> calculateDistanceBetween: aPosition and: anotherPosition [
 
 	^ board calculateDistanceBetween: aPosition and: anotherPosition
