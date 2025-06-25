@@ -92,6 +92,12 @@ Position >> lapsEquals: aLap [
 	^ lap = aLap
 ]
 
+{ #category : 'as yet unclassified' }
+Position >> positionOn: aBoardLength [
+
+	^ (lap - 1) * aBoardLength + square
+]
+
 { #category : 'comparing' }
 Position >> squareEquals: aSquare [
 
@@ -102,8 +108,7 @@ Position >> squareEquals: aSquare [
 Position >> squaresAwayFrom: aPosition with: aBoardLength [
 
 	| squaresTraveled |
-	squaresTraveled := ((aPosition currentLap - 1) * aBoardLength
-	                    + aPosition currentSquare
-	                    - ((lap - 1) * aBoardLength + square)) abs.
+	squaresTraveled := ((aPosition positionOn: aBoardLength)
+	                    - (self positionOn: aBoardLength)) abs.
 	^ squaresTraveled
 ]

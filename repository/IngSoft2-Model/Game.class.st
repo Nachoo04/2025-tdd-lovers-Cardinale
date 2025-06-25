@@ -192,7 +192,7 @@ Game >> initializeWith: aBoard for: someLaps and: someShips and: someDices and: 
 	lastEffect := PlainSquare new.
 	winner := NullShip new.
 	lastPlayedCard := NullCard new.
-	raceGoal := Position at: 0 in: laps.
+	raceGoal := Position at: 0 in: someLaps.
 	activePermanentCards := OrderedCollection new
 ]
 
