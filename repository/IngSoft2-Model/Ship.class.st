@@ -193,6 +193,17 @@ Ship >> modifyFuelBy: aFuelAmount [
 	fuel := fuel modifyBy: aFuelAmount
 ]
 
+{ #category : 'as yet unclassified' }
+Ship >> moveBackwards: aMagnitude in: aBoard [
+
+	| shipNewPosition |
+	shipNewPosition := aBoard update: position with: aMagnitude negated.
+
+	self performMovementFrom: position to: shipNewPosition on: aBoard.
+	^ shipNewPosition.
+	
+]
+
 { #category : 'move' }
 Ship >> moveTo: aPosition [
 
@@ -215,24 +226,51 @@ Ship >> penalizeAndReturnTo: shipInitialPosition [
 	allies first restoreFuel
 ]
 
-{ #category : 'move' }
-Ship >> playTurnWith: aRolledNumber on: aBoard [
+{ #category : 'as yet unclassified' }
+Ship >> performMovementFrom: anInitialPosition to: aFinalPosition on: aBoard [
+	
+	| squaresTraveled |
+	squaresTraveled := aBoard
+		                   calculateDistanceBetween: position
+		                   and: aFinalPosition.
 
-	| adjustedRolledNumber positionBeforeWormHole squaresTraveledWithDice positionAfterWormHole initialPosition |
+	self moveTo: aFinalPosition.
+	self consumeFuel: squaresTraveled from: anInitialPosition
+]
+
+{ #category : 'move' }
+Ship >> playTurnWith: aRolledNumber on: aBoard in: aGame [
+
+	| adjustedRolledNumber positionBeforeWormHole squaresTraveledWithDice positionAfterWormHole initialPosition positionAfterSquareEffect squaresTraveledWithSquareEffect |
 	(self canPlay: aRolledNumber) ifFalse: [ ^ self ].
 	initialPosition := position.
 	adjustedRolledNumber := self adjust: aRolledNumber.
-	
+
 	positionBeforeWormHole := aBoard
-		                              update: position
-		                              with: adjustedRolledNumber.
+		                          update: position
+		                          with: adjustedRolledNumber.
 	squaresTraveledWithDice := aBoard
 		                           calculateDistanceBetween: position
 		                           and: positionBeforeWormHole.
 	positionAfterWormHole := aBoard moveIfWormHoleAt:
-		                             positionBeforeWormHole.
+		                         positionBeforeWormHole.
 	self moveTo: positionAfterWormHole.
 	self consumeFuel: squaresTraveledWithDice from: initialPosition.
+
+	positionAfterSquareEffect := aBoard
+		                             applyEfectOn: self
+		                             with: position
+		                             in: aGame.
+
+	squaresTraveledWithSquareEffect := aBoard
+		                                   calculateDistanceBetween:
+		                                   position
+		                                   and: positionAfterSquareEffect.
+
+	self moveTo: positionAfterSquareEffect.
+	self
+		consumeFuel: squaresTraveledWithSquareEffect
+		from: initialPosition
 ]
 
 { #category : 'penalty' }

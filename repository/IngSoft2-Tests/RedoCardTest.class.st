@@ -23,7 +23,7 @@ RedoCardTest >> testWhenAnRedoCardIsUsedAfterACancellationCardThenTheEffectIsApp
 	sideToRoll := #( 1 1 3 ) asOrderedCollection.
 
 	expectedPosition := Position at: 5 in: 1.
-	expectedFuel := 3.
+	expectedFuel := Fuel with: 3 upTo: 6 in: HasFuelState new.
 
 	aWormHole := WormHole between: 18 and: 19.
 	aBlueShip := Ship called: 'BlueShip'.
@@ -120,12 +120,9 @@ RedoCardTest >> testWhenAnRedoCardIsUsedAfterACancellationCardThenTheEffectIsApp
 { #category : 'tests' }
 RedoCardTest >> testWhenAnRedoCardIsUsedAfterAPermanentCardAndItsNotYourTurnThenItFails [
 
-	| twentySquares sideToRoll expectedPosition expectedFuel aWormHole aBlueShip aBlackShip aLoadedDice aDistributionManager aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aDistribution aBoard aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aRedoCard aRedoCardProbabilisticEvent someShips someDices aGameBuilder aGame anAccelerationCard aSetCardManager anAccelerationCardProbabilisticEvent aNullCard |
+	| twentySquares sideToRoll aWormHole aBlueShip aBlackShip aLoadedDice aDistributionManager aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aDistribution aBoard aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aRedoCard aRedoCardProbabilisticEvent someShips someDices aGameBuilder aGame anAccelerationCard aSetCardManager anAccelerationCardProbabilisticEvent aNullCard |
 	twentySquares := 20.
 	sideToRoll := #( 1 1 3 ) asOrderedCollection.
-
-	expectedPosition := Position at: 5 in: 1.
-	expectedFuel := 1.
 
 	aWormHole := WormHole between: 18 and: 19.
 	aBlueShip := Ship called: 'BlueShip'.
@@ -210,7 +207,7 @@ RedoCardTest >> testWhenAnRedoCardIsUsedAfterARedoCardAfterAnAccelerationCardThe
 	sideToRoll := #( 1 1 10 ) asOrderedCollection.
 
 	expectedPosition := Position at: 6 in: 1.
-	expectedFuel := 14.
+	expectedFuel := Fuel with: 14 upTo: 20 in: HasFuelState new.
 
 	aWormHole := WormHole between: 18 and: 19.
 	aBlueShip := Ship called: 'BlueShip'.
@@ -381,7 +378,7 @@ RedoCardTest >> testWhenAnRedoCardIsUsedAfterAnAccelerationCardThenTheEffectIsAp
 	sideToRoll := #( 1 1 3 ) asOrderedCollection.
 
 	expectedPosition := Position at: 5 in: 1.
-	expectedFuel := 1.
+	expectedFuel := Fuel with: 1 upTo: 6 in: HasFuelState new.
 
 	aWormHole := WormHole between: 18 and: 19.
 	aBlueShip := Ship called: 'BlueShip'.
@@ -465,7 +462,7 @@ RedoCardTest >> testWhenAnRedoCardIsUsedAfterAnAllyCardThenTheEffectIsAppliedPro
 	sideToRoll := #( 3 ) asOrderedCollection.
 
 	expectedPosition := Position at: 9 in: 1.
-	expectedFuel := 3.
+	expectedFuel := Fuel with: 3 upTo: 6 in: HasFuelState new.
 
 	aWormHole := WormHole between: 18 and: 19.
 	aBlueShip := Ship called: 'BlueShip'.
@@ -561,7 +558,7 @@ RedoCardTest >> testWhenAnRedoCardIsUsedAfterAnOverloadCardThenTheEffectIsApplie
 	sideToRoll := #( 3 1 3 ) asOrderedCollection.
 
 	expectedPosition := Position at: 2 in: 1.
-	expectedFuel := 2.
+	expectedFuel := Fuel with: 2 upTo: 6 in: HasFuelState new.
 
 	aWormHole := WormHole between: 18 and: 19.
 	aBlueShip := Ship called: 'BlueShip'.
@@ -640,12 +637,9 @@ RedoCardTest >> testWhenAnRedoCardIsUsedAfterAnOverloadCardThenTheEffectIsApplie
 { #category : 'tests' }
 RedoCardTest >> testWhenAnRedoCardIsUsedBeforeAnyCardIsPlayedThenItFails [
 
-	| twentySquares sideToRoll expectedPosition expectedFuel aWormHole aBlueShip aBlackShip aLoadedDice aDistributionManager aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aDistribution aBoard aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aRedoCard aRedoCardProbabilisticEvent someShips someDices aGameBuilder aGame anAccelerationCard aSetCardManager anAccelerationCardProbabilisticEvent aNullCard |
+	| twentySquares sideToRoll aWormHole aBlueShip aBlackShip aLoadedDice aDistributionManager aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aDistribution aBoard aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aRedoCard aRedoCardProbabilisticEvent someShips someDices aGameBuilder aGame anAccelerationCard aSetCardManager anAccelerationCardProbabilisticEvent aNullCard |
 	twentySquares := 20.
 	sideToRoll := #( 1 1 3 ) asOrderedCollection.
-
-	expectedPosition := Position at: 5 in: 1.
-	expectedFuel := 1.
 
 	aWormHole := WormHole between: 18 and: 19.
 	aBlueShip := Ship called: 'BlueShip'.

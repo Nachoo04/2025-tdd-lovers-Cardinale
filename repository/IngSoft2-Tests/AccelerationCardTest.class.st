@@ -21,6 +21,9 @@ AccelerationCardTest >> testWhenAShipPlaysAnAccelerationCardThenAllRolledNumbers
 	| twentySquares aWormHole aGame sideToRoll aBlueShip aBlackShip aLoadedDice aBoard someShips someDices aDistributionManager aDistribution aProbabilityOfOne aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGameBuilder aCardManager aPlainSquare aPlainSquareProbabilisticEvent anAccelerationCard anAccelerationCardProbabilisticEvent expectedPosition expectedFuel aNullCard |
 	twentySquares := 20.
 	sideToRoll := #( 1 ) asOrderedCollection.
+	
+	expectedPosition := Position at: 2 in: 1.
+	expectedFuel := Fuel with: 0 upTo: 2 in: HasFuelState new.
 
 	aWormHole := WormHole between: 18 and: 19.
 	aBlueShip := Ship called: 'BlueShip'.
@@ -78,9 +81,6 @@ AccelerationCardTest >> testWhenAShipPlaysAnAccelerationCardThenAllRolledNumbers
 		and: aBlackShip.
 	aGame nextTurnPlay.
 	aGame nextTurnPlay.
-
-	expectedPosition := Position at: 2 in: 1.
-	expectedFuel := 0.
 
 	self assert: (aBlueShip currentPositionEquals: expectedPosition).
 	self assert: (aBlueShip fuelEquals: expectedFuel).

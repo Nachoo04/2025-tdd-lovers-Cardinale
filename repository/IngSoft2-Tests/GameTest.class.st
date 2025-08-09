@@ -738,11 +738,11 @@ GameTest >> testWhenTheGameEndsThenTheWinnerIsShownOnTheLeaderBoard [
 { #category : 'tests' }
 GameTest >> testWhenTheGameIsCreatedWithOneDiceThenAllTheShipsFuelEqualsToTheMaximumRolledNumberTimesTwo [
 
-	| fiveSquares aWormHole aBlueShip aBoard someShips someDices twoSides aTwoSidedDice aBlackShip maximumRolledNumber aDistributionManager aDistribution aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGame aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent |
+	| fiveSquares aWormHole aBlueShip aBoard someShips someDices twoSides aTwoSidedDice aBlackShip aDistributionManager aDistribution aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aGame aGameBuilder aCardManager anAllyCard anAllyCardProbabilisticEvent expectedFuel |
 	fiveSquares := 5.
 	twoSides := 2.
 
-	maximumRolledNumber := twoSides.
+	expectedFuel := Fuel with: 4 upTo: 4 in: HasFuelState new.
 
 	aWormHole := WormHole between: 1 and: 2.
 	aBlueShip := Ship called: 'BlueShip'.
@@ -790,20 +790,20 @@ GameTest >> testWhenTheGameIsCreatedWithOneDiceThenAllTheShipsFuelEqualsToTheMax
 	aGameBuilder setAvailableCards: aCardManager.
 	aGame := aGameBuilder build.
 
-	self assert: (aBlueShip fuelEquals: maximumRolledNumber * 2).
-	self assert: (aBlackShip fuelEquals: maximumRolledNumber * 2)
+	self assert: (aBlueShip fuelEquals: expectedFuel).
+	self assert: (aBlackShip fuelEquals: expectedFuel)
 ]
 
 { #category : 'tests' }
 GameTest >> testWhenTheGameIsCreatedWithTwoDicesThenAllTheShipsFuelEqualsToTheMaximumRolledNumberTimesTwo [
 
-	| fiveSquares aWormHole aBlueShip aBoard someShips someDices oneLap twoSides aTwoSidedDice aFourSidedDice fourSides aBlackShip maximumRolledNumber aDistributionBuilder aDistribution aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent zeroReward zeroRewardRewardProbabilisticEvent aRewardManager aCardManager anAllyCard anAllyCardProbabilisticEvent aGameBuilder aGame |
+	| fiveSquares aWormHole aBlueShip aBoard someShips someDices oneLap twoSides aTwoSidedDice aFourSidedDice fourSides aBlackShip aDistributionBuilder aDistribution aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent zeroReward zeroRewardRewardProbabilisticEvent aRewardManager aCardManager anAllyCard anAllyCardProbabilisticEvent aGameBuilder aGame expectedFuel |
 	fiveSquares := 5.
 	twoSides := 2.
 	fourSides := 4.
 	oneLap := 1.
 
-	maximumRolledNumber := twoSides + fourSides.
+	expectedFuel := Fuel with: 12 upTo: 12 in: HasFuelState new.
 
 	aWormHole := WormHole between: 1 and: 2.
 	aBlueShip := Ship called: 'BlueShip'.
@@ -854,8 +854,8 @@ GameTest >> testWhenTheGameIsCreatedWithTwoDicesThenAllTheShipsFuelEqualsToTheMa
 	aGame := aGameBuilder build.
 	
 
-	self assert: (aBlueShip fuelEquals: maximumRolledNumber * 2).
-	self assert: (aBlackShip fuelEquals: maximumRolledNumber * 2)
+	self assert: (aBlueShip fuelEquals: expectedFuel).
+	self assert: (aBlackShip fuelEquals: expectedFuel)
 ]
 
 { #category : 'tests' }

@@ -23,7 +23,7 @@ CancellationCardTest >> testWhenACancellationCardIsUsedAfterAnAccelerationCardTh
 	sideToRoll := #( 1 1 3 ) asOrderedCollection.
 
 	expectedPosition := Position at: 3 in: 1.
-	expectedFuel := 3.
+	expectedFuel := Fuel with: 3 upTo: 6 in: HasFuelState new.
 
 	aWormHole := WormHole between: 18 and: 19.
 	aBlueShip := Ship called: 'BlueShip'.
@@ -191,7 +191,7 @@ CancellationCardTest >> testWhenACancellationCardIsUsedAfterAnOverloadCardThenTh
 	sideToRoll := #( 3 1 1 ) asOrderedCollection.
 
 	expectedPosition := Position at: 1 in: 1.
-	expectedFuel := 5.
+	expectedFuel := Fuel with: 5 upTo: 6 in: HasFuelState new.
 
 	aWormHole := WormHole between: 18 and: 19.
 	aBlueShip := Ship called: 'BlueShip'.
@@ -270,12 +270,9 @@ CancellationCardTest >> testWhenACancellationCardIsUsedAfterAnOverloadCardThenTh
 { #category : 'tests' }
 CancellationCardTest >> testWhenACancellationCardIsUsedBeforeHavingAnActiveCardThenInvalid [
 
-	| twentySquares sideToRoll expectedPosition expectedFuel aWormHole aBlueShip aBlackShip aLoadedDice aDistributionManager aPlainSquareSquare aProbabilityOfOne aPlainSquareSquareProbabilisticEvent aDistribution aBoard aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aCancellationCard aCancellationCardProbabilisticEvent someShips someDices aGameBuilder aGame anAccelerationCard aSetCardManager anAccelerationCardProbabilisticEvent |
+	| twentySquares sideToRoll aWormHole aBlueShip aBlackShip aLoadedDice aDistributionManager aPlainSquareSquare aProbabilityOfOne aPlainSquareSquareProbabilisticEvent aDistribution aBoard aRewardManager zeroReward zeroRewardRewardProbabilisticEvent aCancellationCard aCancellationCardProbabilisticEvent someShips someDices aGameBuilder aGame anAccelerationCard aSetCardManager anAccelerationCardProbabilisticEvent |
 	twentySquares := 20.
 	sideToRoll := #( 1 1 3 ) asOrderedCollection.
-
-	expectedPosition := Position at: 3 in: 1.
-	expectedFuel := 3.
 
 	aWormHole := WormHole between: 18 and: 19.
 	aBlueShip := Ship called: 'BlueShip'.

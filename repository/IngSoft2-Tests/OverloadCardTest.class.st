@@ -5,16 +5,6 @@ Class {
 	#package : 'IngSoft2-Tests'
 }
 
-{ #category : 'asserting' }
-OverloadCardTest >> should: anErrorBlock raise: anErrorClass withMessageText: anErrorMessage [
-
-	self
-		should: anErrorBlock
-		raise: anErrorClass
-		withExceptionDo: [ :error |
-		self assert: error messageText equals: anErrorMessage ]
-]
-
 { #category : 'tests' }
 OverloadCardTest >> testWhenAShipPlaysAnOverloadCardAndTheRolledNumberIsSmallerThanTwoThenTheShipMovesBackwards [
 
@@ -23,7 +13,7 @@ OverloadCardTest >> testWhenAShipPlaysAnOverloadCardAndTheRolledNumberIsSmallerT
 	sideToRoll := #( 1 ) asOrderedCollection.
 
 	expectedPosition := Position at: 0 in: 1.
-	expectedFuel := 0.
+	expectedFuel := Fuel with: 0 upTo: 2 in: HasFuelState new.
 
 	aWormHole := WormHole between: 18 and: 19.
 	aBlueShip := Ship called: 'BlueShip'.
@@ -96,7 +86,7 @@ OverloadCardTest >> testWhenAShipPlaysAnOverloadCardThenTheRolledNumberOfTheTarg
 	sideToRoll := #( 3 ) asOrderedCollection.
 
 	expectedPosition := Position at: 4 in: 1.
-	expectedFuel := 2.
+	expectedFuel := Fuel with: 2 upTo: 6 in: HasFuelState new.
 
 	aWormHole := WormHole between: 18 and: 19.
 	aBlueShip := Ship called: 'BlueShip'.

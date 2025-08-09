@@ -94,26 +94,6 @@ Game >> addActiveCard: aCard [
 ]
 
 { #category : 'action' }
-Game >> applyEffectMovementFor: aShip from: shipPositionAfterWormHole to: shipPositionAfterSquareEffect [
-
-	| squaresTraveledWithSquareEffect |
-	squaresTraveledWithSquareEffect := board
-		                                   calculateDistanceBetween:
-		                                   shipPositionAfterWormHole
-		                                   and:
-		                                   shipPositionAfterSquareEffect.
-
-	aShip moveTo: shipPositionAfterSquareEffect.
-	aShip consumeFuel: squaresTraveledWithSquareEffect
-]
-
-{ #category : 'action' }
-Game >> applyEffectOn: aShip with: aPosition [
-
-	^ board applyEfectOn: aShip with: aPosition in: self.
-]
-
-{ #category : 'action' }
 Game >> applyLastEffectTo: aShip [
 
 	| shipInitialPosition shipPositionAfterEffect |
@@ -124,10 +104,7 @@ Game >> applyLastEffectTo: aShip [
 		                           on: shipInitialPosition
 		                           in: self.
 
-	self
-		applyEffectMovementFor: aShip
-		from: shipInitialPosition
-		to: shipPositionAfterEffect
+	aShip performMovementFrom: shipInitialPosition to: shipPositionAfterEffect on: board
 ]
 
 { #category : 'action' }
@@ -220,73 +197,26 @@ Game >> maximumRoll [
 	^ dices sum: [ :aDice | aDice rollMaximum ]
 ]
 
-{ #category : 'action' }
-Game >> move: aShip backward: aMagnitude [
+{ #category : 'as yet unclassified' }
+Game >> move: aShip backwardsBy: aMagnitude [
 
-	| shipInitialPosition shipNewPosition |
-	shipInitialPosition := aShip currentPosition.
-	shipNewPosition := board
-		                   update: shipInitialPosition
-		                   with: aMagnitude negated.
-	^ shipNewPosition 
+	^ aShip moveBackwards: aMagnitude in: board.
 ]
 
 { #category : 'action' }
 Game >> move: aShip with: rolledNumber [
 
-	| shipInitialPosition shipPositionBeforeWormHole shipPositionAfterWormHole shipPositionAfterSquareEffect squaresTraveledWithDice adjustedRolledNumber |
-	"aShip canPlay: rolledNumber."
 	self applyRewardTo: aShip for: rolledNumber.
-	aShip playTurnWith: rolledNumber on: board.
-
-	"shipInitialPosition := aShip currentPosition.
-
-	adjustedRolledNumber := aShip adjust: rolledNumber.
-
-	shipPositionBeforeWormHole := board
-		                              update: shipInitialPosition
-		                              with: adjustedRolledNumber.
-
-	squaresTraveledWithDice := board
-		                           calculateDistanceBetween:
-		                           shipInitialPosition
-		                           and: shipPositionBeforeWormHole.
-
-	shipPositionAfterWormHole := board moveIfWormHoleAt:
-		                             shipPositionBeforeWormHole.
-
-	aShip moveTo: shipPositionAfterWormHole.
-	aShip consumeFuel: squaresTraveledWithDice."
-
-	"shipPositionAfterSquareEffect := self
-		                                 applyEffectOn: aShip
-		                                 with: shipPositionAfterWormHole.
-
-	self
-		applyEffectMovementFor: aShip
-		from: shipPositionAfterWormHole
-		to: shipPositionAfterSquareEffect."
-
-	"shipPositionAfterSquareEffect > raceGoal ifTrue: [ self finish ]"
+	aShip playTurnWith: rolledNumber on: board in: self.
+	aShip currentPosition > raceGoal ifFalse: [ ^ self ].
+	self finish.
+	winner := aShip
 ]
 
 { #category : 'action' }
 Game >> moveShipsBackwards: aMagnitude [
 
-	| shipInitialPosition shipNewPosition |
-	ships do: [ :aShip |
-		shipInitialPosition := aShip currentPosition.
-		shipNewPosition := self move: aShip backward: aMagnitude.
-		[
-		self
-			applyEffectMovementFor: aShip
-			from: shipInitialPosition
-			to: shipNewPosition ]
-			on: Error
-			do: [
-				aShip moveTo: shipInitialPosition.
-				aShip losesTwoTurns.
-				aShip restoreFuel ] ]
+	ships do: [ :aShip | aShip moveBackwards: aMagnitude in: board ]
 ]
 
 { #category : 'action' }
@@ -314,15 +244,15 @@ Game >> nextTurnPlay [
 	rolledNumber := self rollDices.
 	shipInitialPosition := shipToMove currentPosition.
 	lastEffectBeforeMovement := lastEffect.
-	[ self move: shipToMove with: rolledNumber ]
+	self move: shipToMove with: rolledNumber.
+	"[ self move: shipToMove with: rolledNumber ]
 		on: Error
 		do: [ :anError |
 			anError messageText = 'Ship does not have enough fuel to move.'
 				ifTrue: [
 					shipToMove penalizeAndReturnTo: shipInitialPosition.
-					lastEffect := lastEffectBeforeMovement ] ].
+					lastEffect := lastEffectBeforeMovement ] ]."
 	ships add: shipToMove.
-	finished ifTrue: [ winner := shipToMove ]
 ]
 
 { #category : 'action' }

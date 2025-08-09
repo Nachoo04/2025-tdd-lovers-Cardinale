@@ -96,7 +96,7 @@ RepeatCardTest >> testWhenAShipPlaysARepeatCardAndTheLastEffectIsABackHoleEfectT
 	sideToRoll := #( 10 ) asOrderedCollection.
 
 	expectedPosition := Position at: 2 in: 1.
-	expectedFuel := 2.
+	expectedFuel := Fuel with: 2 upTo: 20 in: HasFuelState new.
 
 	aWormHole := WormHole between: 18 and: 19.
 	aBlueShip := Ship called: 'BlueShip'.
@@ -238,7 +238,7 @@ RepeatCardTest >> testWhenAShipPlaysARepeatCardAndTheLastEffectIsAHyperGavityEfe
 	sidesToRoll := #( 2 5 2 ) asOrderedCollection.
 
 	expectedPosition := Position at: 7 in: 1.
-	expectedFuel := 3.
+	expectedFuel := Fuel with: 3 upTo: 10 in: HasFuelState new.
 
 	aWormHole := WormHole between: 15 and: 16.
 	aBlueShip := Ship called: 'BlueShip'.
@@ -313,7 +313,7 @@ RepeatCardTest >> testWhenAShipPlaysARepeatCardAndTheLastEffectIsAHyperJumpEfect
 	sidesToRoll := #( 2 10 ) asOrderedCollection.
 
 	expectedPosition := Position at: 17 in: 1.
-	expectedFuel := 3.
+	expectedFuel := Fuel with: 3 upTo: 20 in: HasFuelState new.
 	aRatio := 1.
 
 	aWormHole := WormHole between: 15 and: 16.
@@ -394,7 +394,7 @@ RepeatCardTest >> testWhenAShipPlaysARepeatCardAndTheLastEffectIsAMoonWalkEfectT
 	sidesToRoll := #(2 2 10) asOrderedCollection.
 
 	expectedPosition := Position at: 1 in: 1.
-	expectedFuel := 17.
+	expectedFuel := Fuel with: 17 upTo: 20 in: HasFuelState new.
 
 	aWormHole := WormHole between: 15 and: 16.
 	aBlueShip := Ship called: 'BlueShip'.
@@ -466,7 +466,7 @@ RepeatCardTest >> testWhenAShipPlaysARepeatCardAndTheLastEffectIsANullEfectThenI
 	sideToRoll := #(3) asOrderedCollection.
 
 	expectedPosition := Position at: 6 in: 1.
-	expectedFuel := 0.
+	expectedFuel := Fuel with: 0 upTo: 6 in: HasFuelState new.
 
 	aWormHole := WormHole between: 18 and: 19.
 	aBlueShip := Ship called: 'BlueShip'.
@@ -539,7 +539,7 @@ RepeatCardTest >> testWhenAShipPlaysARepeatCardAndTheLastEffectIsAnAtomicBombEff
 	sidesToRoll := #(2 2 10) asOrderedCollection.
 
 	expectedPosition := Position at: 0 in: 1.
-	expectedFuel := 18.
+	expectedFuel := Fuel with: 18 upTo: 20 in: HasFuelState new.
 
 	aWormHole := WormHole between: 15 and: 16.
 	aBlueShip := Ship called: 'BlueShip'.
@@ -611,7 +611,7 @@ RepeatCardTest >> testWhenAShipPlaysARepeatCardWhenIsNotItsTurn [
 	sideToRoll := #( 3 ) asOrderedCollection.
 
 	expectedPosition := Position at: 6 in: 1.
-	expectedFuel := 0.
+	expectedFuel := Fuel with: 0 upTo: 6 in: HasFuelState new.
 
 	aWormHole := WormHole between: 18 and: 19.
 	aBlueShip := Ship called: 'BlueShip'.
