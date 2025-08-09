@@ -158,13 +158,6 @@ Ship >> hasAFuelPenalty [
 	^ turnsLeftToWait > 0
 ]
 
-{ #category : 'testing' }
-Ship >> hasEnoughFuelToTravel: squaresToTravel [
-
-	fuel < 0 ifTrue: [
-		Error signal: 'Ship does not have enough fuel to move.' ]
-]
-
 { #category : 'accessing' }
 Ship >> increaseMaxFuel: aMagnitude [
 
