@@ -148,4 +148,5 @@ WormHoleTest >> testWhenAWormHoleIsCreatedWithTheBeginningLargerThanTheEndingThe
 		raise: Error
 		withMessageText:
 		'A Worm Hole cannot be created with the beginning larger than the ending'
+		""test""
 ]
