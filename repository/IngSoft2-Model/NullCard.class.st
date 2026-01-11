@@ -18,4 +18,7 @@ NullCard >> applyEffectPlayedBy: aPlayingShip affecting: anAffectedCard and: anA
 
 { #category : 'playing' }
 NullCard >> bePlayedBy: aPlayingShip affecting: anAffectedCard and: anAffectedShip in: aGame [
+	"este metodo nunca es alcanzado, pero corresponde por la herencia"
+
+	
 ]
