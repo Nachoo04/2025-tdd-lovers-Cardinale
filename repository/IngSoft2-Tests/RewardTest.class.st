@@ -76,7 +76,7 @@ RewardTest >> setUp [
 ]
 
 { #category : 'tests' }
-RewardTest >> testWhenAPlayerRolledTheMaximumRollThenItsRewardIsAnIncreseOfOneInItsMaxiumFuell [
+RewardTest >> testWhenAPlayerRolledTheMaximumRollThenItsRewardIsAnIncreseOfOneInItsMaxiumFuel [
 
 	| expectedFuelLeft aRewardManager plusOneReward plusOneRewardProbabilisticEvent aGame |
 	expectedFuelLeft := Fuel with: 3 upTo: 3 in: HasFuelState new.

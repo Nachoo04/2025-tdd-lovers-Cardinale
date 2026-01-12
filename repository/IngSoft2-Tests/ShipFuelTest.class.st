@@ -83,7 +83,7 @@ ShipFuelTest >> setUp [
 ]
 
 { #category : 'tests' }
-ShipFuelTest >> testWhenAShipDecideToPassThenItsFuellsToppedUp [
+ShipFuelTest >> testWhenAShipDecideToPassThenItsFuelIsToppedUp [
 
 	| expectedFuelLeft |
 	expectedFuelLeft := Fuel with: 2 upTo: 2 in: HasFuelState new.
