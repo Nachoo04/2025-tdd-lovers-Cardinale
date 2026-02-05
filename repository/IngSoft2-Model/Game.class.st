@@ -120,6 +120,15 @@ Game >> applyRollModifier: aPenalty [
 	ships do: [ :aShip | aShip applyRollModifier: aPenalty ]
 ]
 
+{ #category : 'as yet unclassified' }
+Game >> applySkipPenalty [
+	
+	| anAffectedShip |
+	anAffectedShip := ships removeFirst.
+	anAffectedShip turnSkipped.
+	ships addFirst: anAffectedShip.
+]
+
 { #category : 'action' }
 Game >> calculateDistanceBetween: aPosition and: anotherPosition [
 

@@ -298,6 +298,12 @@ Ship >> restoreFuel [
 	fuel := fuel restore.
 ]
 
+{ #category : 'as yet unclassified' }
+Ship >> turnSkipped [
+
+	turnsLeftToWait := turnsLeftToWait + 1
+]
+
 { #category : 'comparing' }
 Ship >> validateCard: aCard [ 
 	
