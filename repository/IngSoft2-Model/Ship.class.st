@@ -12,7 +12,8 @@ Class {
 		'gravityPenalty',
 		'cards',
 		'allies',
-		'rollModifier'
+		'rollModifier',
+		'imprisoned'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -54,6 +55,12 @@ Ship >> applyRollModifier: aModifier [
 	rollModifier := rollModifier + aModifier
 ]
 
+{ #category : 'as yet unclassified' }
+Ship >> beImpeisoned [
+
+	imprisoned := true
+]
+
 { #category : 'move' }
 Ship >> borrowFuelFromAllies [
 
@@ -78,11 +85,11 @@ Ship >> canPlay: aRolledNumber [
 
 	| hasToWait |
 	hasToWait := turnsLeftToWait > 0.
-	
-	hasToWait ifTrue: [
-		self reducePenalty ].
-	
-	^  hasToWait not and: gravityPenalty <= aRolledNumber 
+
+	hasToWait ifTrue: [ self reducePenalty ].
+
+	^ (hasToWait not and: gravityPenalty <= aRolledNumber) and:
+		  imprisoned not
 ]
 
 { #category : 'accessing' }
@@ -176,7 +183,8 @@ Ship >> initializeCalled: aName [
 	cards := OrderedCollection new.
 	rollModifier := 0.
 	allies := OrderedCollection new.
-	allies add: NullShip new
+	allies add: NullShip new.
+	imprisoned := false
 ]
 
 { #category : 'penalty' }
