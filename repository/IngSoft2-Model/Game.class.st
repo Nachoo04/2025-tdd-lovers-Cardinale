@@ -16,7 +16,8 @@ Class {
 		'lastEffect',
 		'lastPlayedCard',
 		'activePermanentCards',
-		'raceGoal'
+		'raceGoal',
+		'turnMode'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -141,6 +142,12 @@ Game >> canStillPlay [
 	finished ifTrue: [ Error signal: 'The game has finished.' ]
 ]
 
+{ #category : 'as yet unclassified' }
+Game >> changeTurnModeTo: aTurnMode [
+
+	turnMode := aTurnMode
+]
+
 { #category : 'changing state' }
 Game >> finish [
 
@@ -179,7 +186,8 @@ Game >> initializeWith: aBoard for: someLaps and: someShips and: someDices and: 
 	winner := NullShip new.
 	lastPlayedCard := NullCard new.
 	raceGoal := Position at: 0 in: someLaps.
-	activePermanentCards := OrderedCollection new
+	activePermanentCards := OrderedCollection new.
+	turnMode := NormalTurnMode new.
 ]
 
 { #category : 'action' }
@@ -250,9 +258,10 @@ Game >> nextTurnPlay [
 	| shipToMove rolledNumber |
 	self canStillPlay.
 	shipToMove := ships removeFirst.
-	rolledNumber := self rollDices.
+	rolledNumber := turnMode executeOn: self.
 	self move: shipToMove with: rolledNumber.
-	ships add: shipToMove
+	ships add: shipToMove.
+	self changeTurnModeTo: NormalTurnMode new
 ]
 
 { #category : 'action' }
