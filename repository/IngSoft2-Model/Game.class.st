@@ -224,8 +224,6 @@ Game >> move: aShip backwardsBy: aMagnitude [
 Game >> move: aShip with: rolledNumber [
 
 	self applyRewardTo: aShip for: rolledNumber.
-	rolledNumber = self maximumRoll ifTrue: [
-		aShip free ].
 	aShip playTurnWith: rolledNumber on: board in: self.
 	aShip currentPosition > raceGoal ifFalse: [ ^ self ].
 	self finish.

@@ -148,7 +148,7 @@ Ship >> formAllianceWith: aShip [
 { #category : 'finalization' }
 Ship >> free [
 
-	imprisoned := false
+	state letOut: self
 ]
 
 { #category : 'accessing' }

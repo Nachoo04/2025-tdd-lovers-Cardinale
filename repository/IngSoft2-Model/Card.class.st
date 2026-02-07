@@ -11,7 +11,7 @@ Class {
 { #category : 'playing' }
 Card >> applyEffectPlayedBy: aPlayingShip affecting: anAffectedCard and: anAffectedShip in: aGame [
 
-	aPlayingShip free.
+	self subclassResponsibility.
 ]
 
 { #category : 'playing' }

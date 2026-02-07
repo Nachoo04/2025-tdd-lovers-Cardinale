@@ -20,10 +20,16 @@ TrappedShipState >> initializeWith: aNumberForFreedom [
 	freedom := aNumberForFreedom
 ]
 
+{ #category : 'instance creation' }
+TrappedShipState >> letOut: aShip [
+
+	aShip state: NormalShipState new
+]
+
 { #category : 'accessing' }
 TrappedShipState >> move: aShip with: rolledNumber on: aBoard in: aGame [
 
 	rolledNumber = freedom ifFalse: [ ^ self ].
-	aShip state: NormalShipState new.
+	self letOut: aShip.
 	aShip movesWith: rolledNumber on: aBoard in: aGame
 ]
