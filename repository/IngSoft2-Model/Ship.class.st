@@ -146,6 +146,12 @@ Ship >> formAllianceWith: aShip [
 	allies remove: aNullShip ifAbsent: [ Error signal: 'pepe' ]
 ]
 
+{ #category : 'finalization' }
+Ship >> free [
+
+	imprisoned := false
+]
+
 { #category : 'accessing' }
 Ship >> fuel: someFuel [
 	
@@ -250,6 +256,7 @@ Ship >> playTurnWith: aRolledNumber on: aBoard in: aGame [
 	| adjustedRolledNumber positionBeforeWormHole squaresTraveledWithDice positionAfterWormHole initialPosition positionAfterSquareEffect squaresTraveledWithSquareEffect |
 	(self canPlay: aRolledNumber) ifFalse: [ ^ self ].
 	initialPosition := position.
+
 	adjustedRolledNumber := self adjust: aRolledNumber.
 
 	positionBeforeWormHole := aBoard

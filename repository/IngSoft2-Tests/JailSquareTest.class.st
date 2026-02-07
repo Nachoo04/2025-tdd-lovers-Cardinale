@@ -99,3 +99,28 @@ JailSquareTest >> testWhenAShipFallIntoAJailSquareAndDontRollTheMaximumRollThenI
 
 	self assert: (aBlueShip currentPositionEquals: expectedPosition)
 ]
+
+{ #category : 'tests' }
+JailSquareTest >> testWhenAShipFallIntoAJailSquareAndRollTheMaximumRollThenItCanMoves [
+
+	| sideToRoll aLoadedDice expectedPosition someDices aGame |
+	sideToRoll := #( 1 1 2 ) asOrderedCollection.
+	aLoadedDice := LoadedDice toRoll: sideToRoll.
+
+	expectedPosition := Position at: 3 in: 1.
+
+	someDices := OrderedCollection new.
+	someDices add: aLoadedDice.
+
+	aGameBuilder setDices: someDices.
+	aGame := aGameBuilder build.
+
+	aGame nextTurnPlay.
+	aGame nextTurnPass.
+	aGame nextTurnPlay.
+	aGame nextTurnPass.
+	aGame nextTurnPlay.
+
+
+	self assert: (aBlueShip currentPositionEquals: expectedPosition)
+]
