@@ -375,9 +375,9 @@ RepeatCardTest >> testWhenAShipPlaysARepeatCardAndTheLastEffectIsAnHyperJumpEfec
 	someDices add: aLoadedDice.
 
 	aRatio := 1.
-	aParsecJumpOfFive := Parsec with: 5.
-	anotherParsecJumpOfFive := Parsec with: 5.
-	aParsecJumpOfTen := Parsec with: 10.
+	aParsecJumpOfFive := Parsec initializeWith: 5.
+	anotherParsecJumpOfFive := Parsec initializeWith: 5.
+	aParsecJumpOfTen := Parsec initializeWith: 10.
 	someParsecs := OrderedCollection new.
 	someParsecs add: aParsecJumpOfFive.
 	someParsecs add: anotherParsecJumpOfFive.

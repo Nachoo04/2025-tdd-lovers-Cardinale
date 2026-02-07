@@ -1,6 +1,6 @@
 Class {
 	#name : 'NormalShipState',
-	#superclass : 'Object',
+	#superclass : 'State',
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }

@@ -1,6 +1,6 @@
 Class {
 	#name : 'TrappedShipState',
-	#superclass : 'Object',
+	#superclass : 'State',
 	#instVars : [
 		'freedom'
 	],
@@ -9,9 +9,15 @@ Class {
 }
 
 { #category : 'instance creation' }
-TrappedShipState class >> with: aNumberForFreedom [
+TrappedShipState class >> initializeWith: aNumberForFreedom [
 
-	^ self new with: aNumberForFreedom
+	^ self new initializeWith: aNumberForFreedom
+]
+
+{ #category : 'instance creation' }
+TrappedShipState >> initializeWith: aNumberForFreedom [
+
+	freedom := aNumberForFreedom
 ]
 
 { #category : 'accessing' }
@@ -20,10 +26,4 @@ TrappedShipState >> move: aShip with: rolledNumber on: aBoard in: aGame [
 	rolledNumber = freedom ifFalse: [ ^ self ].
 	aShip state: NormalShipState new.
 	aShip movesWith: rolledNumber on: aBoard in: aGame
-]
-
-{ #category : 'instance creation' }
-TrappedShipState >> with: aNumberForFreedom [
-
-	freedom := aNumberForFreedom
 ]

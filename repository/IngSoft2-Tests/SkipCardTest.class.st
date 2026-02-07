@@ -1,27 +1,48 @@
 Class {
 	#name : 'SkipCardTest',
 	#superclass : 'TestCase',
+	#instVars : [
+		'twentySquares',
+		'aBlueShip',
+		'aBlackShip',
+		'aRedShip',
+		'expectedCards',
+		'aDistributionManager',
+		'aPlainSquare',
+		'aProbabilityOfOne',
+		'aPlainSquareProbabilisticEvent',
+		'sideToRoll',
+		'aWormHole',
+		'aLoadedDice',
+		'aDistribution',
+		'aBoard',
+		'aRewardManager',
+		'zeroReward',
+		'zeroRewardRewardProbabilisticEvent',
+		'anSkipCard',
+		'anSkipCardProbabilisticEvent',
+		'aSetCardManagerWithSkipCards',
+		'someShips',
+		'someDices',
+		'aGameBuilder',
+		'aNullCard',
+		'anAccelerationCard',
+		'anAccelerationCardProbabilisticEvent'
+	],
 	#category : 'IngSoft2-Tests',
 	#package : 'IngSoft2-Tests'
 }
 
-{ #category : 'tests' }
-SkipCardTest >> testWhenASkipCardIsPlayedThenTheActualShipIsSkipped [
+{ #category : 'running' }
+SkipCardTest >> setUp [
 
-	| twentySquares aBlueShip aBlackShip aDistributionManager aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aDistribution aRewardManager zeroReward zeroRewardProbabilisticEvent aCardManager anSkipCard anSkipCardProbabilisticEvent someShips aGameBuilder expectedPosition expectedFuel sideToRoll aWormHole aLoadedDice aBoard someDices aNullCard aGame |
-	expectedPosition := Position at: 0 in: 1.
-	expectedFuel := Fuel with: 2 upTo: 2 in: HasFuelState new.
+	super setUp.
 
 	twentySquares := 20.
-
 	aBlueShip := Ship called: 'BlueShip'.
 	aBlackShip := Ship called: 'BlackShip'.
-
-	sideToRoll := #( 1 ) asOrderedCollection.
-
-	aWormHole := WormHole between: 18 and: 19.
-	aLoadedDice := LoadedDice toRoll: sideToRoll.
-
+	aRedShip := Ship called: 'RedShip'.
+	expectedCards := OrderedCollection new.
 
 	aDistributionManager := ProbablisiticEventsManager new.
 	aPlainSquare := PlainSquare new.
@@ -29,6 +50,12 @@ SkipCardTest >> testWhenASkipCardIsPlayedThenTheActualShipIsSkipped [
 	aPlainSquareProbabilisticEvent := ProbabilisticEvent
 		                                  for: aPlainSquare
 		                                  with: aProbabilityOfOne.
+
+	sideToRoll := #( 1 ) asOrderedCollection.
+
+	aWormHole := WormHole between: 18 and: 19.
+	aLoadedDice := LoadedDice toRoll: sideToRoll.
+
 	aDistributionManager add: aPlainSquareProbabilisticEvent.
 	aDistribution := aDistributionManager generateFor: twentySquares.
 
@@ -39,31 +66,70 @@ SkipCardTest >> testWhenASkipCardIsPlayedThenTheActualShipIsSkipped [
 
 	aRewardManager := ProbablisiticEventsManager new.
 	zeroReward := FuelDecreaseReward of: 0.
-	zeroRewardProbabilisticEvent := ProbabilisticEvent
-		                                for: zeroReward
-		                                with: aProbabilityOfOne.
-	aRewardManager add: zeroRewardProbabilisticEvent.
+	zeroRewardRewardProbabilisticEvent := ProbabilisticEvent
+		                                      for: zeroReward
+		                                      with: aProbabilityOfOne.
+	aRewardManager add: zeroRewardRewardProbabilisticEvent.
 
-	aCardManager := ProbablisiticEventsManager new.
+	aSetCardManagerWithSkipCards := ProbablisiticEventsManager new.
+
 	anSkipCard := SkipCard new.
-	aNullCard := NullCard new.
 	anSkipCardProbabilisticEvent := ProbabilisticEvent
 		                                for: anSkipCard
 		                                with: aProbabilityOfOne.
-	aCardManager add: anSkipCardProbabilisticEvent.
+	aSetCardManagerWithSkipCards add: anSkipCardProbabilisticEvent.
+
+	anAccelerationCard := AccelerationCard new.
+	anAccelerationCardProbabilisticEvent := ProbabilisticEvent
+		                                        for: anAccelerationCard
+		                                        with: aProbabilityOfOne.
+
 
 	someShips := OrderedCollection new.
 	someDices := OrderedCollection new.
-	someDices add: aLoadedDice.
 	someShips add: aBlueShip.
 	someShips add: aBlackShip.
-	aGameBuilder := GameBuilder new.
+	someDices add: aLoadedDice.
 
-	aGameBuilder setShips: someShips.
-	aGameBuilder setRewards: aRewardManager.
+	aGameBuilder := GameBuilder new.
 	aGameBuilder setBoard: aBoard.
+	aGameBuilder setShips: someShips.
 	aGameBuilder setDices: someDices.
-	aGameBuilder setAvailableCards: aCardManager.
+	aGameBuilder setRewards: aRewardManager.
+
+	aNullCard := NullCard new
+]
+
+{ #category : 'tests' }
+SkipCardTest >> testWhenAShipPlaysAnSkipCardThenItIsNoLongerInItsHand [
+
+	| aGame aSetCardManager |
+	aSetCardManager := SetProbablisiticEventsManager new.
+	aSetCardManager add: anSkipCardProbabilisticEvent.
+	aSetCardManager add: anAccelerationCardProbabilisticEvent.
+
+	aGameBuilder setAvailableCards: aSetCardManager.
+	aGame := aGameBuilder build.
+
+	expectedCards add: anAccelerationCard.
+
+	aGame
+		play: anSkipCard
+		by: aBlueShip
+		affecting: aNullCard
+		and: aBlackShip.
+
+	self assert: aBlueShip cards equals: expectedCards
+]
+
+{ #category : 'tests' }
+SkipCardTest >> testWhenASkipCardIsPlayedThenTheActualShipIsSkipped [
+
+	|  expectedPosition expectedFuel  aGame |
+	expectedPosition := Position at: 0 in: 1.
+	expectedFuel := Fuel with: 2 upTo: 2 in: HasFuelState new.
+
+	aGameBuilder setAvailableCards: aSetCardManagerWithSkipCards .
 
 	aGame := aGameBuilder build.
 
@@ -80,62 +146,12 @@ SkipCardTest >> testWhenASkipCardIsPlayedThenTheActualShipIsSkipped [
 { #category : 'tests' }
 SkipCardTest >> testWhenASkipCardWasPlayThenAffectedShipCanPlayAfterAFullRound [
 
-	| twentySquares aBlueShip aBlackShip aDistributionManager aPlainSquare aProbabilityOfOne aPlainSquareProbabilisticEvent aDistribution aRewardManager zeroReward zeroRewardProbabilisticEvent aCardManager anSkipCard anSkipCardProbabilisticEvent someShips aGameBuilder expectedPosition expectedFuel sideToRoll aWormHole aLoadedDice aBoard someDices aNullCard aGame |
+	|  expectedPosition expectedFuel  aGame |
 	expectedPosition := Position at: 1 in: 1.
 	expectedFuel := Fuel with: 1 upTo: 2 in: HasFuelState new.
 
-	twentySquares := 20.
 
-	aBlueShip := Ship called: 'BlueShip'.
-	aBlackShip := Ship called: 'BlackShip'.
-
-	sideToRoll := #( 1 ) asOrderedCollection.
-
-	aWormHole := WormHole between: 18 and: 19.
-	aLoadedDice := LoadedDice toRoll: sideToRoll.
-
-
-	aDistributionManager := ProbablisiticEventsManager new.
-	aPlainSquare := PlainSquare new.
-	aProbabilityOfOne := 1.
-	aPlainSquareProbabilisticEvent := ProbabilisticEvent
-		                                  for: aPlainSquare
-		                                  with: aProbabilityOfOne.
-	aDistributionManager add: aPlainSquareProbabilisticEvent.
-	aDistribution := aDistributionManager generateFor: twentySquares.
-
-	aBoard := Board
-		          with: twentySquares
-		          and: aWormHole
-		          distributedBy: aDistribution.
-
-	aRewardManager := ProbablisiticEventsManager new.
-	zeroReward := FuelDecreaseReward of: 0.
-	zeroRewardProbabilisticEvent := ProbabilisticEvent
-		                                for: zeroReward
-		                                with: aProbabilityOfOne.
-	aRewardManager add: zeroRewardProbabilisticEvent.
-
-	aCardManager := ProbablisiticEventsManager new.
-	anSkipCard := SkipCard new.
-	aNullCard := NullCard new.
-	anSkipCardProbabilisticEvent := ProbabilisticEvent
-		                                for: anSkipCard
-		                                with: aProbabilityOfOne.
-	aCardManager add: anSkipCardProbabilisticEvent.
-
-	someShips := OrderedCollection new.
-	someDices := OrderedCollection new.
-	someDices add: aLoadedDice.
-	someShips add: aBlueShip.
-	someShips add: aBlackShip.
-	aGameBuilder := GameBuilder new.
-
-	aGameBuilder setShips: someShips.
-	aGameBuilder setRewards: aRewardManager.
-	aGameBuilder setBoard: aBoard.
-	aGameBuilder setDices: someDices.
-	aGameBuilder setAvailableCards: aCardManager.
+	aGameBuilder setAvailableCards: aSetCardManagerWithSkipCards .
 
 	aGame := aGameBuilder build.
 

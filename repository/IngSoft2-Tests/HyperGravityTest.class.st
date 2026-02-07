@@ -160,7 +160,7 @@ HyperGravityTest >> testWhenThereIsAHyperGravitySquareWithMagnitudeGreaterThanTh
 
 	aWormHole := WormHole between: 1 and: 2.
 
-	aDice := Dice with: twoSides.
+	aDice := Dice initializeWith: twoSides.
 
 	aDistributionManager := ProbablisiticEventsManager new.
 	aHyperGravitySquare := HyperGravitySquare between: 10 and: 12.

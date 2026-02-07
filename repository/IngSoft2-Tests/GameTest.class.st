@@ -340,10 +340,10 @@ GameTest >> testWhenAShipTakesAHyperJumpThenItsMovesAccordingly [
 
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
-	aParsecJumpOfFive := Parsec with: 5.
-	otherParsecJumpOfFive := Parsec with: 5.
-	aParsecJumpOfSix := Parsec with: 6.
-	anotherParsecJumpOfFive := Parsec with: 5.
+	aParsecJumpOfFive := Parsec initializeWith: 5.
+	otherParsecJumpOfFive := Parsec initializeWith: 5.
+	aParsecJumpOfSix := Parsec initializeWith: 6.
+	anotherParsecJumpOfFive := Parsec initializeWith: 5.
 	someParsecs := OrderedCollection new.
 	someParsecs add: aParsecJumpOfFive.
 	someParsecs add: otherParsecJumpOfFive.
@@ -420,7 +420,7 @@ GameTest >> testWhenTheGameIsCreatedWithOneDiceThenAllTheShipsFuelEqualsToTheMax
 
 	aWormHole := WormHole between: 1 and: 2.
 
-	aTwoSidedDice := Dice with: twoSides.
+	aTwoSidedDice := Dice initializeWith: twoSides.
 
 	aDistributionManager add: aPlainSquareProbabilisticEvent.
 	aDistribution := aDistributionManager generateFor: fiveSquares.
@@ -453,8 +453,8 @@ GameTest >> testWhenTheGameIsCreatedWithTwoDicesThenAllTheShipsFuelEqualsToTheMa
 
 	aWormHole := WormHole between: 1 and: 2.
 
-	aTwoSidedDice := Dice with: twoSides.
-	aFourSidedDice := Dice with: fourSides.
+	aTwoSidedDice := Dice initializeWith: twoSides.
+	aFourSidedDice := Dice initializeWith: fourSides.
 
 	aDistributionManager add: aPlainSquareProbabilisticEvent.
 	aDistribution := aDistributionManager generateFor: fiveSquares.
@@ -577,7 +577,7 @@ GameTest >> testWhenThereIsLessThanOneLapThenTheGameIsInvalid [
 	zeroLaps := 0.
 
 	aWormHole := WormHole between: 1 and: 2.
-	aDice := Dice with: twoSides.
+	aDice := Dice initializeWith: twoSides.
 
 	aDistributionManager add: aPlainSquareProbabilisticEvent.
 	aDistribution := aDistributionManager generateFor: fiveSquares.

@@ -12,18 +12,18 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
+{ #category : 'creation' }
+Dice class >> initializeWith: numberOfSides [
+
+	self numberOfSidesGreaterThanTwo: numberOfSides.
+	^ self new initializeWith: numberOfSides
+]
+
 { #category : 'validation' }
 Dice class >> numberOfSidesGreaterThanTwo: numberOfSides [
 
 	numberOfSides < 2 ifTrue: [
 		Error signal: 'Dice must have at least two sides.' ]
-]
-
-{ #category : 'creation' }
-Dice class >> with: numberOfSides [
-
-	self numberOfSidesGreaterThanTwo: numberOfSides.
-	^ self new initializeWith: numberOfSides
 ]
 
 { #category : 'initialization' }

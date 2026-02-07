@@ -14,7 +14,9 @@ Class {
 		'anAllyCard',
 		'anAllyCardProbabilisticEvent',
 		'someShips',
-		'aGameBuilder'
+		'aGameBuilder',
+		'aDistributionManager',
+		'aNullCard'
 	],
 	#category : 'IngSoft2-Tests',
 	#package : 'IngSoft2-Tests'
@@ -27,12 +29,12 @@ JailSquareTest >> setUp [
 
 	twentySquares := 20.
 
-
+	aProbabilityOfOne := 1.
 	aWormHole := WormHole between: 17 and: 18.
 	aBlueShip := Ship called: 'BlueShip'.
 	aBlackShip := Ship called: 'BlackShip'.
 
-
+	aDistributionManager := ProbablisiticEventsManager new.
 	aRewardManager := ProbablisiticEventsManager new.
 	zeroReward := FuelDecreaseReward of: 0.
 	zeroRewardRewardProbabilisticEvent := ProbabilisticEvent
@@ -42,6 +44,7 @@ JailSquareTest >> setUp [
 
 	aCardManager := ProbablisiticEventsManager new.
 	anAllyCard := AllyCard new.
+	aNullCard := NullCard new.
 	anAllyCardProbabilisticEvent := ProbabilisticEvent
 		                                for: anAllyCard
 		                                with: aProbabilityOfOne.
@@ -61,20 +64,14 @@ JailSquareTest >> setUp [
 { #category : 'tests' }
 JailSquareTest >> testWhenAShipFallIntoAJailSquareAndDontRollTheMaximumRollThenItCantMoves [
 
-	| sideToRoll aLoadedDice expectedPosition someDices aGame aSetJailSquare aSetJailSquareProbabilisticEvent aBoard aDistributionManager aDistribution |
+	| sideToRoll aLoadedDice expectedPosition someDices aGame aSetJailSquare aSetJailSquareProbabilisticEvent aBoard aDistribution |
 	sideToRoll := #( 2 1 ) asOrderedCollection.
-	twentySquares := 20.
 
-
-	aWormHole := WormHole between: 17 and: 18.
-	aBlueShip := Ship called: 'BlueShip'.
-	aBlackShip := Ship called: 'BlackShip'.
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
 	someDices := OrderedCollection new.
 	someDices add: aLoadedDice.
 
-	aSetJailSquare := JailSquare with: someDices.
-	aProbabilityOfOne := 1.
+	aSetJailSquare := JailSquare initializeWith: someDices.
 	aSetJailSquareProbabilisticEvent := ProbabilisticEvent
 		                                    for: aSetJailSquare
 		                                    with: aProbabilityOfOne.
@@ -90,30 +87,6 @@ JailSquareTest >> testWhenAShipFallIntoAJailSquareAndDontRollTheMaximumRollThenI
 
 	expectedPosition := Position at: 2 in: 1.
 
-
-	aRewardManager := ProbablisiticEventsManager new.
-	zeroReward := FuelDecreaseReward of: 0.
-	zeroRewardRewardProbabilisticEvent := ProbabilisticEvent
-		                                      for: zeroReward
-		                                      with: aProbabilityOfOne.
-	aRewardManager add: zeroRewardRewardProbabilisticEvent.
-
-	aCardManager := ProbablisiticEventsManager new.
-	anAllyCard := AllyCard new.
-	anAllyCardProbabilisticEvent := ProbabilisticEvent
-		                                for: anAllyCard
-		                                with: aProbabilityOfOne.
-	aCardManager add: anAllyCardProbabilisticEvent.
-
-	someShips := OrderedCollection new.
-	someShips add: aBlueShip.
-	someShips add: aBlackShip.
-
-	aGameBuilder := GameBuilder new.
-
-	aGameBuilder setShips: someShips.
-	aGameBuilder setRewards: aRewardManager.
-	aGameBuilder setAvailableCards: aCardManager.
 	aGameBuilder setDices: someDices.
 	aGameBuilder setBoard: aBoard.
 	aGame := aGameBuilder build.
@@ -128,7 +101,7 @@ JailSquareTest >> testWhenAShipFallIntoAJailSquareAndDontRollTheMaximumRollThenI
 { #category : 'tests' }
 JailSquareTest >> testWhenAShipFallIntoAJailSquareAndItsFreeButItHasntFuellEnoughtThenItDoesntMove [
 
-	| sideToRoll aLoadedDice expectedPosition someDices aGame aSetJailSquare aSetJailSquareProbabilisticEvent aDistributionManager aDistribution aBoard aNullCard expectedFuel |
+	| sideToRoll aLoadedDice expectedPosition someDices aGame aSetJailSquare aSetJailSquareProbabilisticEvent aDistribution aBoard expectedFuel |
 	sideToRoll := #( 1 2 2 ) asOrderedCollection.
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
@@ -138,8 +111,7 @@ JailSquareTest >> testWhenAShipFallIntoAJailSquareAndItsFreeButItHasntFuellEnoug
 	someDices := OrderedCollection new.
 	someDices add: aLoadedDice.
 
-	aSetJailSquare := JailSquare with: someDices.
-	aProbabilityOfOne := 1.
+	aSetJailSquare := JailSquare initializeWith: someDices.
 	aSetJailSquareProbabilisticEvent := ProbabilisticEvent
 		                                    for: aSetJailSquare
 		                                    with: aProbabilityOfOne.
@@ -154,31 +126,6 @@ JailSquareTest >> testWhenAShipFallIntoAJailSquareAndItsFreeButItHasntFuellEnoug
 		          distributedBy: aDistribution.
 
 
-
-	aRewardManager := ProbablisiticEventsManager new.
-	zeroReward := FuelDecreaseReward of: 0.
-	zeroRewardRewardProbabilisticEvent := ProbabilisticEvent
-		                                      for: zeroReward
-		                                      with: aProbabilityOfOne.
-	aRewardManager add: zeroRewardRewardProbabilisticEvent.
-
-	aCardManager := ProbablisiticEventsManager new.
-	anAllyCard := AllyCard new.
-	aNullCard := NullCard new.
-	anAllyCardProbabilisticEvent := ProbabilisticEvent
-		                                for: anAllyCard
-		                                with: aProbabilityOfOne.
-	aCardManager add: anAllyCardProbabilisticEvent.
-
-	someShips := OrderedCollection new.
-	someShips add: aBlueShip.
-	someShips add: aBlackShip.
-
-	aGameBuilder := GameBuilder new.
-
-	aGameBuilder setShips: someShips.
-	aGameBuilder setRewards: aRewardManager.
-	aGameBuilder setAvailableCards: aCardManager.
 	aGameBuilder setDices: someDices.
 	aGameBuilder setBoard: aBoard.
 	aGame := aGameBuilder build.
@@ -196,7 +143,7 @@ JailSquareTest >> testWhenAShipFallIntoAJailSquareAndItsFreeButItHasntFuellEnoug
 { #category : 'tests' }
 JailSquareTest >> testWhenAShipFallIntoAJailSquareAndItsFreeButItHasntFuellEnoughtThenItUseItsAllyFuel [
 
-	| sideToRoll aLoadedDice expectedPosition someDices aGame aSetJailSquare aSetJailSquareProbabilisticEvent aDistributionManager aDistribution aBoard aNullCard expectedFuel |
+	| sideToRoll aLoadedDice expectedPosition someDices aGame aSetJailSquare aSetJailSquareProbabilisticEvent aDistribution aBoard expectedFuel |
 	sideToRoll := #( 1 2 2 ) asOrderedCollection.
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
@@ -206,13 +153,11 @@ JailSquareTest >> testWhenAShipFallIntoAJailSquareAndItsFreeButItHasntFuellEnoug
 	someDices := OrderedCollection new.
 	someDices add: aLoadedDice.
 
-	aSetJailSquare := JailSquare with: someDices.
-	aProbabilityOfOne := 1.
+	aSetJailSquare := JailSquare initializeWith: someDices.
 	aSetJailSquareProbabilisticEvent := ProbabilisticEvent
 		                                    for: aSetJailSquare
 		                                    with: aProbabilityOfOne.
 
-	aDistributionManager := ProbablisiticEventsManager new.
 	aDistributionManager add: aSetJailSquareProbabilisticEvent.
 	aDistribution := aDistributionManager generateFor: twentySquares.
 
@@ -221,32 +166,6 @@ JailSquareTest >> testWhenAShipFallIntoAJailSquareAndItsFreeButItHasntFuellEnoug
 		          and: aWormHole
 		          distributedBy: aDistribution.
 
-
-
-	aRewardManager := ProbablisiticEventsManager new.
-	zeroReward := FuelDecreaseReward of: 0.
-	zeroRewardRewardProbabilisticEvent := ProbabilisticEvent
-		                                      for: zeroReward
-		                                      with: aProbabilityOfOne.
-	aRewardManager add: zeroRewardRewardProbabilisticEvent.
-
-	aCardManager := ProbablisiticEventsManager new.
-	anAllyCard := AllyCard new.
-	aNullCard := NullCard new.
-	anAllyCardProbabilisticEvent := ProbabilisticEvent
-		                                for: anAllyCard
-		                                with: aProbabilityOfOne.
-	aCardManager add: anAllyCardProbabilisticEvent.
-
-	someShips := OrderedCollection new.
-	someShips add: aBlueShip.
-	someShips add: aBlackShip.
-
-	aGameBuilder := GameBuilder new.
-
-	aGameBuilder setShips: someShips.
-	aGameBuilder setRewards: aRewardManager.
-	aGameBuilder setAvailableCards: aCardManager.
 	aGameBuilder setDices: someDices.
 	aGameBuilder setBoard: aBoard.
 	aGame := aGameBuilder build.
@@ -270,7 +189,7 @@ JailSquareTest >> testWhenAShipFallIntoAJailSquareAndItsFreeButItHasntFuellEnoug
 { #category : 'tests' }
 JailSquareTest >> testWhenAShipFallIntoAJailSquareAndRollTheMaximumRollThenItCanMoves [
 
-	| sideToRoll aLoadedDice expectedPosition someDices aGame aSetJailSquare aSetJailSquareProbabilisticEvent aDistributionManager aDistribution aBoard |
+	| sideToRoll aLoadedDice expectedPosition someDices aGame aSetJailSquare aSetJailSquareProbabilisticEvent  aDistribution aBoard |
 	sideToRoll := #( 1 1 2 ) asOrderedCollection.
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
@@ -279,8 +198,7 @@ JailSquareTest >> testWhenAShipFallIntoAJailSquareAndRollTheMaximumRollThenItCan
 	someDices := OrderedCollection new.
 	someDices add: aLoadedDice.
 
-	aSetJailSquare := JailSquare with: someDices.
-	aProbabilityOfOne := 1.
+	aSetJailSquare := JailSquare initializeWith: someDices.
 	aSetJailSquareProbabilisticEvent := ProbabilisticEvent
 		                                    for: aSetJailSquare
 		                                    with: aProbabilityOfOne.
@@ -294,31 +212,6 @@ JailSquareTest >> testWhenAShipFallIntoAJailSquareAndRollTheMaximumRollThenItCan
 		          and: aWormHole
 		          distributedBy: aDistribution.
 
-
-
-	aRewardManager := ProbablisiticEventsManager new.
-	zeroReward := FuelDecreaseReward of: 0.
-	zeroRewardRewardProbabilisticEvent := ProbabilisticEvent
-		                                      for: zeroReward
-		                                      with: aProbabilityOfOne.
-	aRewardManager add: zeroRewardRewardProbabilisticEvent.
-
-	aCardManager := ProbablisiticEventsManager new.
-	anAllyCard := AllyCard new.
-	anAllyCardProbabilisticEvent := ProbabilisticEvent
-		                                for: anAllyCard
-		                                with: aProbabilityOfOne.
-	aCardManager add: anAllyCardProbabilisticEvent.
-
-	someShips := OrderedCollection new.
-	someShips add: aBlueShip.
-	someShips add: aBlackShip.
-
-	aGameBuilder := GameBuilder new.
-
-	aGameBuilder setShips: someShips.
-	aGameBuilder setRewards: aRewardManager.
-	aGameBuilder setAvailableCards: aCardManager.
 	aGameBuilder setDices: someDices.
 	aGameBuilder setBoard: aBoard.
 	aGame := aGameBuilder build.

@@ -12,7 +12,7 @@ Class {
 }
 
 { #category : 'instance creation' }
-Unit class >> with: aMeasureOfDistance [
+Unit class >> initializeWith: aMeasureOfDistance [
 
 
 	^ self new initializeWith: aMeasureOfDistance 

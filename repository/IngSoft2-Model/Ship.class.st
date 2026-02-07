@@ -9,7 +9,6 @@ Class {
 		'name',
 		'fuel',
 		'turnsLeftToWait',
-		'gravityPenalty',
 		'cards',
 		'allies',
 		'rollModifier',
@@ -45,9 +44,9 @@ Ship >> amountOfCards [
 ]
 
 { #category : 'penalty' }
-Ship >> applyGravityPenalty: aGravitySquare [
+Ship >> applyGravityPenalty: aGravityPenalty [
 
-	gravityPenalty := aGravitySquare 
+	state := GravityShipState initializeWith: aGravityPenalty
 ]
 
 { #category : 'penalty' }
@@ -59,7 +58,7 @@ Ship >> applyRollModifier: aModifier [
 { #category : 'as yet unclassified' }
 Ship >> beImpeisonedWith: numberToFreedom [
 
-	state := TrappedShipState with: numberToFreedom
+	state := TrappedShipState initializeWith: numberToFreedom
 ]
 
 { #category : 'move' }
@@ -82,14 +81,14 @@ Ship >> canLendFuelFor: fuelNeededToTravel [
 ]
 
 { #category : 'testing' }
-Ship >> canPlay: aRolledNumber [
+Ship >> canPlay [
 
 	| hasToWait |
 	hasToWait := turnsLeftToWait > 0.
 
 	hasToWait ifTrue: [ self reducePenalty ].
 
-	^ hasToWait not and: gravityPenalty <= aRolledNumber
+	^ hasToWait not
 ]
 
 { #category : 'accessing' }
@@ -185,7 +184,6 @@ Ship >> initializeCalled: aName [
 	position := Position at: 0 in: 1.
 	fuel := Fuel with: 0 upTo: 0 in: DoesntHaveFuelState new.
 	turnsLeftToWait := 0.
-	gravityPenalty := 0.
 	cards := OrderedCollection new.
 	rollModifier := 0.
 	allies := OrderedCollection new.
@@ -226,7 +224,7 @@ Ship >> moveTo: aPosition [
 Ship >> movesWith: aRolledNumber on: aBoard in: aGame [
 
 	| adjustedRolledNumber positionBeforeWormHole squaresTraveledWithDice positionAfterWormHole initialPosition positionAfterSquareEffect squaresTraveledWithSquareEffect |
-	(self canPlay: aRolledNumber) ifFalse: [ ^ self ].
+	(self canPlay) ifFalse: [ ^ self ].
 	initialPosition := position.
 
 	adjustedRolledNumber := self adjust: aRolledNumber.
