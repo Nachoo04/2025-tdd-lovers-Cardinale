@@ -13,7 +13,8 @@ Class {
 		'cards',
 		'allies',
 		'rollModifier',
-		'imprisoned'
+		'imprisoned',
+		'state'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -56,9 +57,9 @@ Ship >> applyRollModifier: aModifier [
 ]
 
 { #category : 'as yet unclassified' }
-Ship >> beImpeisoned [
+Ship >> beImpeisonedWith: numberToFreedom [
 
-	imprisoned := true
+	state := TrappedShipState with: numberToFreedom
 ]
 
 { #category : 'move' }
@@ -88,8 +89,7 @@ Ship >> canPlay: aRolledNumber [
 
 	hasToWait ifTrue: [ self reducePenalty ].
 
-	^ (hasToWait not and: gravityPenalty <= aRolledNumber) and:
-		  imprisoned not
+	^ hasToWait not and: gravityPenalty <= aRolledNumber
 ]
 
 { #category : 'accessing' }
@@ -190,7 +190,7 @@ Ship >> initializeCalled: aName [
 	rollModifier := 0.
 	allies := OrderedCollection new.
 	allies add: NullShip new.
-	imprisoned := false
+	state := NormalShipState new.
 ]
 
 { #category : 'penalty' }
@@ -222,36 +222,8 @@ Ship >> moveTo: aPosition [
 	position := aPosition
 ]
 
-{ #category : 'accessing' }
-Ship >> name [
-
-	^ name
-]
-
-{ #category : 'penalty' }
-Ship >> penalizeAndReturnTo: shipInitialPosition [
-
-	self moveTo: shipInitialPosition.
-	self losesTwoTurns.
-	self restoreFuel.
-	allies first losesTwoTurns.
-	allies first restoreFuel
-]
-
-{ #category : 'move' }
-Ship >> performMovementFrom: anInitialPosition to: aFinalPosition on: aBoard [
-	
-	| squaresTraveled |
-	squaresTraveled := aBoard
-		                   calculateDistanceBetween: position
-		                   and: aFinalPosition.
-
-	self moveTo: aFinalPosition.
-	self consumeFuel: squaresTraveled from: anInitialPosition
-]
-
-{ #category : 'move' }
-Ship >> playTurnWith: aRolledNumber on: aBoard in: aGame [
+{ #category : 'as yet unclassified' }
+Ship >> movesWith: aRolledNumber on: aBoard in: aGame [
 
 	| adjustedRolledNumber positionBeforeWormHole squaresTraveledWithDice positionAfterWormHole initialPosition positionAfterSquareEffect squaresTraveledWithSquareEffect |
 	(self canPlay: aRolledNumber) ifFalse: [ ^ self ].
@@ -286,6 +258,40 @@ Ship >> playTurnWith: aRolledNumber on: aBoard in: aGame [
 		from: initialPosition
 ]
 
+{ #category : 'accessing' }
+Ship >> name [
+
+	^ name
+]
+
+{ #category : 'penalty' }
+Ship >> penalizeAndReturnTo: shipInitialPosition [
+
+	self moveTo: shipInitialPosition.
+	self losesTwoTurns.
+	self restoreFuel.
+	allies first losesTwoTurns.
+	allies first restoreFuel
+]
+
+{ #category : 'move' }
+Ship >> performMovementFrom: anInitialPosition to: aFinalPosition on: aBoard [
+	
+	| squaresTraveled |
+	squaresTraveled := aBoard
+		                   calculateDistanceBetween: position
+		                   and: aFinalPosition.
+
+	self moveTo: aFinalPosition.
+	self consumeFuel: squaresTraveled from: anInitialPosition
+]
+
+{ #category : 'move' }
+Ship >> playTurnWith: aRolledNumber on: aBoard in: aGame [
+
+	state move: self with: aRolledNumber on: aBoard in: aGame 
+]
+
 { #category : 'penalty' }
 Ship >> reducePenalty [
 
@@ -311,6 +317,12 @@ Ship >> removeAlly: anAlly [
 Ship >> restoreFuel [
 
 	fuel := fuel restore.
+]
+
+{ #category : 'accessing' }
+Ship >> state: actualState [
+
+	state := actualState
 ]
 
 { #category : 'as yet unclassified' }
