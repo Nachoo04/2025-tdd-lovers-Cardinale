@@ -120,3 +120,29 @@ ReverseCardTest >> testWhenAReverseCardIsPlayedThenTheRoundDirectionChange [
 	self assert: (aBlackShip currentPositionEquals: expectedPosition).
 	self assert: (aBlackShip fuelEquals: expectedFuel)
 ]
+
+{ #category : 'tests' }
+ReverseCardTest >> testWhenAReverseCardIsPlayedTwiseThenTheRoundDirectionReturnToHisNormalDirection [
+
+	| expectedPosition expectedFuel aGame |
+	expectedPosition := Position at: 1 in: 1.
+	expectedFuel := Fuel with: 1 upTo: 2 in: HasFuelState new.
+
+	aGameBuilder setAvailableCards: aSetCardManagerWithSkipCards.
+
+	aGame := aGameBuilder build.
+
+	aGame
+		play: aReverseCard
+		by: aBlueShip
+		affecting: aNullCard
+		and: aBlackShip.
+	aGame
+		play: aReverseCard
+		by: aBlackShip 
+		affecting: aNullCard
+		and: aBlueShip.
+	aGame nextTurnPlay.
+	self assert: (aBlueShip currentPositionEquals: expectedPosition).
+	self assert: (aBlueShip fuelEquals: expectedFuel)
+]

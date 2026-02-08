@@ -260,10 +260,13 @@ Game >> nextTurnPlay [
 
 	| shipToMove rolledNumber |
 	self canStillPlay.
-	shipToMove := ships removeFirst.
+
+	shipToMove := turnSequencer nextShip.
 	rolledNumber := turnMode executeOn: self.
 	self move: shipToMove with: rolledNumber.
-	ships add: shipToMove.
+	turnSequencer queue: shipToMove.
+
+
 	self changeTurnModeTo: NormalTurnMode new
 ]
 
@@ -311,6 +314,12 @@ Game >> remove: anAffectedCard playedBy: aShip [
 	self validateIsActive: anAffectedCard.
 	activePermanentCards remove: anAffectedCard.
 	anAffectedCard cancelEffectIn: self
+]
+
+{ #category : 'as yet unclassified' }
+Game >> reverseRound [
+
+	turnSequencer reverseOrder.
 ]
 
 { #category : 'action' }
