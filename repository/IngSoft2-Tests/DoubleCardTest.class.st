@@ -100,6 +100,16 @@ DoubleCardTest >> setUp [
 	aNullCard := NullCard new
 ]
 
+{ #category : 'asserting' }
+DoubleCardTest >> should: anErrorBlock raise: anErrorClass withMessageText: anErrorMessage [
+
+	self
+		should: anErrorBlock
+		raise: anErrorClass
+		withExceptionDo: [ :error |
+		self assert: error messageText equals: anErrorMessage ]
+]
+
 { #category : 'tests' }
 DoubleCardTest >> testWhenADoubleCardIsPlayedTheShipAffectedMovesCorrectly [
 
@@ -164,4 +174,24 @@ DoubleCardTest >> testWhenAShipPlaysADoubleCardThenItIsNoLongerInItsHand [
 		and: aBlackShip.
 
 	self assert: aBlueShip cards equals: expectedCards
+]
+
+{ #category : 'tests' }
+DoubleCardTest >> testWhenAShipTriesToPlayAnAllyCardThatIsNotInItsHandThenInvalid [
+
+	| aGame aSetCardManager |
+	aSetCardManager := SetProbablisiticEventsManager new.
+	aSetCardManager add: anAccelerationCardProbabilisticEvent.
+	aGameBuilder setAvailableCards: aSetCardManager.
+	aGame := aGameBuilder build.
+
+	self
+		should: [
+				aGame
+					play: anDoubleCard
+					by: aBlueShip
+					affecting: aNullCard
+					and: aBlackShip ]
+		raise: Error
+		withMessageText: 'The ship does not have that card on its hand.'
 ]

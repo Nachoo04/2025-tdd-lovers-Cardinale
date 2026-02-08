@@ -9,6 +9,8 @@ Class {
 FreedomCard >> applyEffectPlayedBy: aPlayingShip affecting: anAffectedCard and: anAffectedShip in: aGame [
 
 	aPlayingShip free.
+	aGame lastPlayedCard: self.
+
 ]
 
 { #category : 'playing' }

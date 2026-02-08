@@ -8,7 +8,9 @@ Class {
 { #category : 'playing' }
 DoubleCard >> applyEffectPlayedBy: aPlayingShip affecting: anAffectedCard and: anAffectedShip in: aGame [
 
-	aGame changeTurnModeTo: DoubleTurnMode new
+	aGame changeTurnModeTo: DoubleTurnMode new.
+	aGame lastPlayedCard: self.
+
 ]
 
 { #category : 'playing' }

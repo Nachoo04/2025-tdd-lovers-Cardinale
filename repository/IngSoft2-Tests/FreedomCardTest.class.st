@@ -170,6 +170,43 @@ FreedomCardTest >> testWhenAShipPlaysAFreedomCardThenItIsNoLongerInItsHand [
 ]
 
 { #category : 'tests' }
+FreedomCardTest >> testWhenAShipTriesToPlayAnAllyCardThatIsNotInItsHandThenInvalid [
+
+	| aGame aSetCardManager aSetJailSquare aSetJailSquareProbabilisticEvent aDistributionManager aDistribution aBoard |
+	aSetCardManager := SetProbablisiticEventsManager new.
+	aSetCardManager add: anAccelerationCardProbabilisticEvent.
+
+	aSetJailSquare := JailSquare with: someDices.
+	aSetJailSquareProbabilisticEvent := ProbabilisticEvent
+		                                    for: aSetJailSquare
+		                                    with: aProbabilityOfOne.
+
+	aDistributionManager := ProbablisiticEventsManager new.
+	aDistributionManager add: aSetJailSquareProbabilisticEvent.
+	aDistribution := aDistributionManager generateFor: twentySquares.
+
+	aBoard := Board
+		          with: twentySquares
+		          and: aWormHole
+		          distributedBy: aDistribution.
+
+	aGameBuilder setBoard: aBoard.
+
+	aGameBuilder setAvailableCards: aSetCardManager.
+	aGame := aGameBuilder build.
+
+	self
+		should: [
+				aGame
+					play: aFreedomCard
+					by: aBlueShip
+					affecting: aNullCard
+					and: aBlackShip ]
+		raise: Error
+		withMessageText: 'The ship does not have that card on its hand.'
+]
+
+{ #category : 'tests' }
 FreedomCardTest >> testWhenAShipTryToUseAFreedomCardWhenItsFreeThenItCantDoIt [
 
 	| aGame aSetJailSquare aSetJailSquareProbabilisticEvent aBoard aDistributionManager aDistribution aSetCardManager |

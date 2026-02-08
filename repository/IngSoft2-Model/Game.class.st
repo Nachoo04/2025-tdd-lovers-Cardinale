@@ -17,7 +17,9 @@ Class {
 		'lastPlayedCard',
 		'activePermanentCards',
 		'raceGoal',
-		'turnMode'
+		'turnMode',
+		'counterRound',
+		'turnSequencer'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -188,6 +190,7 @@ Game >> initializeWith: aBoard for: someLaps and: someShips and: someDices and: 
 	raceGoal := Position at: 0 in: someLaps.
 	activePermanentCards := OrderedCollection new.
 	turnMode := NormalTurnMode new.
+	turnSequencer := TurnSequencer with: someShips 
 ]
 
 { #category : 'action' }
