@@ -12,13 +12,6 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'creation' }
-Dice class >> initializeWith: numberOfSides [
-
-	self numberOfSidesGreaterThanTwo: numberOfSides.
-	^ self new initializeWith: numberOfSides
-]
-
 { #category : 'validation' }
 Dice class >> numberOfSidesGreaterThanTwo: numberOfSides [
 
@@ -26,11 +19,11 @@ Dice class >> numberOfSidesGreaterThanTwo: numberOfSides [
 		Error signal: 'Dice must have at least two sides.' ]
 ]
 
-{ #category : 'initialization' }
-Dice >> initializeWith: sides [
+{ #category : 'creation' }
+Dice class >> with: numberOfSides [
 
-	numberOfSides := sides.
-	initialSide := 1
+	self numberOfSidesGreaterThanTwo: numberOfSides.
+	^ self new with: numberOfSides
 ]
 
 { #category : 'functions' }
@@ -43,4 +36,11 @@ Dice >> roll [
 Dice >> rollMaximum [
 
 	^ numberOfSides
+]
+
+{ #category : 'initialization' }
+Dice >> with: sides [
+
+	numberOfSides := sides.
+	initialSide := 1
 ]

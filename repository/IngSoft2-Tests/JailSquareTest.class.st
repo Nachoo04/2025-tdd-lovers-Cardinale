@@ -71,7 +71,7 @@ JailSquareTest >> testWhenAShipFallIntoAJailSquareAndDontRollTheMaximumRollThenI
 	someDices := OrderedCollection new.
 	someDices add: aLoadedDice.
 
-	aSetJailSquare := JailSquare initializeWith: someDices.
+	aSetJailSquare := JailSquare with: someDices.
 	aSetJailSquareProbabilisticEvent := ProbabilisticEvent
 		                                    for: aSetJailSquare
 		                                    with: aProbabilityOfOne.
@@ -111,7 +111,7 @@ JailSquareTest >> testWhenAShipFallIntoAJailSquareAndItsFreeButItHasntFuellEnoug
 	someDices := OrderedCollection new.
 	someDices add: aLoadedDice.
 
-	aSetJailSquare := JailSquare initializeWith: someDices.
+	aSetJailSquare := JailSquare with: someDices.
 	aSetJailSquareProbabilisticEvent := ProbabilisticEvent
 		                                    for: aSetJailSquare
 		                                    with: aProbabilityOfOne.
@@ -153,7 +153,7 @@ JailSquareTest >> testWhenAShipFallIntoAJailSquareAndItsFreeButItHasntFuellEnoug
 	someDices := OrderedCollection new.
 	someDices add: aLoadedDice.
 
-	aSetJailSquare := JailSquare initializeWith: someDices.
+	aSetJailSquare := JailSquare with: someDices.
 	aSetJailSquareProbabilisticEvent := ProbabilisticEvent
 		                                    for: aSetJailSquare
 		                                    with: aProbabilityOfOne.
@@ -198,7 +198,7 @@ JailSquareTest >> testWhenAShipFallIntoAJailSquareAndRollTheMaximumRollThenItCan
 	someDices := OrderedCollection new.
 	someDices add: aLoadedDice.
 
-	aSetJailSquare := JailSquare initializeWith: someDices.
+	aSetJailSquare := JailSquare with: someDices.
 	aSetJailSquareProbabilisticEvent := ProbabilisticEvent
 		                                    for: aSetJailSquare
 		                                    with: aProbabilityOfOne.

@@ -81,10 +81,10 @@ HyperJumpTest >> testWhenASecondShipTakesAHyperJumpSquareThatWasTakenBeforeThenI
 
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
 	
-	aParsecJumpOfFive := Parsec initializeWith: 5.
-	aParsecJumpOfFour := Parsec initializeWith: 4.
-	aParsecJumpOfSix := Parsec initializeWith: 6.
-	anotherParsecJumpOfFive := Parsec initializeWith: 5.	
+	aParsecJumpOfFive := Parsec with: 5.
+	aParsecJumpOfFour := Parsec with: 4.
+	aParsecJumpOfSix := Parsec with: 6.
+	anotherParsecJumpOfFive := Parsec with: 5.	
 	someParsecs := OrderedCollection new.
 	someParsecs add: aParsecJumpOfFive.
 	someParsecs add: aParsecJumpOfFour.
@@ -128,9 +128,9 @@ HyperJumpTest >> testWhenAShipTakesAHyperJumpSquareAndAfterTheJumpItGoesThroughT
 	aWormHole := WormHole between: 3 and: 4.
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
-	aParsecJumpOfFive := Parsec initializeWith: 5.
-	aParsecJumpOfThree := Parsec initializeWith: 3.
-	aParsecJumpOfTwo := Parsec initializeWith: 2.
+	aParsecJumpOfFive := Parsec with: 5.
+	aParsecJumpOfThree := Parsec with: 3.
+	aParsecJumpOfTwo := Parsec with: 2.
 	someParsecs := OrderedCollection new.
 	someParsecs add: aParsecJumpOfFive.
 	someParsecs add: aParsecJumpOfTwo.
@@ -176,9 +176,9 @@ HyperJumpTest >> testWhenAShipTakesAHyperJumpSquareAndIncrementALapThenItsPositi
 	aWormHole := WormHole between: 3 and: 4.
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
-	aParsecJumpOfFive := Parsec initializeWith: 5.
-	aParsecJumpOfThree := Parsec initializeWith: 3.
-	aParsecJumpOfTwo := Parsec initializeWith: 2.
+	aParsecJumpOfFive := Parsec with: 5.
+	aParsecJumpOfThree := Parsec with: 3.
+	aParsecJumpOfTwo := Parsec with: 2.
 	someParsecs := OrderedCollection new.
 	someParsecs add: aParsecJumpOfFive.
 	someParsecs add: aParsecJumpOfTwo.
@@ -223,10 +223,10 @@ HyperJumpTest >> testWhenAShipTakesAHyperJumpSquareThenItsFuelIsConsumedCorrectl
 
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
-	aParsecJumpOfFive := Parsec initializeWith: 5.
-	aParsecJumpOfFour := Parsec initializeWith: 4.
-	aParsecJumpOfSix := Parsec initializeWith: 6.
-	anotherParsecJumpOfFive := Parsec initializeWith: 5.
+	aParsecJumpOfFive := Parsec with: 5.
+	aParsecJumpOfFour := Parsec with: 4.
+	aParsecJumpOfSix := Parsec with: 6.
+	anotherParsecJumpOfFive := Parsec with: 5.
 	someParsecs := OrderedCollection new.
 	someParsecs add: aParsecJumpOfFive.
 	someParsecs add: aParsecJumpOfFour.
@@ -273,10 +273,10 @@ HyperJumpTest >> testWhenAShipTakesAHyperJumpThenItsMovesAccordingly [
 
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
-	aParsecJumpOfFive := Parsec initializeWith: 5.
-	aParsecJumpOfFour := Parsec initializeWith: 4.
-	aParsecJumpOfSix := Parsec initializeWith: 6.
-	anotherParsecJumpOfFive := Parsec initializeWith: 5.
+	aParsecJumpOfFive := Parsec with: 5.
+	aParsecJumpOfFour := Parsec with: 4.
+	aParsecJumpOfSix := Parsec with: 6.
+	anotherParsecJumpOfFive := Parsec with: 5.
 	someParsecs := OrderedCollection new.
 	someParsecs add: aParsecJumpOfFive.
 	someParsecs add: aParsecJumpOfFour.
@@ -324,10 +324,10 @@ HyperJumpTest >> testWhenAllTheParsecsHaveBeenTakenThenTheNextShipTakesTheFirstP
 	aPinkShip := Ship called: 'PinkShip'.
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
-	aParsecJumpOfFive := Parsec initializeWith: 5.
-	aParsecJumpOfFour := Parsec initializeWith: 4.
-	aParsecJumpOfSix := Parsec initializeWith: 6.
-	anotherParsecJumpOfFive := Parsec initializeWith: 5.
+	aParsecJumpOfFive := Parsec with: 5.
+	aParsecJumpOfFour := Parsec with: 4.
+	aParsecJumpOfSix := Parsec with: 6.
+	anotherParsecJumpOfFive := Parsec with: 5.
 	someParsecs := OrderedCollection new.
 	someParsecs add: aParsecJumpOfFive.
 	someParsecs add: aParsecJumpOfFour.
@@ -380,10 +380,10 @@ HyperJumpTest >> testWhenTheRatioIsTwoAndAShipTakesAHyperJumpThenItsMovesCorrect
 
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
 
-	aParsecJumpOfTwo := Parsec initializeWith: 2.
-	anotherParsecJumpOfTwo := Parsec initializeWith: 2.
-	aParsecJumpOfThree := Parsec initializeWith: 3.
-	anotherParsecJumpOfThree := Parsec initializeWith: 3.
+	aParsecJumpOfTwo := Parsec with: 2.
+	anotherParsecJumpOfTwo := Parsec with: 2.
+	aParsecJumpOfThree := Parsec with: 3.
+	anotherParsecJumpOfThree := Parsec with: 3.
 	someParsecs := OrderedCollection new.
 	someParsecs add: aParsecJumpOfTwo.
 	someParsecs add: anotherParsecJumpOfTwo.
@@ -430,10 +430,10 @@ HyperJumpTest >> testWhenTheRatioIsTwoAndHasLightYearsThenItsMovesCorrectly [
 
 	aLoadedDice := LoadedDice toRoll: sideToRoll.
 	
-	aLightYearJump := LightYear initializeWith: 6.
-	aParsecJump := Parsec initializeWith: 2.
-	anotherLightYearJump := LightYear initializeWith: 9.
-	anotherParsecJump := Parsec initializeWith: 3.
+	aLightYearJump := LightYear with: 6.
+	aParsecJump := Parsec with: 2.
+	anotherLightYearJump := LightYear with: 9.
+	anotherParsecJump := Parsec with: 3.
 	
 	someParsecs := OrderedCollection new.
 	

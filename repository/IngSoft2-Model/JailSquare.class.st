@@ -9,11 +9,11 @@ Class {
 }
 
 { #category : 'instance creation' }
-JailSquare class >> initializeWith: someDices [
+JailSquare class >> with: someDices [
 
 	| maximumRoll |
 	maximumRoll := someDices sum: [ :aDice | aDice rollMaximum ].
-	^ self new initializeWith: maximumRoll
+	^ self new with: maximumRoll
 ]
 
 { #category : 'effect' }
@@ -23,8 +23,14 @@ JailSquare >> applyOn: aShip and: aPosition in: aGame [
 	^ aPosition
 ]
 
+{ #category : 'effect' }
+JailSquare >> repeatEffectFor: aShip on: aPosition in: aGame [
+
+	^ self applyOn: aShip and: aPosition in: aGame
+]
+
 { #category : 'instance creation' }
-JailSquare >> initializeWith: maximumRoll [
+JailSquare >> with: maximumRoll [
 
 	numberToFreedom := maximumRoll
 ]

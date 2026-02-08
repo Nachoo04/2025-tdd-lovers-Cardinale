@@ -22,3 +22,9 @@ SkipCard >> bePlayedBy: aPlayingShip affecting: anAffectedCard and: aTargetShip 
 	aPlayingShip remove: self
 	
 ]
+
+{ #category : 'comparing' }
+SkipCard >> compare: aShip and: anotherShip [
+
+	^ false
+]

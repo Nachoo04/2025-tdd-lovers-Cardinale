@@ -17,3 +17,9 @@ FreedomCard >> bePlayedBy: aPlayingShip affecting: anAffectedCard and: anAffecte
 	self applyEffectPlayedBy: aPlayingShip affecting: anAffectedCard and: anAffectedShip in: aGame.
 	aPlayingShip remove: self
 ]
+
+{ #category : 'comparing' }
+FreedomCard >> compare: aShip and: anotherShip [
+
+	^ false
+]

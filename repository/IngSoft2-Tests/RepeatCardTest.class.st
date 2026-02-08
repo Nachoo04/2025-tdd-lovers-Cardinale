@@ -197,6 +197,47 @@ RepeatCardTest >> testWhenAShipPlaysARepeatCardAndTheLastEffectIsACardEffectThen
 ]
 
 { #category : 'tests' }
+RepeatCardTest >> testWhenAShipPlaysARepeatCardAndTheLastEffectIsAJailEfectThenItIsAppliedCorrectly [
+
+	| sidesToRoll aLoadedDice someDices aDistributionManager aDistribution aBoard aGame expectedPosition expectedFuel aJailSquare aJailSquareProbabilisticEvent |
+	sidesToRoll := #( 2 2 10 ) asOrderedCollection.
+	aLoadedDice := LoadedDice toRoll: sidesToRoll.
+	someDices := OrderedCollection new.
+	someDices add: aLoadedDice.
+
+	aDistributionManager := ProbablisiticEventsManager new.
+	aJailSquare := JailSquare with: someDices.
+	aJailSquareProbabilisticEvent := ProbabilisticEvent
+		                                     for: aJailSquare
+		                                     with: aProbabilityOfOne.
+	aDistributionManager add: aJailSquareProbabilisticEvent.
+	aDistribution := aDistributionManager generateFor: twentySquares.
+
+	aBoard := Board
+		          with: twentySquares
+		          and: aWormHole
+		          distributedBy: aDistribution.
+
+	aGameBuilder setBoard: aBoard.
+	aGameBuilder setDices: someDices.
+	aGame := aGameBuilder build.
+
+	expectedPosition := Position at: 0 in: 1.
+	expectedFuel := Fuel with: 20 upTo: 20 in: HasFuelState new.
+
+	aGame nextTurnPlay.
+	aGame
+		play: aRepeatCard
+		by: aBlueShip
+		affecting: aNullCard
+		and: aBlackShip.
+	aGame nextTurnPlay.
+
+	self assert: (aBlackShip currentPositionEquals: expectedPosition).
+	self assert: (aBlackShip fuelEquals: expectedFuel)
+]
+
+{ #category : 'tests' }
 RepeatCardTest >> testWhenAShipPlaysARepeatCardAndTheLastEffectIsAMoonWalkEfectThenItIsAppliedCorrectly [
 
 	| sidesToRoll aLoadedDice someDices aDistributionManager aMoonWalkSquare aMoonWalkSquareProbabilisticEvent aDistribution aBoard aGame expectedPosition expectedFuel |
@@ -375,9 +416,9 @@ RepeatCardTest >> testWhenAShipPlaysARepeatCardAndTheLastEffectIsAnHyperJumpEfec
 	someDices add: aLoadedDice.
 
 	aRatio := 1.
-	aParsecJumpOfFive := Parsec initializeWith: 5.
-	anotherParsecJumpOfFive := Parsec initializeWith: 5.
-	aParsecJumpOfTen := Parsec initializeWith: 10.
+	aParsecJumpOfFive := Parsec with: 5.
+	anotherParsecJumpOfFive := Parsec with: 5.
+	aParsecJumpOfTen := Parsec with: 10.
 	someParsecs := OrderedCollection new.
 	someParsecs add: aParsecJumpOfFive.
 	someParsecs add: anotherParsecJumpOfFive.

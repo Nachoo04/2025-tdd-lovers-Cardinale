@@ -21,3 +21,9 @@ DoubleCard >> bePlayedBy: aPlayingShip affecting: anAffectedCard and: anAffected
 		in: aGame.
 	aPlayingShip remove: self
 ]
+
+{ #category : 'comparing' }
+DoubleCard >> compare: aShip and: anotherShip [
+
+	^ false
+]

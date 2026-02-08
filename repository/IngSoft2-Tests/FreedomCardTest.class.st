@@ -97,7 +97,7 @@ FreedomCardTest >> testWhenAShipFallIntoAJailSquareAndUseAFreedomCardThenItCanMo
 
 	| expectedPosition aGame aSetJailSquare aSetJailSquareProbabilisticEvent aBoard aDistributionManager aDistribution |
 
-	aSetJailSquare := JailSquare initializeWith: someDices.
+	aSetJailSquare := JailSquare with: someDices.
 	aSetJailSquareProbabilisticEvent := ProbabilisticEvent
 		                                    for: aSetJailSquare
 		                                    with: aProbabilityOfOne.
@@ -139,7 +139,7 @@ FreedomCardTest >> testWhenAShipPlaysAFreedomCardThenItIsNoLongerInItsHand [
 	aSetCardManager add: anAccelerationCardProbabilisticEvent.
 	
 	
-	aSetJailSquare := JailSquare initializeWith: someDices.
+	aSetJailSquare := JailSquare with: someDices.
 	aSetJailSquareProbabilisticEvent := ProbabilisticEvent
 		                                    for: aSetJailSquare
 		                                    with: aProbabilityOfOne.
@@ -178,7 +178,7 @@ FreedomCardTest >> testWhenAShipTryToUseAFreedomCardWhenItsFreeThenItCantDoIt [
 	aSetCardManager add: aFreedomCardProbabilisticEvent.
 	aSetCardManager add: anAccelerationCardProbabilisticEvent.
 	
-	aSetJailSquare := JailSquare initializeWith: someDices.
+	aSetJailSquare := JailSquare with: someDices.
 	aSetJailSquareProbabilisticEvent := ProbabilisticEvent
 		                                    for: aSetJailSquare
 		                                    with: aProbabilityOfOne.
@@ -216,7 +216,7 @@ FreedomCardTest >> testWhenAShipUseAFreedomCardWhenIsNotItsTurnThenWhenItNeedToP
 
 	| expectedPosition aGame aSetJailSquare aSetJailSquareProbabilisticEvent aBoard aDistributionManager aDistribution |
 	
-	aSetJailSquare := JailSquare initializeWith: someDices.
+	aSetJailSquare := JailSquare with: someDices.
 	aSetJailSquareProbabilisticEvent := ProbabilisticEvent
 		                                    for: aSetJailSquare
 		                                    with: aProbabilityOfOne.

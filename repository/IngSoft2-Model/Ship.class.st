@@ -46,7 +46,7 @@ Ship >> amountOfCards [
 { #category : 'penalty' }
 Ship >> applyGravityPenalty: aGravityPenalty [
 
-	state := GravityShipState initializeWith: aGravityPenalty
+	state := GravityShipState with: aGravityPenalty
 ]
 
 { #category : 'penalty' }
@@ -58,7 +58,7 @@ Ship >> applyRollModifier: aModifier [
 { #category : 'as yet unclassified' }
 Ship >> beImpeisonedWith: numberToFreedom [
 
-	state := TrappedShipState initializeWith: numberToFreedom
+	state := TrappedShipState with: numberToFreedom
 ]
 
 { #category : 'move' }
