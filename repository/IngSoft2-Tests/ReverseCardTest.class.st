@@ -1,5 +1,5 @@
 Class {
-	#name : 'SkipCardTest',
+	#name : 'ReverseCardTest',
 	#superclass : 'TestCase',
 	#instVars : [
 		'twentySquares',
@@ -19,22 +19,22 @@ Class {
 		'aRewardManager',
 		'zeroReward',
 		'zeroRewardRewardProbabilisticEvent',
-		'anSkipCard',
-		'anSkipCardProbabilisticEvent',
 		'aSetCardManagerWithSkipCards',
+		'aReverseCard',
+		'aReverseCardProbabilisticEvent',
+		'anAccelerationCard',
+		'anAccelerationCardProbabilisticEvent',
 		'someShips',
 		'someDices',
 		'aGameBuilder',
-		'aNullCard',
-		'anAccelerationCard',
-		'anAccelerationCardProbabilisticEvent'
+		'aNullCard'
 	],
 	#category : 'IngSoft2-Tests',
 	#package : 'IngSoft2-Tests'
 }
 
 { #category : 'running' }
-SkipCardTest >> setUp [
+ReverseCardTest >> setUp [
 
 	super setUp.
 
@@ -73,11 +73,11 @@ SkipCardTest >> setUp [
 
 	aSetCardManagerWithSkipCards := ProbablisiticEventsManager new.
 
-	anSkipCard := SkipCard new.
-	anSkipCardProbabilisticEvent := ProbabilisticEvent
-		                                for: anSkipCard
+	aReverseCard := ReverseCard new.
+	aReverseCardProbabilisticEvent := ProbabilisticEvent
+		                                for: aReverseCard
 		                                with: aProbabilityOfOne.
-	aSetCardManagerWithSkipCards add: anSkipCardProbabilisticEvent.
+	aSetCardManagerWithSkipCards add: aReverseCardProbabilisticEvent.
 
 	anAccelerationCard := AccelerationCard new.
 	anAccelerationCardProbabilisticEvent := ProbabilisticEvent
@@ -100,98 +100,48 @@ SkipCardTest >> setUp [
 	aNullCard := NullCard new
 ]
 
-{ #category : 'asserting' }
-SkipCardTest >> should: anErrorBlock raise: anErrorClass withMessageText: anErrorMessage [
-
-	self
-		should: anErrorBlock
-		raise: anErrorClass
-		withExceptionDo: [ :error |
-		self assert: error messageText equals: anErrorMessage ]
-]
-
 { #category : 'tests' }
-SkipCardTest >> testWhenAShipPlaysAnSkipCardThenItIsNoLongerInItsHand [
-
-	| aGame aSetCardManager |
-	aSetCardManager := SetProbablisiticEventsManager new.
-	aSetCardManager add: anSkipCardProbabilisticEvent.
-	aSetCardManager add: anAccelerationCardProbabilisticEvent.
-
-	aGameBuilder setAvailableCards: aSetCardManager.
-	aGame := aGameBuilder build.
-
-	expectedCards add: anAccelerationCard.
-
-	aGame
-		play: anSkipCard
-		by: aBlueShip
-		affecting: aNullCard
-		and: aBlackShip.
-
-	self assert: aBlueShip cards equals: expectedCards
-]
-
-{ #category : 'tests' }
-SkipCardTest >> testWhenAShipTriesToPlayAnAllyCardThatIsNotInItsHandThenInvalid [
-
-	| aGame aSetCardManager |
-	aSetCardManager := SetProbablisiticEventsManager new.
-	aSetCardManager add: anAccelerationCardProbabilisticEvent.
-	aGameBuilder setAvailableCards: aSetCardManager.
-	aGame := aGameBuilder build.
-
-	self
-		should: [
-				aGame
-					play: anSkipCard 
-					by: aBlueShip
-					affecting: aNullCard
-					and: aBlackShip ]
-		raise: Error
-		withMessageText: 'The ship does not have that card on its hand.'
-]
-
-{ #category : 'tests' }
-SkipCardTest >> testWhenASkipCardIsPlayedThenTheActualShipIsSkipped [
-
-	|  expectedPosition expectedFuel  aGame |
-	expectedPosition := Position at: 0 in: 1.
-	expectedFuel := Fuel with: 2 upTo: 2 in: HasFuelState new.
-
-	aGameBuilder setAvailableCards: aSetCardManagerWithSkipCards .
-
-	aGame := aGameBuilder build.
-
-	aGame
-		play: anSkipCard
-		by: aBlueShip
-		affecting: aNullCard
-		and: aBlackShip.
-	aGame nextTurnPlay.
-	self assert: (aBlueShip currentPositionEquals: expectedPosition).
-	self assert: (aBlueShip fuelEquals: expectedFuel)
-]
-
-{ #category : 'tests' }
-SkipCardTest >> testWhenASkipCardWasPlayThenAffectedShipCanPlayAfterAFullRound [
+ReverseCardTest >> testWhenAReverseCardIsPlayedThenTheRoundDirectionChange [
 
 	|  expectedPosition expectedFuel  aGame |
 	expectedPosition := Position at: 1 in: 1.
 	expectedFuel := Fuel with: 1 upTo: 2 in: HasFuelState new.
 
-
 	aGameBuilder setAvailableCards: aSetCardManagerWithSkipCards .
 
 	aGame := aGameBuilder build.
 
 	aGame
-		play: anSkipCard
+		play: aReverseCard 
 		by: aBlueShip
 		affecting: aNullCard
 		and: aBlackShip.
 	aGame nextTurnPlay.
-	aGame nextTurnPlay.
+	self assert: (aBlackShip currentPositionEquals: expectedPosition).
+	self assert: (aBlackShip fuelEquals: expectedFuel)
+]
+
+{ #category : 'tests' }
+ReverseCardTest >> testWhenAReverseCardIsPlayedTwiseThenTheRoundDirectionReturnToHisNormalDirection [
+
+	| expectedPosition expectedFuel aGame |
+	expectedPosition := Position at: 1 in: 1.
+	expectedFuel := Fuel with: 1 upTo: 2 in: HasFuelState new.
+
+	aGameBuilder setAvailableCards: aSetCardManagerWithSkipCards.
+
+	aGame := aGameBuilder build.
+
+	aGame
+		play: aReverseCard
+		by: aBlueShip
+		affecting: aNullCard
+		and: aBlackShip.
+	aGame
+		play: aReverseCard
+		by: aBlackShip 
+		affecting: aNullCard
+		and: aBlueShip.
 	aGame nextTurnPlay.
 	self assert: (aBlueShip currentPositionEquals: expectedPosition).
 	self assert: (aBlueShip fuelEquals: expectedFuel)

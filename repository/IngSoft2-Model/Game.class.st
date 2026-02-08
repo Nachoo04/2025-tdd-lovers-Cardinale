@@ -17,7 +17,9 @@ Class {
 		'lastPlayedCard',
 		'activePermanentCards',
 		'raceGoal',
-		'turnMode'
+		'turnMode',
+		'counterRound',
+		'turnSequencer'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -188,6 +190,7 @@ Game >> initializeWith: aBoard for: someLaps and: someShips and: someDices and: 
 	raceGoal := Position at: 0 in: someLaps.
 	activePermanentCards := OrderedCollection new.
 	turnMode := NormalTurnMode new.
+	turnSequencer := TurnSequencer with: someShips 
 ]
 
 { #category : 'action' }
@@ -257,10 +260,13 @@ Game >> nextTurnPlay [
 
 	| shipToMove rolledNumber |
 	self canStillPlay.
-	shipToMove := ships removeFirst.
+
+	shipToMove := turnSequencer nextShip.
 	rolledNumber := turnMode executeOn: self.
 	self move: shipToMove with: rolledNumber.
-	ships add: shipToMove.
+	turnSequencer queue: shipToMove.
+
+
 	self changeTurnModeTo: NormalTurnMode new
 ]
 
@@ -308,6 +314,12 @@ Game >> remove: anAffectedCard playedBy: aShip [
 	self validateIsActive: anAffectedCard.
 	activePermanentCards remove: anAffectedCard.
 	anAffectedCard cancelEffectIn: self
+]
+
+{ #category : 'as yet unclassified' }
+Game >> reverseRound [
+
+	turnSequencer reverseOrder.
 ]
 
 { #category : 'action' }

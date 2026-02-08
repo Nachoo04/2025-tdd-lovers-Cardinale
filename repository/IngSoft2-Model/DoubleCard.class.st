@@ -8,7 +8,9 @@ Class {
 { #category : 'playing' }
 DoubleCard >> applyEffectPlayedBy: aPlayingShip affecting: anAffectedCard and: anAffectedShip in: aGame [
 
-	aGame changeTurnModeTo: DoubleTurnMode new
+	aGame changeTurnModeTo: DoubleTurnMode new.
+	aGame lastPlayedCard: self.
+
 ]
 
 { #category : 'playing' }
@@ -20,4 +22,10 @@ DoubleCard >> bePlayedBy: aPlayingShip affecting: anAffectedCard and: anAffected
 		and: anAffectedShip
 		in: aGame.
 	aPlayingShip remove: self
+]
+
+{ #category : 'comparing' }
+DoubleCard >> compare: aShip and: anotherShip [
+
+	^ false
 ]

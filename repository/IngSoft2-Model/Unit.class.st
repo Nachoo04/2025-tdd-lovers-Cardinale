@@ -15,19 +15,13 @@ Class {
 Unit class >> with: aMeasureOfDistance [
 
 
-	^ self new initializeWith: aMeasureOfDistance 
+	^ self new with: aMeasureOfDistance 
 ]
 
 { #category : 'comparing' }
 Unit >> > aUnitDistance [
 
 	^ measureOfDistance > aUnitDistance measureOfDistance
-]
-
-{ #category : 'initialization' }
-Unit >> initializeWith: aMeasureOfDistance [
-
-	measureOfDistance := aMeasureOfDistance
 ]
 
 { #category : 'accessing' }
@@ -40,4 +34,10 @@ Unit >> measureOfDistance [
 Unit >> toParsec [
 
 	self subclassResponsibility
+]
+
+{ #category : 'initialization' }
+Unit >> with: aMeasureOfDistance [
+
+	measureOfDistance := aMeasureOfDistance
 ]

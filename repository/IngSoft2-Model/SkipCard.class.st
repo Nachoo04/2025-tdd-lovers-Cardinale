@@ -9,6 +9,8 @@ Class {
 SkipCard >> applyEffectPlayedBy: aPlayingShip affecting: anAffectedCard and: anAffectedShip in: aGame [
 
 	aGame applySkipPenalty.
+	aGame lastPlayedCard: self.
+
 ]
 
 { #category : 'playing' }
@@ -21,4 +23,10 @@ SkipCard >> bePlayedBy: aPlayingShip affecting: anAffectedCard and: aTargetShip 
 		in: aGame.
 	aPlayingShip remove: self
 	
+]
+
+{ #category : 'comparing' }
+SkipCard >> compare: aShip and: anotherShip [
+
+	^ false
 ]

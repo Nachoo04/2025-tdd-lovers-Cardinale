@@ -9,10 +9,11 @@ Class {
 		'name',
 		'fuel',
 		'turnsLeftToWait',
-		'gravityPenalty',
 		'cards',
 		'allies',
-		'rollModifier'
+		'rollModifier',
+		'imprisoned',
+		'state'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -43,15 +44,21 @@ Ship >> amountOfCards [
 ]
 
 { #category : 'penalty' }
-Ship >> applyGravityPenalty: aGravitySquare [
+Ship >> applyGravityPenalty: aGravityPenalty [
 
-	gravityPenalty := aGravitySquare 
+	state := GravityShipState with: aGravityPenalty
 ]
 
 { #category : 'penalty' }
 Ship >> applyRollModifier: aModifier [
 
 	rollModifier := rollModifier + aModifier
+]
+
+{ #category : 'as yet unclassified' }
+Ship >> beImpeisonedWith: numberToFreedom [
+
+	state := TrappedShipState with: numberToFreedom
 ]
 
 { #category : 'move' }
@@ -74,15 +81,14 @@ Ship >> canLendFuelFor: fuelNeededToTravel [
 ]
 
 { #category : 'testing' }
-Ship >> canPlay: aRolledNumber [
+Ship >> canPlay [
 
 	| hasToWait |
 	hasToWait := turnsLeftToWait > 0.
-	
-	hasToWait ifTrue: [
-		self reducePenalty ].
-	
-	^  hasToWait not and: gravityPenalty <= aRolledNumber 
+
+	hasToWait ifTrue: [ self reducePenalty ].
+
+	^ hasToWait not
 ]
 
 { #category : 'accessing' }
@@ -139,6 +145,12 @@ Ship >> formAllianceWith: aShip [
 	allies remove: aNullShip ifAbsent: [ Error signal: 'pepe' ]
 ]
 
+{ #category : 'finalization' }
+Ship >> free [
+
+	state letOut: self
+]
+
 { #category : 'accessing' }
 Ship >> fuel: someFuel [
 	
@@ -172,11 +184,11 @@ Ship >> initializeCalled: aName [
 	position := Position at: 0 in: 1.
 	fuel := Fuel with: 0 upTo: 0 in: DoesntHaveFuelState new.
 	turnsLeftToWait := 0.
-	gravityPenalty := 0.
 	cards := OrderedCollection new.
 	rollModifier := 0.
 	allies := OrderedCollection new.
-	allies add: NullShip new
+	allies add: NullShip new.
+	state := NormalShipState new.
 ]
 
 { #category : 'penalty' }
@@ -206,6 +218,42 @@ Ship >> moveBackwards: aMagnitude in: aBoard [
 Ship >> moveTo: aPosition [
 
 	position := aPosition
+]
+
+{ #category : 'as yet unclassified' }
+Ship >> movesWith: aRolledNumber on: aBoard in: aGame [
+
+	| adjustedRolledNumber positionBeforeWormHole squaresTraveledWithDice positionAfterWormHole initialPosition positionAfterSquareEffect squaresTraveledWithSquareEffect |
+	(self canPlay) ifFalse: [ ^ self ].
+	initialPosition := position.
+
+	adjustedRolledNumber := self adjust: aRolledNumber.
+
+	positionBeforeWormHole := aBoard
+		                          update: position
+		                          with: adjustedRolledNumber.
+	squaresTraveledWithDice := aBoard
+		                           calculateDistanceBetween: position
+		                           and: positionBeforeWormHole.
+	positionAfterWormHole := aBoard moveIfWormHoleAt:
+		                         positionBeforeWormHole.
+	self moveTo: positionAfterWormHole.
+	self consumeFuel: squaresTraveledWithDice from: initialPosition.
+
+	positionAfterSquareEffect := aBoard
+		                             applyEfectOn: self
+		                             with: position
+		                             in: aGame.
+
+	squaresTraveledWithSquareEffect := aBoard
+		                                   calculateDistanceBetween:
+		                                   position
+		                                   and: positionAfterSquareEffect.
+
+	self moveTo: positionAfterSquareEffect.
+	self
+		consumeFuel: squaresTraveledWithSquareEffect
+		from: initialPosition
 ]
 
 { #category : 'accessing' }
@@ -239,36 +287,7 @@ Ship >> performMovementFrom: anInitialPosition to: aFinalPosition on: aBoard [
 { #category : 'move' }
 Ship >> playTurnWith: aRolledNumber on: aBoard in: aGame [
 
-	| adjustedRolledNumber positionBeforeWormHole squaresTraveledWithDice positionAfterWormHole initialPosition positionAfterSquareEffect squaresTraveledWithSquareEffect |
-	(self canPlay: aRolledNumber) ifFalse: [ ^ self ].
-	initialPosition := position.
-	adjustedRolledNumber := self adjust: aRolledNumber.
-
-	positionBeforeWormHole := aBoard
-		                          update: position
-		                          with: adjustedRolledNumber.
-	squaresTraveledWithDice := aBoard
-		                           calculateDistanceBetween: position
-		                           and: positionBeforeWormHole.
-	positionAfterWormHole := aBoard moveIfWormHoleAt:
-		                         positionBeforeWormHole.
-	self moveTo: positionAfterWormHole.
-	self consumeFuel: squaresTraveledWithDice from: initialPosition.
-
-	positionAfterSquareEffect := aBoard
-		                             applyEfectOn: self
-		                             with: position
-		                             in: aGame.
-
-	squaresTraveledWithSquareEffect := aBoard
-		                                   calculateDistanceBetween:
-		                                   position
-		                                   and: positionAfterSquareEffect.
-
-	self moveTo: positionAfterSquareEffect.
-	self
-		consumeFuel: squaresTraveledWithSquareEffect
-		from: initialPosition
+	state move: self with: aRolledNumber on: aBoard in: aGame 
 ]
 
 { #category : 'penalty' }
@@ -296,6 +315,12 @@ Ship >> removeAlly: anAlly [
 Ship >> restoreFuel [
 
 	fuel := fuel restore.
+]
+
+{ #category : 'accessing' }
+Ship >> state: actualState [
+
+	state := actualState
 ]
 
 { #category : 'as yet unclassified' }
