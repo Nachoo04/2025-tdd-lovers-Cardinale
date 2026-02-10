@@ -15,6 +15,21 @@ TurnSequencer class >> with: someShips [
 	^ self new initializeWith: someShips
 ]
 
+{ #category : 'penalty' }
+TurnSequencer >> applyRollModifier: aPenalty [
+
+	ships do: [ :aShip | aShip applyRollModifier: aPenalty ]
+]
+
+{ #category : 'as yet unclassified' }
+TurnSequencer >> applySkipPenalty [
+
+	| anAffectedShip |
+	anAffectedShip := ships removeFirst.
+	anAffectedShip turnSkipped.
+	ships addFirst: anAffectedShip
+]
+
 { #category : 'initialization' }
 TurnSequencer >> initializeWith: someShips [
 
@@ -38,4 +53,10 @@ TurnSequencer >> queue: aShip [
 TurnSequencer >> reverseOrder [
 
 	turnDirection := turnDirection reverse
+]
+
+{ #category : 'as yet unclassified' }
+TurnSequencer >> validateShip [
+
+	^ ships first
 ]

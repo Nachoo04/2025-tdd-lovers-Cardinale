@@ -100,6 +100,16 @@ ReverseCardTest >> setUp [
 	aNullCard := NullCard new
 ]
 
+{ #category : 'asserting' }
+ReverseCardTest >> should: anErrorBlock raise: anErrorClass withMessageText: anErrorMessage [
+
+	self
+		should: anErrorBlock
+		raise: anErrorClass
+		withExceptionDo: [ :error |
+		self assert: error messageText equals: anErrorMessage ]
+]
+
 { #category : 'tests' }
 ReverseCardTest >> testWhenAReverseCardIsPlayedThenTheRoundDirectionChange [
 
@@ -145,4 +155,46 @@ ReverseCardTest >> testWhenAReverseCardIsPlayedTwiseThenTheRoundDirectionReturnT
 	aGame nextTurnPlay.
 	self assert: (aBlueShip currentPositionEquals: expectedPosition).
 	self assert: (aBlueShip fuelEquals: expectedFuel)
+]
+
+{ #category : 'tests' }
+ReverseCardTest >> testWhenAShipPlaysAnSkipCardThenItIsNoLongerInItsHand [
+
+	| aGame aSetCardManager |
+	aSetCardManager := SetProbablisiticEventsManager new.
+	aSetCardManager add: aReverseCardProbabilisticEvent.
+	aSetCardManager add: anAccelerationCardProbabilisticEvent.
+
+	aGameBuilder setAvailableCards: aSetCardManager.
+	aGame := aGameBuilder build.
+
+	expectedCards add: anAccelerationCard.
+
+	aGame
+		play: aReverseCard 
+		by: aBlueShip
+		affecting: aNullCard
+		and: aBlackShip.
+
+	self assert: aBlueShip cards equals: expectedCards
+]
+
+{ #category : 'tests' }
+ReverseCardTest >> testWhenAShipTriesToPlayAReverseCardThatIsNotInItsHandThenInvalid [
+
+	| aGame aSetCardManager |
+	aSetCardManager := SetProbablisiticEventsManager new.
+	aSetCardManager add: anAccelerationCardProbabilisticEvent.
+	aGameBuilder setAvailableCards: aSetCardManager.
+	aGame := aGameBuilder build.
+
+	self
+		should: [
+				aGame
+					play: aReverseCard 
+					by: aBlueShip
+					affecting: aNullCard
+					and: aBlackShip ]
+		raise: Error
+		withMessageText: 'The ship does not have that card on its hand.'
 ]

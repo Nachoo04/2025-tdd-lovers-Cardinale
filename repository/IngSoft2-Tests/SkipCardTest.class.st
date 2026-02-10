@@ -133,7 +133,7 @@ SkipCardTest >> testWhenAShipPlaysAnSkipCardThenItIsNoLongerInItsHand [
 ]
 
 { #category : 'tests' }
-SkipCardTest >> testWhenAShipTriesToPlayAnAllyCardThatIsNotInItsHandThenInvalid [
+SkipCardTest >> testWhenAShipTriesToPlayAnSkipCardThatIsNotInItsHandThenInvalid [
 
 	| aGame aSetCardManager |
 	aSetCardManager := SetProbablisiticEventsManager new.

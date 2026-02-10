@@ -170,7 +170,7 @@ FreedomCardTest >> testWhenAShipPlaysAFreedomCardThenItIsNoLongerInItsHand [
 ]
 
 { #category : 'tests' }
-FreedomCardTest >> testWhenAShipTriesToPlayAnAllyCardThatIsNotInItsHandThenInvalid [
+FreedomCardTest >> testWhenAShipTriesToPlayAFreedomCardThatIsNotInItsHandThenInvalid [
 
 	| aGame aSetCardManager aSetJailSquare aSetJailSquareProbabilisticEvent aDistributionManager aDistribution aBoard |
 	aSetCardManager := SetProbablisiticEventsManager new.

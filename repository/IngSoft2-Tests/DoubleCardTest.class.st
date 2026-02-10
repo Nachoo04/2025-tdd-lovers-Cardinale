@@ -177,7 +177,7 @@ DoubleCardTest >> testWhenAShipPlaysADoubleCardThenItIsNoLongerInItsHand [
 ]
 
 { #category : 'tests' }
-DoubleCardTest >> testWhenAShipTriesToPlayAnAllyCardThatIsNotInItsHandThenInvalid [
+DoubleCardTest >> testWhenAShipTriesToPlayAnDoubleCardThatIsNotInItsHandThenInvalid [
 
 	| aGame aSetCardManager |
 	aSetCardManager := SetProbablisiticEventsManager new.

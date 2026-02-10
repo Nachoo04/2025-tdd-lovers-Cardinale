@@ -17,9 +17,8 @@ Class {
 		'lastPlayedCard',
 		'activePermanentCards',
 		'raceGoal',
-		'turnMode',
-		'counterRound',
-		'turnSequencer'
+		'turnSequencer',
+		'rollMode'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -120,16 +119,13 @@ Game >> applyRewardTo: aShip for: aRolledNumber [
 { #category : 'action' }
 Game >> applyRollModifier: aPenalty [
 
-	ships do: [ :aShip | aShip applyRollModifier: aPenalty ]
+	turnSequencer applyRollModifier: aPenalty 
 ]
 
 { #category : 'as yet unclassified' }
 Game >> applySkipPenalty [
 	
-	| anAffectedShip |
-	anAffectedShip := ships removeFirst.
-	anAffectedShip turnSkipped.
-	ships addFirst: anAffectedShip.
+	turnSequencer applySkipPenalty.
 ]
 
 { #category : 'action' }
@@ -147,7 +143,7 @@ Game >> canStillPlay [
 { #category : 'as yet unclassified' }
 Game >> changeTurnModeTo: aTurnMode [
 
-	turnMode := aTurnMode
+	rollMode := aTurnMode
 ]
 
 { #category : 'changing state' }
@@ -178,9 +174,9 @@ Game >> hasFinished [
 Game >> initializeWith: aBoard for: someLaps and: someShips and: someDices and: aRewardManager and: aCardMaganer [
 
 	board := aBoard.
-	ships := someShips.
 	dices := someDices.
 	laps := someLaps.
+	ships := someShips .
 	finished := false.
 	rewards := aRewardManager.
 	cards := aCardMaganer.
@@ -189,7 +185,7 @@ Game >> initializeWith: aBoard for: someLaps and: someShips and: someDices and: 
 	lastPlayedCard := NullCard new.
 	raceGoal := Position at: 0 in: someLaps.
 	activePermanentCards := OrderedCollection new.
-	turnMode := NormalTurnMode new.
+	rollMode := NormalTurnMode new.
 	turnSequencer := TurnSequencer with: someShips 
 ]
 
@@ -250,9 +246,9 @@ Game >> nextTurnPass [
 
 	| shipToMove |
 	self canStillPlay.
-	shipToMove := ships removeFirst.
+	shipToMove := turnSequencer nextShip.
 	shipToMove restoreFuel.
-	ships add: shipToMove.
+	turnSequencer queue: shipToMove
 ]
 
 { #category : 'action' }
@@ -262,7 +258,7 @@ Game >> nextTurnPlay [
 	self canStillPlay.
 
 	shipToMove := turnSequencer nextShip.
-	rolledNumber := turnMode executeOn: self.
+	rolledNumber := rollMode executeOn: self.
 	self move: shipToMove with: rolledNumber.
 	turnSequencer queue: shipToMove.
 
@@ -341,7 +337,8 @@ Game >> validateIsActive: aCard [
 { #category : 'validation' }
 Game >> validateNextPlayer: aShip [
 
-	((ships at: 1) equals: aShip) ifFalse: [
+
+	((turnSequencer validateShip) equals: aShip) ifFalse: [
 		Error signal:
 			'A permanent card cannot be played when it is not your turn.' ]
 ]
