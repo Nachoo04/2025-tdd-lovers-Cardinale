@@ -145,6 +145,14 @@ Game >> changeTurnModeTo: aTurnMode [
 	rollMode := aTurnMode
 ]
 
+{ #category : 'action' }
+Game >> executeRollFor: aShip [
+
+	rollMode executeOn: self for: aShip.
+
+	
+]
+
 { #category : 'changing state' }
 Game >> finish [
 
