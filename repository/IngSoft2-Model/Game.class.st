@@ -6,7 +6,6 @@ Class {
 	#superclass : 'Object',
 	#instVars : [
 		'board',
-		'ships',
 		'dices',
 		'finished',
 		'winner',
@@ -17,8 +16,8 @@ Class {
 		'lastPlayedCard',
 		'activePermanentCards',
 		'raceGoal',
-		'turnSequencer',
-		'rollMode'
+		'rollMode',
+		'shipsManager'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -119,13 +118,13 @@ Game >> applyRewardTo: aShip for: aRolledNumber [
 { #category : 'action' }
 Game >> applyRollModifier: aPenalty [
 
-	turnSequencer applyRollModifier: aPenalty 
+	shipsManager applyRollModifier: aPenalty 
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'action' }
 Game >> applySkipPenalty [
 
-	turnSequencer applySkipPenalty.
+	shipsManager applySkipPenalty.
 ]
 
 { #category : 'action' }
@@ -140,7 +139,7 @@ Game >> canStillPlay [
 	finished ifTrue: [ Error signal: 'The game has finished.' ]
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'action' }
 Game >> changeTurnModeTo: aTurnMode [
 
 	rollMode := aTurnMode
@@ -176,7 +175,6 @@ Game >> initializeWith: aBoard for: someLaps and: someShips and: someDices and: 
 	board := aBoard.
 	dices := someDices.
 	laps := someLaps.
-	ships := someShips .
 	finished := false.
 	rewards := aRewardManager.
 	cards := aCardMaganer.
@@ -185,8 +183,8 @@ Game >> initializeWith: aBoard for: someLaps and: someShips and: someDices and: 
 	lastPlayedCard := NullCard new.
 	raceGoal := Position at: 0 in: someLaps.
 	activePermanentCards := OrderedCollection new.
-	rollMode := NormalTurnMode new.
-	turnSequencer := TurnSequencer with: someShips 
+	rollMode := NormalRollMode new.
+	shipsManager := ShipsManager with: someShips 
 ]
 
 { #category : 'action' }
@@ -232,38 +230,32 @@ Game >> move: aShip with: rolledNumber [
 { #category : 'action' }
 Game >> moveShipsBackwards: aMagnitude [
 
-	ships do: [ :aShip | aShip moveBackwards: aMagnitude in: board ]
+	shipsManager moveShipsBackwards: aMagnitude in: board.
 ]
 
 { #category : 'action' }
 Game >> moveShipsToSquareZero [
 	
-	ships do: [ :aShip | aShip moveTo: (aShip currentPosition adjustSquare: 0) ]
+	shipsManager moveShipsToSquareZero.
 ]
 
 { #category : 'action' }
 Game >> nextTurnPass [
 
-	| shipToMove |
 	self canStillPlay.
-	shipToMove := turnSequencer nextShip.
-	shipToMove restoreFuel.
-	turnSequencer queue: shipToMove
+	shipsManager passNextShip
 ]
 
 { #category : 'action' }
 Game >> nextTurnPlay [
 
-	| shipToMove rolledNumber |
+
 	self canStillPlay.
 
-	shipToMove := turnSequencer nextShip.
-	rolledNumber := rollMode executeOn: self.
-	self move: shipToMove with: rolledNumber.
-	turnSequencer queue: shipToMove.
+	shipsManager playNextShipIn: self.
 
 
-	self changeTurnModeTo: NormalTurnMode new
+	self changeTurnModeTo: NormalRollMode new
 ]
 
 { #category : 'action' }
@@ -291,16 +283,10 @@ Game >> playLastCardBy: aPlayingShip affecting: anAffectedCard and: aTargetShip 
 { #category : 'printing' }
 Game >> printBoard [
 
-	| positions results winnerShip sortedPositions |
+	| winnerShip shipsScore results |
 	winnerShip := 'Winner: ' , winner name , String cr.
-	sortedPositions := ships sorted: [ :aShip |
-		                   board
-			                   calculateDistanceBetween: (Position at: 0 in: 1)
-			                   and: aShip currentPosition ] descending.
-	positions := String cr join:
-		             (sortedPositions collect: [ :aShip | aShip details ]).
-
-	results := winnerShip , positions.
+	shipsScore := shipsManager shipsScoreOn: board.
+	results := winnerShip , shipsScore.
 	^ results
 ]
 
@@ -312,10 +298,10 @@ Game >> remove: anAffectedCard playedBy: aShip [
 	anAffectedCard cancelEffectIn: self
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'action' }
 Game >> reverseRound [
 
-	turnSequencer reverseOrder.
+	shipsManager reverseOrder.
 ]
 
 { #category : 'action' }
@@ -338,7 +324,7 @@ Game >> validateIsActive: aCard [
 Game >> validateNextPlayer: aShip [
 
 
-	((turnSequencer validateShip) equals: aShip) ifFalse: [
+	((shipsManager validateShip) equals: aShip) ifFalse: [
 		Error signal:
 			'A permanent card cannot be played when it is not your turn.' ]
 ]

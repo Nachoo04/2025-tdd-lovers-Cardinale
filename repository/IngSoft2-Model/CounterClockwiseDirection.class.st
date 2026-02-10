@@ -1,3 +1,6 @@
+"
+This class represent a counter clock wise direction to roll the dices
+"
 Class {
 	#name : 'CounterClockwiseDirection',
 	#superclass : 'Object',
@@ -5,12 +8,7 @@ Class {
 	#package : 'IngSoft2-Model'
 }
 
-{ #category : 'as yet unclassified' }
-CounterClockwiseDirection >> applySkipPenalty [
-	self shouldBeImplemented.
-]
-
-{ #category : 'as yet unclassified' }
+{ #category : 'applying' }
 CounterClockwiseDirection >> applySkipPenaltyFor: someShips [
 
 	| affectedShip |
@@ -19,7 +17,15 @@ CounterClockwiseDirection >> applySkipPenaltyFor: someShips [
 	someShips add: affectedShip
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'accessing' }
+CounterClockwiseDirection >> for: someShips [
+
+	| shipToMove |
+	shipToMove := someShips removeLast.
+	^ shipToMove
+]
+
+{ #category : 'accessing' }
 CounterClockwiseDirection >> queue: aShip to: someShips [
 
 	someShips addFirst: aShip
@@ -29,12 +35,4 @@ CounterClockwiseDirection >> queue: aShip to: someShips [
 CounterClockwiseDirection >> reverse [
 
 	^ ClockwiseDirection new
-]
-
-{ #category : 'accessing' }
-CounterClockwiseDirection >> to: someShips [
-
-	| shipToMove |
-	shipToMove := someShips removeLast.
-	^ shipToMove
 ]

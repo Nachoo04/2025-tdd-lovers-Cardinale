@@ -55,7 +55,7 @@ Ship >> applyRollModifier: aModifier [
 	rollModifier := rollModifier + aModifier
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'penalty' }
 Ship >> beImpeisonedWith: numberToFreedom [
 
 	state := TrappedShipState with: numberToFreedom
@@ -220,7 +220,7 @@ Ship >> moveTo: aPosition [
 	position := aPosition
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'move' }
 Ship >> movesWith: aRolledNumber on: aBoard in: aGame [
 
 	| adjustedRolledNumber positionBeforeWormHole squaresTraveledWithDice positionAfterWormHole initialPosition positionAfterSquareEffect squaresTraveledWithSquareEffect |
@@ -323,7 +323,7 @@ Ship >> state: actualState [
 	state := actualState
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'penalty' }
 Ship >> turnSkipped [
 
 	turnsLeftToWait := turnsLeftToWait + 1

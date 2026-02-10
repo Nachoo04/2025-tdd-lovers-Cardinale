@@ -1,3 +1,6 @@
+"
+This class represent an abstract class of State
+"
 Class {
 	#name : 'State',
 	#superclass : 'Object',

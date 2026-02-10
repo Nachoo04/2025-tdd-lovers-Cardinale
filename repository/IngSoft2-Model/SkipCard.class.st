@@ -1,3 +1,6 @@
+"
+This class represent a SkipCard
+"
 Class {
 	#name : 'SkipCard',
 	#superclass : 'Card',

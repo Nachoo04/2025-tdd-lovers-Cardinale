@@ -1,3 +1,6 @@
+"
+This class represent a NormalShipState
+"
 Class {
 	#name : 'NormalShipState',
 	#superclass : 'State',

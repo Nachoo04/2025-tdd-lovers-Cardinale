@@ -1,3 +1,6 @@
+"
+This class represent a GravityShipState
+"
 Class {
 	#name : 'GravityShipState',
 	#superclass : 'State',

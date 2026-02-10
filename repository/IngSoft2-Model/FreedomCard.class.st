@@ -1,3 +1,6 @@
+"
+This class represent a FreedomCard
+"
 Class {
 	#name : 'FreedomCard',
 	#superclass : 'Card',

@@ -1,3 +1,6 @@
+"
+This class represent a ReverseCard
+"
 Class {
 	#name : 'ReverseCard',
 	#superclass : 'Card',

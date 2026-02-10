@@ -1,3 +1,6 @@
+"
+This class represent a JailSquare
+"
 Class {
 	#name : 'JailSquare',
 	#superclass : 'Square',

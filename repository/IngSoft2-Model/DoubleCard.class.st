@@ -1,3 +1,6 @@
+"
+This class represent a DoubleCard
+"
 Class {
 	#name : 'DoubleCard',
 	#superclass : 'Card',
@@ -8,7 +11,7 @@ Class {
 { #category : 'playing' }
 DoubleCard >> applyEffectPlayedBy: aPlayingShip affecting: anAffectedCard and: anAffectedShip in: aGame [
 
-	aGame changeTurnModeTo: DoubleTurnMode new.
+	aGame changeTurnModeTo: DoubleRollMode new.
 	aGame lastPlayedCard: self.
 
 ]
