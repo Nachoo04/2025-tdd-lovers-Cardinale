@@ -6,6 +6,15 @@ Class {
 }
 
 { #category : 'as yet unclassified' }
+ClockwiseDirection >> applySkipPenaltyFor: someShips [
+
+	| affectedShip |
+	affectedShip := someShips removeFirst.
+	affectedShip turnSkipped.
+	someShips addFirst: affectedShip
+]
+
+{ #category : 'as yet unclassified' }
 ClockwiseDirection >> queue: aShip to: someShips [
 
 	someShips add: aShip .

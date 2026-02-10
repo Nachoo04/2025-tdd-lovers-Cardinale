@@ -6,6 +6,20 @@ Class {
 }
 
 { #category : 'as yet unclassified' }
+CounterClockwiseDirection >> applySkipPenalty [
+	self shouldBeImplemented.
+]
+
+{ #category : 'as yet unclassified' }
+CounterClockwiseDirection >> applySkipPenaltyFor: someShips [
+
+	| affectedShip |
+	affectedShip := someShips removeLast.
+	affectedShip turnSkipped.
+	someShips add: affectedShip
+]
+
+{ #category : 'as yet unclassified' }
 CounterClockwiseDirection >> queue: aShip to: someShips [
 
 	someShips addFirst: aShip

@@ -124,7 +124,7 @@ Game >> applyRollModifier: aPenalty [
 
 { #category : 'as yet unclassified' }
 Game >> applySkipPenalty [
-	
+
 	turnSequencer applySkipPenalty.
 ]
 

@@ -19,8 +19,10 @@ Class {
 		'aRewardManager',
 		'zeroReward',
 		'zeroRewardRewardProbabilisticEvent',
-		'aSetCardManagerWithSkipCards',
 		'aReverseCard',
+		'aSkipCard',
+		'aSkipCardProbabilisticEvent',
+		'aSetCardManagerWithReverseCards',
 		'aReverseCardProbabilisticEvent',
 		'anAccelerationCard',
 		'anAccelerationCardProbabilisticEvent',
@@ -71,18 +73,22 @@ ReverseCardTest >> setUp [
 		                                      with: aProbabilityOfOne.
 	aRewardManager add: zeroRewardRewardProbabilisticEvent.
 
-	aSetCardManagerWithSkipCards := ProbablisiticEventsManager new.
+	aSetCardManagerWithReverseCards := ProbablisiticEventsManager new.
 
 	aReverseCard := ReverseCard new.
 	aReverseCardProbabilisticEvent := ProbabilisticEvent
-		                                for: aReverseCard
-		                                with: aProbabilityOfOne.
-	aSetCardManagerWithSkipCards add: aReverseCardProbabilisticEvent.
+		                                  for: aReverseCard
+		                                  with: aProbabilityOfOne.
+	aSetCardManagerWithReverseCards add: aReverseCardProbabilisticEvent.
 
 	anAccelerationCard := AccelerationCard new.
 	anAccelerationCardProbabilisticEvent := ProbabilisticEvent
 		                                        for: anAccelerationCard
 		                                        with: aProbabilityOfOne.
+	aSkipCard := SkipCard new.
+	aSkipCardProbabilisticEvent := ProbabilisticEvent
+		                               for: aSkipCard
+		                               with: aProbabilityOfOne.
 
 
 	someShips := OrderedCollection new.
@@ -111,13 +117,83 @@ ReverseCardTest >> should: anErrorBlock raise: anErrorClass withMessageText: anE
 ]
 
 { #category : 'tests' }
+ReverseCardTest >> testWhenAReverseCardIsPlayedAfterASkipCardThenTheEffectsApplyCorrectly [
+
+	| expectedFuel aGame aSetCardManager blueShipExpectedPosition blackShipExpectedPosition |
+	blueShipExpectedPosition := Position at: 0 in: 1.
+	blackShipExpectedPosition := Position at: 1 in: 1.
+	expectedFuel := Fuel with: 1 upTo: 2 in: HasFuelState new.
+
+	aSetCardManager := SetProbablisiticEventsManager new.
+	aSetCardManager add: aReverseCardProbabilisticEvent.
+	aSetCardManager add: aSkipCardProbabilisticEvent.
+
+	aGameBuilder setAvailableCards: aSetCardManager.
+
+	aGame := aGameBuilder build.
+
+	aGame
+		play: aSkipCard
+		by: aBlackShip
+		affecting: aNullCard
+		and: aBlueShip .
+	aGame
+		play: aReverseCard
+		by: aBlackShip 
+		affecting: aNullCard
+		and: aBlueShip.
+	aGame nextTurnPlay.
+	aGame nextTurnPlay.
+	self assert:
+		(aBlueShip currentPositionEquals: blueShipExpectedPosition).
+	self assert:
+		(aBlackShip currentPositionEquals: blackShipExpectedPosition).
+	self assert: (aBlackShip fuelEquals: expectedFuel)
+]
+
+{ #category : 'tests' }
+ReverseCardTest >> testWhenAReverseCardIsPlayedBeforeASkipCardThenTheEffectsApplyCorrectly [
+
+	| expectedFuel aGame aSetCardManager blueShipExpectedPosition blackShipExpectedPosition |
+	blueShipExpectedPosition := Position at: 1 in: 1.
+	blackShipExpectedPosition := Position at: 0 in: 1.
+	expectedFuel := Fuel with: 1 upTo: 2 in: HasFuelState new.
+
+	aSetCardManager := SetProbablisiticEventsManager new.
+	aSetCardManager add: aReverseCardProbabilisticEvent.
+	aSetCardManager add: aSkipCardProbabilisticEvent.
+
+	aGameBuilder setAvailableCards: aSetCardManager.
+
+	aGame := aGameBuilder build.
+
+	aGame
+		play: aReverseCard
+		by: aBlackShip
+		affecting: aNullCard
+		and: aBlueShip.
+	aGame
+		play: aSkipCard
+		by: aBlueShip
+		affecting: aNullCard
+		and: aBlackShip.
+	aGame nextTurnPlay.
+	aGame nextTurnPlay.
+	self assert:
+		(aBlueShip currentPositionEquals: blueShipExpectedPosition).
+	self assert: (aBlueShip fuelEquals: expectedFuel).
+	self assert:
+		(aBlackShip currentPositionEquals: blackShipExpectedPosition)
+]
+
+{ #category : 'tests' }
 ReverseCardTest >> testWhenAReverseCardIsPlayedThenTheRoundDirectionChange [
 
 	|  expectedPosition expectedFuel  aGame |
 	expectedPosition := Position at: 1 in: 1.
 	expectedFuel := Fuel with: 1 upTo: 2 in: HasFuelState new.
 
-	aGameBuilder setAvailableCards: aSetCardManagerWithSkipCards .
+	aGameBuilder setAvailableCards: aSetCardManagerWithReverseCards .
 
 	aGame := aGameBuilder build.
 
@@ -138,7 +214,7 @@ ReverseCardTest >> testWhenAReverseCardIsPlayedTwiseThenTheRoundDirectionReturnT
 	expectedPosition := Position at: 1 in: 1.
 	expectedFuel := Fuel with: 1 upTo: 2 in: HasFuelState new.
 
-	aGameBuilder setAvailableCards: aSetCardManagerWithSkipCards.
+	aGameBuilder setAvailableCards: aSetCardManagerWithReverseCards .
 
 	aGame := aGameBuilder build.
 

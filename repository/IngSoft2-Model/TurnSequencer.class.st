@@ -24,10 +24,7 @@ TurnSequencer >> applyRollModifier: aPenalty [
 { #category : 'as yet unclassified' }
 TurnSequencer >> applySkipPenalty [
 
-	| anAffectedShip |
-	anAffectedShip := ships removeFirst.
-	anAffectedShip turnSkipped.
-	ships addFirst: anAffectedShip
+	turnDirection applySkipPenaltyFor: ships
 ]
 
 { #category : 'initialization' }
