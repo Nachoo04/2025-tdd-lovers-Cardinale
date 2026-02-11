@@ -26,8 +26,8 @@ Class {
 		'someDices',
 		'aGameBuilder',
 		'aNullCard',
-		'anAccelerationCard',
-		'anAccelerationCardProbabilisticEvent'
+		'anAllyCard',
+		'anAllyCardProbabilisticEvent'
 	],
 	#category : 'IngSoft2-Tests',
 	#package : 'IngSoft2-Tests'
@@ -79,9 +79,9 @@ SkipCardTest >> setUp [
 		                                with: aProbabilityOfOne.
 	aSetCardManagerWithSkipCards add: anSkipCardProbabilisticEvent.
 
-	anAccelerationCard := AccelerationCard new.
-	anAccelerationCardProbabilisticEvent := ProbabilisticEvent
-		                                        for: anAccelerationCard
+	anAllyCard := AllyCard new.
+	anAllyCardProbabilisticEvent := ProbabilisticEvent
+		                                        for: anAllyCard
 		                                        with: aProbabilityOfOne.
 
 
@@ -116,12 +116,12 @@ SkipCardTest >> testWhenAShipPlaysAnSkipCardThenItIsNoLongerInItsHand [
 	| aGame aSetCardManager |
 	aSetCardManager := SetProbablisiticEventsManager new.
 	aSetCardManager add: anSkipCardProbabilisticEvent.
-	aSetCardManager add: anAccelerationCardProbabilisticEvent.
+	aSetCardManager add: anAllyCardProbabilisticEvent .
 
 	aGameBuilder setAvailableCards: aSetCardManager.
 	aGame := aGameBuilder build.
 
-	expectedCards add: anAccelerationCard.
+	expectedCards add: anAllyCard.
 
 	aGame
 		play: anSkipCard
@@ -137,7 +137,7 @@ SkipCardTest >> testWhenAShipTriesToPlayAnSkipCardThatIsNotInItsHandThenInvalid 
 
 	| aGame aSetCardManager |
 	aSetCardManager := SetProbablisiticEventsManager new.
-	aSetCardManager add: anAccelerationCardProbabilisticEvent.
+	aSetCardManager add: anAllyCardProbabilisticEvent .
 	aGameBuilder setAvailableCards: aSetCardManager.
 	aGame := aGameBuilder build.
 

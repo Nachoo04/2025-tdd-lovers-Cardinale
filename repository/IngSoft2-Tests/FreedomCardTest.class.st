@@ -16,8 +16,8 @@ Class {
 		'zeroRewardRewardProbabilisticEvent',
 		'aFreedomCard',
 		'aFreedomCardProbabilisticEvent',
-		'anAccelerationCard',
-		'anAccelerationCardProbabilisticEvent',
+		'anAllyCard',
+		'anAllyCardProbabilisticEvent',
 		'someShips',
 		'someDices',
 		'aGameBuilder',
@@ -61,9 +61,9 @@ FreedomCardTest >> setUp [
 		                                with: aProbabilityOfOne.
 	aSetCardManagerWithFreedomCards add: aFreedomCardProbabilisticEvent.
 
-	anAccelerationCard := AccelerationCard new.
-	anAccelerationCardProbabilisticEvent := ProbabilisticEvent
-		                                        for: anAccelerationCard
+	anAllyCard := AllyCard new.
+	anAllyCardProbabilisticEvent := ProbabilisticEvent
+		                                        for: anAllyCard
 		                                        with: aProbabilityOfOne.
 
 
@@ -121,7 +121,7 @@ FreedomCardTest >> testWhenAShipFallIntoAJailSquareAndUseAFreedomCardThenItCanMo
 	aGame
 		play: aFreedomCard
 		by: aBlueShip
-		affecting: anAccelerationCard
+		affecting: anAllyCard
 		and: aBlackShip.
 	aGame nextTurnPlay.
 
@@ -136,7 +136,7 @@ FreedomCardTest >> testWhenAShipPlaysAFreedomCardThenItIsNoLongerInItsHand [
 	
 	aSetCardManager := SetProbablisiticEventsManager new.
 	aSetCardManager add: aFreedomCardProbabilisticEvent.
-	aSetCardManager add: anAccelerationCardProbabilisticEvent.
+	aSetCardManager add: anAllyCardProbabilisticEvent .
 	
 	
 	aSetJailSquare := JailSquare with: someDices.
@@ -157,7 +157,7 @@ FreedomCardTest >> testWhenAShipPlaysAFreedomCardThenItIsNoLongerInItsHand [
 	aGameBuilder setAvailableCards: aSetCardManager.
 	aGame := aGameBuilder build.
 
-	expectedCards add: anAccelerationCard.
+	expectedCards add: anAllyCard.
 
 	aGame nextTurnPlay.
 	aGame
@@ -174,7 +174,7 @@ FreedomCardTest >> testWhenAShipTriesToPlayAFreedomCardThatIsNotInItsHandThenInv
 
 	| aGame aSetCardManager aSetJailSquare aSetJailSquareProbabilisticEvent aDistributionManager aDistribution aBoard |
 	aSetCardManager := SetProbablisiticEventsManager new.
-	aSetCardManager add: anAccelerationCardProbabilisticEvent.
+	aSetCardManager add: anAllyCardProbabilisticEvent .
 
 	aSetJailSquare := JailSquare with: someDices.
 	aSetJailSquareProbabilisticEvent := ProbabilisticEvent
@@ -213,7 +213,7 @@ FreedomCardTest >> testWhenAShipTryToUseAFreedomCardWhenItsFreeThenItCantDoIt [
 	
 	aSetCardManager := SetProbablisiticEventsManager new.
 	aSetCardManager add: aFreedomCardProbabilisticEvent.
-	aSetCardManager add: anAccelerationCardProbabilisticEvent.
+	aSetCardManager add: anAllyCardProbabilisticEvent .
 	
 	aSetJailSquare := JailSquare with: someDices.
 	aSetJailSquareProbabilisticEvent := ProbabilisticEvent
@@ -225,7 +225,7 @@ FreedomCardTest >> testWhenAShipTryToUseAFreedomCardWhenItsFreeThenItCantDoIt [
 	aDistribution := aDistributionManager generateFor: twentySquares.
 	
 	expectedCards add: aFreedomCard.
-	expectedCards add: anAccelerationCard.
+	expectedCards add: anAllyCard.
 
 	aBoard := Board
 		          with: twentySquares
@@ -241,7 +241,7 @@ FreedomCardTest >> testWhenAShipTryToUseAFreedomCardWhenItsFreeThenItCantDoIt [
 				aGame
 					play: aFreedomCard
 					by: aBlueShip
-					affecting: anAccelerationCard
+					affecting: anAllyCard
 					and: aBlackShip ]
 		raise: Error
 		withMessageText: 'This ship is not imprisoned.'.
@@ -249,7 +249,7 @@ FreedomCardTest >> testWhenAShipTryToUseAFreedomCardWhenItsFreeThenItCantDoIt [
 ]
 
 { #category : 'tests' }
-FreedomCardTest >> testWhenAShipUseAFreedomCardWhenIsNotItsTurnThenWhenItNeedToPlayItCanMoves [
+FreedomCardTest >> testWhenAShipUseAFreedomCardWhenIsNotHisTurnThenWhenHeHasToPlayHeCanMoves [
 
 	| expectedPosition aGame aSetJailSquare aSetJailSquareProbabilisticEvent aBoard aDistributionManager aDistribution |
 	
@@ -276,7 +276,7 @@ FreedomCardTest >> testWhenAShipUseAFreedomCardWhenIsNotItsTurnThenWhenItNeedToP
 	aGame
 		play: aFreedomCard
 		by: aBlueShip
-		affecting: anAccelerationCard
+		affecting: anAllyCard
 		and: aBlackShip.
 	aGame nextTurnPass.
 	aGame nextTurnPlay.
