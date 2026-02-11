@@ -2,10 +2,8 @@ Class {
 	#name : 'ReverseCardTest',
 	#superclass : 'TestCase',
 	#instVars : [
-		'twentySquares',
 		'aBlueShip',
 		'aBlackShip',
-		'aRedShip',
 		'expectedCards',
 		'aDistributionManager',
 		'aPlainSquare',
@@ -20,12 +18,8 @@ Class {
 		'zeroReward',
 		'zeroRewardRewardProbabilisticEvent',
 		'aReverseCard',
-		'aSkipCard',
-		'aSkipCardProbabilisticEvent',
 		'aSetCardManagerWithReverseCards',
 		'aReverseCardProbabilisticEvent',
-		'anAccelerationCard',
-		'anAccelerationCardProbabilisticEvent',
 		'someShips',
 		'someDices',
 		'aGameBuilder',
@@ -38,12 +32,12 @@ Class {
 { #category : 'running' }
 ReverseCardTest >> setUp [
 
+	| twentySquares |
 	super setUp.
 
 	twentySquares := 20.
 	aBlueShip := Ship called: 'BlueShip'.
 	aBlackShip := Ship called: 'BlackShip'.
-	aRedShip := Ship called: 'RedShip'.
 	expectedCards := OrderedCollection new.
 
 	aDistributionManager := ProbablisiticEventsManager new.
@@ -81,14 +75,7 @@ ReverseCardTest >> setUp [
 		                                  with: aProbabilityOfOne.
 	aSetCardManagerWithReverseCards add: aReverseCardProbabilisticEvent.
 
-	anAccelerationCard := AccelerationCard new.
-	anAccelerationCardProbabilisticEvent := ProbabilisticEvent
-		                                        for: anAccelerationCard
-		                                        with: aProbabilityOfOne.
-	aSkipCard := SkipCard new.
-	aSkipCardProbabilisticEvent := ProbabilisticEvent
-		                               for: aSkipCard
-		                               with: aProbabilityOfOne.
+
 
 
 	someShips := OrderedCollection new.
@@ -119,10 +106,15 @@ ReverseCardTest >> should: anErrorBlock raise: anErrorClass withMessageText: anE
 { #category : 'tests' }
 ReverseCardTest >> testWhenAReverseCardIsPlayedAfterASkipCardThenTheEffectsApplyCorrectly [
 
-	| expectedFuel aGame aSetCardManager blueShipExpectedPosition blackShipExpectedPosition |
+	| expectedFuel aGame aSetCardManager blueShipExpectedPosition blackShipExpectedPosition aSkipCard aSkipCardProbabilisticEvent |
 	blueShipExpectedPosition := Position at: 0 in: 1.
 	blackShipExpectedPosition := Position at: 1 in: 1.
 	expectedFuel := Fuel with: 1 upTo: 2 in: HasFuelState new.
+
+	aSkipCard := SkipCard new.
+	aSkipCardProbabilisticEvent := ProbabilisticEvent
+		                               for: aSkipCard
+		                               with: aProbabilityOfOne.
 
 	aSetCardManager := SetProbablisiticEventsManager new.
 	aSetCardManager add: aReverseCardProbabilisticEvent.
@@ -136,10 +128,10 @@ ReverseCardTest >> testWhenAReverseCardIsPlayedAfterASkipCardThenTheEffectsApply
 		play: aSkipCard
 		by: aBlackShip
 		affecting: aNullCard
-		and: aBlueShip .
+		and: aBlueShip.
 	aGame
 		play: aReverseCard
-		by: aBlackShip 
+		by: aBlackShip
 		affecting: aNullCard
 		and: aBlueShip.
 	aGame nextTurnPlay.
@@ -154,10 +146,15 @@ ReverseCardTest >> testWhenAReverseCardIsPlayedAfterASkipCardThenTheEffectsApply
 { #category : 'tests' }
 ReverseCardTest >> testWhenAReverseCardIsPlayedBeforeASkipCardThenTheEffectsApplyCorrectly [
 
-	| expectedFuel aGame aSetCardManager blueShipExpectedPosition blackShipExpectedPosition |
+	| expectedFuel aGame aSetCardManager blueShipExpectedPosition blackShipExpectedPosition aSkipCard aSkipCardProbabilisticEvent |
 	blueShipExpectedPosition := Position at: 1 in: 1.
 	blackShipExpectedPosition := Position at: 0 in: 1.
 	expectedFuel := Fuel with: 1 upTo: 2 in: HasFuelState new.
+
+	aSkipCard := SkipCard new.
+	aSkipCardProbabilisticEvent := ProbabilisticEvent
+		                               for: aSkipCard
+		                               with: aProbabilityOfOne.
 
 	aSetCardManager := SetProbablisiticEventsManager new.
 	aSetCardManager add: aReverseCardProbabilisticEvent.
@@ -236,18 +233,23 @@ ReverseCardTest >> testWhenAReverseCardIsPlayedTwiseThenTheRoundDirectionReturnT
 { #category : 'tests' }
 ReverseCardTest >> testWhenAShipPlaysAnSkipCardThenItIsNoLongerInItsHand [
 
-	| aGame aSetCardManager |
+	| aGame aSetCardManager anAllyCard anAllyCardProbabilisticEvent |
+	anAllyCard := AllyCard new.
+	anAllyCardProbabilisticEvent := ProbabilisticEvent
+		                                for: anAllyCard
+		                                with: aProbabilityOfOne.
+
 	aSetCardManager := SetProbablisiticEventsManager new.
 	aSetCardManager add: aReverseCardProbabilisticEvent.
-	aSetCardManager add: anAccelerationCardProbabilisticEvent.
+	aSetCardManager add: anAllyCardProbabilisticEvent.
 
 	aGameBuilder setAvailableCards: aSetCardManager.
 	aGame := aGameBuilder build.
 
-	expectedCards add: anAccelerationCard.
+	expectedCards add: anAllyCard.
 
 	aGame
-		play: aReverseCard 
+		play: aReverseCard
 		by: aBlueShip
 		affecting: aNullCard
 		and: aBlackShip.
@@ -258,16 +260,20 @@ ReverseCardTest >> testWhenAShipPlaysAnSkipCardThenItIsNoLongerInItsHand [
 { #category : 'tests' }
 ReverseCardTest >> testWhenAShipTriesToPlayAReverseCardThatIsNotInItsHandThenInvalid [
 
-	| aGame aSetCardManager |
+	| aGame aSetCardManager anAllyCard anAllyCardProbabilisticEvent|
+	anAllyCard := AllyCard new.
+	anAllyCardProbabilisticEvent := ProbabilisticEvent
+		                                for: anAllyCard
+		                                with: aProbabilityOfOne.
 	aSetCardManager := SetProbablisiticEventsManager new.
-	aSetCardManager add: anAccelerationCardProbabilisticEvent.
+	aSetCardManager add: anAllyCardProbabilisticEvent.
 	aGameBuilder setAvailableCards: aSetCardManager.
 	aGame := aGameBuilder build.
 
 	self
 		should: [
 				aGame
-					play: aReverseCard 
+					play: aReverseCard
 					by: aBlueShip
 					affecting: aNullCard
 					and: aBlackShip ]
