@@ -18,6 +18,13 @@ ShipsManager class >> with: someShips [
 	^ self new initializeWith: someShips
 ]
 
+{ #category : 'action' }
+ShipsManager >> applyPassTurnFor: aShip [
+
+	aShip restoreFuel.
+	self queue: aShip
+]
+
 { #category : 'penalty' }
 ShipsManager >> applyRollModifier: aPenalty [
 
@@ -28,6 +35,13 @@ ShipsManager >> applyRollModifier: aPenalty [
 ShipsManager >> applySkipPenalty [
 
 	turnDirection applySkipPenaltyFor: ships
+]
+
+{ #category : 'action' }
+ShipsManager >> executeMoveFor: aShip in: aGame [
+
+	aGame executeRollFor: aShip.
+	self queue: aShip
 ]
 
 { #category : 'initialization' }
@@ -58,19 +72,14 @@ ShipsManager >> nextShip [
 { #category : 'action' }
 ShipsManager >> passNextShip [
 
-	| shipToMove |
-	shipToMove := turnDirection for: ships.
-	shipToMove restoreFuel.
-	self queue: shipToMove
+	turnDirection passFor: ships by: self.
+
 ]
 
 { #category : 'accessing' }
 ShipsManager >> playNextShipIn: aGame [
 
-	| shipToMove |
-	shipToMove := turnDirection for: ships.
-	aGame executeRollFor: shipToMove.
-	self queue: shipToMove
+	turnDirection for: ships in: aGame by: self
 ]
 
 { #category : 'accessing' }

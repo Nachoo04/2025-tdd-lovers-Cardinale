@@ -18,11 +18,19 @@ CounterClockwiseDirection >> applySkipPenaltyFor: someShips [
 ]
 
 { #category : 'accessing' }
-CounterClockwiseDirection >> for: someShips [
+CounterClockwiseDirection >> for: someShips in: aGame by: aShipManager [
 
 	| shipToMove |
 	shipToMove := someShips removeLast.
-	^ shipToMove
+	aShipManager executeMoveFor: shipToMove in: aGame
+]
+
+{ #category : 'applying' }
+CounterClockwiseDirection >> passFor: someShips by: aShipManager [
+
+	| shipToMove |
+	shipToMove := someShips removeLast.
+	aShipManager applyPassTurnFor: shipToMove
 ]
 
 { #category : 'accessing' }
