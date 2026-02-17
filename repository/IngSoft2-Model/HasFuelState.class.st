@@ -3,7 +3,7 @@ This class represents a fuel state
 "
 Class {
 	#name : 'HasFuelState',
-	#superclass : 'Object',
+	#superclass : 'FuelState',
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }

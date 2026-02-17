@@ -111,7 +111,7 @@ DoubleCardTest >> should: anErrorBlock raise: anErrorClass withMessageText: anEr
 ]
 
 { #category : 'tests' }
-DoubleCardTest >> testWhenADoubleCardIsPlayedTheShipAffectedMovesCorrectly [
+DoubleCardTest >> testWhenADoubleCardIsPlayedTheShipAffectedRollTheDicesTwice [
 
 
 	| expectedPosition expectedFuel  aGame |
@@ -133,7 +133,7 @@ DoubleCardTest >> testWhenADoubleCardIsPlayedTheShipAffectedMovesCorrectly [
 ]
 
 { #category : 'tests' }
-DoubleCardTest >> testWhenAShipMovesNoramlThenADoubleCardIsPlayAndTheNextShipMovesCorrectly [
+DoubleCardTest >> testWhenAShipMovesNoramlThenADoubleCardIsPlayAndTheNextShipRollTheDicesTwice [
 
 	|  expectedPosition expectedFuel  aGame |
 	expectedPosition := Position at: 2 in: 1.
