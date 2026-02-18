@@ -32,12 +32,6 @@ ShipsManager >> applyRollModifier: aPenalty [
 ]
 
 { #category : 'action' }
-ShipsManager >> applySkipPenalty [
-
-	turnDirection applySkipPenaltyFor: ships
-]
-
-{ #category : 'action' }
 ShipsManager >> executeMoveFor: aShip in: aGame [
 
 	aGame executeRollFor: aShip.
@@ -63,12 +57,6 @@ ShipsManager >> moveShipsToSquareZero [
 	ships do: [ :aShip | aShip moveTo: (aShip currentPosition adjustSquare: 0) ]
 ]
 
-{ #category : 'accessing' }
-ShipsManager >> nextShip [
-
-	^ turnDirection for: ships
-]
-
 { #category : 'action' }
 ShipsManager >> passNextShip [
 
@@ -89,7 +77,7 @@ ShipsManager >> queue: aShip [
 ]
 
 { #category : 'action' }
-ShipsManager >> reverseOrder [
+ShipsManager >> reverseRoundOrder [
 
 	turnDirection := turnDirection reverse
 ]
@@ -107,6 +95,12 @@ ShipsManager >> shipsScoreOn: aBoard [
 		             (sortedPositions collect: [ :aShip | aShip details ]).
 
 	^ positions
+]
+
+{ #category : 'action' }
+ShipsManager >> skipNextShip [
+
+	turnDirection applySkipPenaltyFor: ships
 ]
 
 { #category : 'action' }

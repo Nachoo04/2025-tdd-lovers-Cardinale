@@ -11,7 +11,7 @@ Class {
 { #category : 'playing' }
 DoubleCard >> applyEffectPlayedBy: aPlayingShip affecting: anAffectedCard and: anAffectedShip in: aGame [
 
-	aGame changeTurnModeTo: DoubleRollMode new.
+	aGame changeRollModeTo: DoubleRollMode new.
 	aGame lastPlayedCard: self.
 
 ]

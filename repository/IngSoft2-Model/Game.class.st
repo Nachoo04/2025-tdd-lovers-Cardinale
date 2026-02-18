@@ -122,12 +122,6 @@ Game >> applyRollModifier: aPenalty [
 ]
 
 { #category : 'action' }
-Game >> applySkipPenalty [
-
-	shipsManager applySkipPenalty.
-]
-
-{ #category : 'action' }
 Game >> calculateDistanceBetween: aPosition and: anotherPosition [
 
 	^ board calculateDistanceBetween: aPosition and: anotherPosition
@@ -140,7 +134,7 @@ Game >> canStillPlay [
 ]
 
 { #category : 'action' }
-Game >> changeTurnModeTo: aTurnMode [
+Game >> changeRollModeTo: aTurnMode [
 
 	rollMode := aTurnMode
 ]
@@ -263,7 +257,7 @@ Game >> nextTurnPlay [
 	shipsManager playNextShipIn: self.
 
 
-	self changeTurnModeTo: NormalRollMode new
+	self changeRollModeTo: NormalRollMode new
 ]
 
 { #category : 'action' }
@@ -309,7 +303,7 @@ Game >> remove: anAffectedCard playedBy: aShip [
 { #category : 'action' }
 Game >> reverseRound [
 
-	shipsManager reverseOrder.
+	shipsManager reverseRoundOrder.
 ]
 
 { #category : 'action' }
@@ -319,6 +313,12 @@ Game >> rollDices [
 	rolledNumber := dices sumNumbers: [ :aDice | aDice roll ].
 
 	^ rolledNumber
+]
+
+{ #category : 'action' }
+Game >> skipNextPlayer [
+
+	shipsManager skipNextShip.
 ]
 
 { #category : 'validation' }

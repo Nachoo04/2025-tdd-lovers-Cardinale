@@ -14,6 +14,12 @@ Square >> applyOn: aShip and: aPosition in: aGame [
 	self subclassResponsibility
 ]
 
+{ #category : 'effect' }
+Square >> repeatEffectFor: aShip on: aPosition in: aGame [
+
+	self subclassResponsibility
+]
+
 { #category : 'validation' }
 Square >> validateMagnitudeWith: aMaximumRoll and: aBoardLenght [
 
