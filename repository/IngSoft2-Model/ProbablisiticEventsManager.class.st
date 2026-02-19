@@ -21,7 +21,7 @@ ProbablisiticEventsManager >> add: anEvent [
 ProbablisiticEventsManager >> generateFor: aLength [
 
 	| generatedEvents |
-	generatedEvents := (0 for: aLength - 1) collect: [ :aNumber |
+	generatedEvents := (0 to: aLength - 1) collect: [ :aNumber |
 		                    (probabilityEvents atRandomWeighting: [
 			                     :aProbabilisticEvent |
 			                     aProbabilisticEvent probability ]) event ].
