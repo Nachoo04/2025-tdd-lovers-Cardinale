@@ -187,6 +187,59 @@ JailSquareTest >> testWhenAShipFallIntoAJailSquareAndItsFreeButItHasntFuellEnoug
 ]
 
 { #category : 'tests' }
+JailSquareTest >> testWhenAShipFallIntoAJailSquareAndRollTheMaximumRollButOtherShipPlaysAnSkipCardThenItCantMove [
+
+	| sideToRoll aLoadedDice expectedPosition someDices aGame aSetJailSquare aSetJailSquareProbabilisticEvent aDistribution aBoard anSkipCard anSkipCardProbabilisticEvent aSetCardManager |
+	sideToRoll := #( 1 1 2 ) asOrderedCollection.
+	aLoadedDice := LoadedDice toRoll: sideToRoll.
+
+	expectedPosition := Position at: 1 in: 1.
+
+	someDices := OrderedCollection new.
+	someDices add: aLoadedDice.
+
+	aSetJailSquare := JailSquare with: someDices.
+	aSetJailSquareProbabilisticEvent := ProbabilisticEvent
+		                                    for: aSetJailSquare
+		                                    with: aProbabilityOfOne.
+
+	aDistributionManager := ProbablisiticEventsManager new.
+	aDistributionManager add: aSetJailSquareProbabilisticEvent.
+	aDistribution := aDistributionManager generateFor: twentySquares.
+
+	aBoard := Board
+		          with: twentySquares
+		          and: aWormHole
+		          distributedBy: aDistribution.
+
+	anSkipCard := SkipCard new.
+	anSkipCardProbabilisticEvent := ProbabilisticEvent
+		                                for: anSkipCard
+		                                with: aProbabilityOfOne.
+	aSetCardManager := SetProbablisiticEventsManager new.
+	aSetCardManager add: anSkipCardProbabilisticEvent.
+
+	aGameBuilder setAvailableCards: aSetCardManager.
+	aGameBuilder setDices: someDices.
+	aGameBuilder setBoard: aBoard.
+	aGame := aGameBuilder build.
+
+	aGame nextTurnPlay.
+	aGame nextTurnPlay.
+	aGame nextTurnPass.
+	aGame nextTurnPass.
+	aGame
+		play: anSkipCard
+		by: aBlueShip
+		affecting: aNullCard
+		and: aBlackShip.
+	aGame nextTurnPlay.
+
+
+	self assert: (aBlueShip currentPositionEquals: expectedPosition)
+]
+
+{ #category : 'tests' }
 JailSquareTest >> testWhenAShipFallIntoAJailSquareAndRollTheMaximumRollThenItCanMoves [
 
 	| sideToRoll aLoadedDice expectedPosition someDices aGame aSetJailSquare aSetJailSquareProbabilisticEvent  aDistribution aBoard |

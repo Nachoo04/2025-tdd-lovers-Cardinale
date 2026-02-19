@@ -29,7 +29,7 @@ MoonWalkSquare >> applyOn: aShip and: aPosition in: aGame [
 { #category : 'initialization' }
 MoonWalkSquare >> initializeBetween: aMinimumMagnitude and: aMaximumMagnitude [
 
-	magnitude := (aMinimumMagnitude to: aMaximumMagnitude) atRandom
+	magnitude := (aMinimumMagnitude for: aMaximumMagnitude) atRandom
 ]
 
 { #category : 'effect' }

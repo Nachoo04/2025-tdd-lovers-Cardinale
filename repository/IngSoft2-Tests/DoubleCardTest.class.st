@@ -22,8 +22,8 @@ Class {
 		'zeroRewardRewardProbabilisticEvent',
 		'anDoubleCard',
 		'anDoubleCardProbabilisticEvent',
-		'anAccelerationCard',
-		'anAccelerationCardProbabilisticEvent',
+		'anAllyCard',
+		'anAllyCardProbabilisticEvent',
 		'someShips',
 		'someDices',
 		'aGameBuilder',
@@ -80,9 +80,9 @@ DoubleCardTest >> setUp [
 		                                  with: aProbabilityOfOne.
 	aCardManager add: anDoubleCardProbabilisticEvent.
 
-	anAccelerationCard := AccelerationCard new.
-	anAccelerationCardProbabilisticEvent := ProbabilisticEvent
-		                                        for: anAccelerationCard
+	anAllyCard := AllyCard new.
+	anAllyCardProbabilisticEvent := ProbabilisticEvent
+		                                        for: anAllyCard
 		                                        with: aProbabilityOfOne.
 
 	someShips := OrderedCollection new.
@@ -111,7 +111,7 @@ DoubleCardTest >> should: anErrorBlock raise: anErrorClass withMessageText: anEr
 ]
 
 { #category : 'tests' }
-DoubleCardTest >> testWhenADoubleCardIsPlayedTheShipAffectedMovesCorrectly [
+DoubleCardTest >> testWhenADoubleCardIsPlayedTheShipAffectedRollTheDicesTwice [
 
 
 	| expectedPosition expectedFuel  aGame |
@@ -133,7 +133,7 @@ DoubleCardTest >> testWhenADoubleCardIsPlayedTheShipAffectedMovesCorrectly [
 ]
 
 { #category : 'tests' }
-DoubleCardTest >> testWhenAShipMovesNoramlThenADoubleCardIsPlayAndTheNextShipMovesCorrectly [
+DoubleCardTest >> testWhenAShipMovesNoramlThenADoubleCardIsPlayAndTheNextShipRollTheDicesTwice [
 
 	|  expectedPosition expectedFuel  aGame |
 	expectedPosition := Position at: 2 in: 1.
@@ -160,12 +160,12 @@ DoubleCardTest >> testWhenAShipPlaysADoubleCardThenItIsNoLongerInItsHand [
 	| aGame aSetCardManager |
 	aSetCardManager := SetProbablisiticEventsManager new.
 	aSetCardManager add: anDoubleCardProbabilisticEvent .
-	aSetCardManager add: anAccelerationCardProbabilisticEvent.
+	aSetCardManager add: anAllyCardProbabilisticEvent .
 
 	aGameBuilder setAvailableCards: aSetCardManager.
 	aGame := aGameBuilder build.
 
-	expectedCards add: anAccelerationCard.
+	expectedCards add: anAllyCard.
 
 	aGame
 		play: anDoubleCard 
@@ -177,11 +177,11 @@ DoubleCardTest >> testWhenAShipPlaysADoubleCardThenItIsNoLongerInItsHand [
 ]
 
 { #category : 'tests' }
-DoubleCardTest >> testWhenAShipTriesToPlayAnAllyCardThatIsNotInItsHandThenInvalid [
+DoubleCardTest >> testWhenAShipTriesToPlayAnDoubleCardThatIsNotInItsHandThenInvalid [
 
 	| aGame aSetCardManager |
 	aSetCardManager := SetProbablisiticEventsManager new.
-	aSetCardManager add: anAccelerationCardProbabilisticEvent.
+	aSetCardManager add: anAllyCardProbabilisticEvent .
 	aGameBuilder setAvailableCards: aSetCardManager.
 	aGame := aGameBuilder build.
 

@@ -35,7 +35,7 @@ AccelerationCard >> cancelEffectIn: aGame [
 ]
 
 { #category : 'comparing' }
-AccelerationCard >> compare: firstAlly and: secondAlly [
+AccelerationCard >> compare: aShip and: anotherShip [
 
 	^ false
 ]

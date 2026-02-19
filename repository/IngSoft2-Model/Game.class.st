@@ -6,7 +6,6 @@ Class {
 	#superclass : 'Object',
 	#instVars : [
 		'board',
-		'ships',
 		'dices',
 		'finished',
 		'winner',
@@ -17,9 +16,8 @@ Class {
 		'lastPlayedCard',
 		'activePermanentCards',
 		'raceGoal',
-		'turnMode',
-		'counterRound',
-		'turnSequencer'
+		'rollMode',
+		'shipsManager'
 	],
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
@@ -120,16 +118,7 @@ Game >> applyRewardTo: aShip for: aRolledNumber [
 { #category : 'action' }
 Game >> applyRollModifier: aPenalty [
 
-	ships do: [ :aShip | aShip applyRollModifier: aPenalty ]
-]
-
-{ #category : 'as yet unclassified' }
-Game >> applySkipPenalty [
-	
-	| anAffectedShip |
-	anAffectedShip := ships removeFirst.
-	anAffectedShip turnSkipped.
-	ships addFirst: anAffectedShip.
+	shipsManager applyRollModifier: aPenalty 
 ]
 
 { #category : 'action' }
@@ -144,10 +133,18 @@ Game >> canStillPlay [
 	finished ifTrue: [ Error signal: 'The game has finished.' ]
 ]
 
-{ #category : 'as yet unclassified' }
-Game >> changeTurnModeTo: aTurnMode [
+{ #category : 'action' }
+Game >> changeRollModeTo: aTurnMode [
 
-	turnMode := aTurnMode
+	rollMode := aTurnMode
+]
+
+{ #category : 'action' }
+Game >> executeRollFor: aShip [
+
+	rollMode executeOn: self for: aShip.
+
+	
 ]
 
 { #category : 'changing state' }
@@ -178,7 +175,6 @@ Game >> hasFinished [
 Game >> initializeWith: aBoard for: someLaps and: someShips and: someDices and: aRewardManager and: aCardMaganer [
 
 	board := aBoard.
-	ships := someShips.
 	dices := someDices.
 	laps := someLaps.
 	finished := false.
@@ -189,8 +185,8 @@ Game >> initializeWith: aBoard for: someLaps and: someShips and: someDices and: 
 	lastPlayedCard := NullCard new.
 	raceGoal := Position at: 0 in: someLaps.
 	activePermanentCards := OrderedCollection new.
-	turnMode := NormalTurnMode new.
-	turnSequencer := TurnSequencer with: someShips 
+	rollMode := NormalRollMode new.
+	shipsManager := ShipsManager with: someShips 
 ]
 
 { #category : 'action' }
@@ -236,38 +232,32 @@ Game >> move: aShip with: rolledNumber [
 { #category : 'action' }
 Game >> moveShipsBackwards: aMagnitude [
 
-	ships do: [ :aShip | aShip moveBackwards: aMagnitude in: board ]
+	shipsManager moveShipsBackwards: aMagnitude in: board.
 ]
 
 { #category : 'action' }
 Game >> moveShipsToSquareZero [
 	
-	ships do: [ :aShip | aShip moveTo: (aShip currentPosition adjustSquare: 0) ]
+	shipsManager moveShipsToSquareZero.
 ]
 
 { #category : 'action' }
 Game >> nextTurnPass [
 
-	| shipToMove |
 	self canStillPlay.
-	shipToMove := ships removeFirst.
-	shipToMove restoreFuel.
-	ships add: shipToMove.
+	shipsManager passNextShip
 ]
 
 { #category : 'action' }
 Game >> nextTurnPlay [
 
-	| shipToMove rolledNumber |
+
 	self canStillPlay.
 
-	shipToMove := turnSequencer nextShip.
-	rolledNumber := turnMode executeOn: self.
-	self move: shipToMove with: rolledNumber.
-	turnSequencer queue: shipToMove.
+	shipsManager playNextShipIn: self.
 
 
-	self changeTurnModeTo: NormalTurnMode new
+	self changeRollModeTo: NormalRollMode new
 ]
 
 { #category : 'action' }
@@ -295,16 +285,10 @@ Game >> playLastCardBy: aPlayingShip affecting: anAffectedCard and: aTargetShip 
 { #category : 'printing' }
 Game >> printBoard [
 
-	| positions results winnerShip sortedPositions |
+	| winnerShip shipsScore results |
 	winnerShip := 'Winner: ' , winner name , String cr.
-	sortedPositions := ships sorted: [ :aShip |
-		                   board
-			                   calculateDistanceBetween: (Position at: 0 in: 1)
-			                   and: aShip currentPosition ] descending.
-	positions := String cr join:
-		             (sortedPositions collect: [ :aShip | aShip details ]).
-
-	results := winnerShip , positions.
+	shipsScore := shipsManager shipsScoreOn: board.
+	results := winnerShip , shipsScore.
 	^ results
 ]
 
@@ -316,10 +300,10 @@ Game >> remove: anAffectedCard playedBy: aShip [
 	anAffectedCard cancelEffectIn: self
 ]
 
-{ #category : 'as yet unclassified' }
+{ #category : 'action' }
 Game >> reverseRound [
 
-	turnSequencer reverseOrder.
+	shipsManager reverseRoundOrder.
 ]
 
 { #category : 'action' }
@@ -329,6 +313,12 @@ Game >> rollDices [
 	rolledNumber := dices sumNumbers: [ :aDice | aDice roll ].
 
 	^ rolledNumber
+]
+
+{ #category : 'action' }
+Game >> skipNextPlayer [
+
+	shipsManager skipNextShip.
 ]
 
 { #category : 'validation' }
@@ -341,7 +331,8 @@ Game >> validateIsActive: aCard [
 { #category : 'validation' }
 Game >> validateNextPlayer: aShip [
 
-	((ships at: 1) equals: aShip) ifFalse: [
+
+	((shipsManager validateShip) equals: aShip) ifFalse: [
 		Error signal:
 			'A permanent card cannot be played when it is not your turn.' ]
 ]

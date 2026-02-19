@@ -29,7 +29,7 @@ HyperGravitySquare >> applyOn: aShip and: aPosition in: aGame [
 { #category : 'initialization' }
 HyperGravitySquare >> initializeBetween: aMinimumMagnitude and: aMaximumMagnitude [
 
-	rollToContinue := (aMinimumMagnitude to: aMaximumMagnitude) atRandom
+	rollToContinue := (aMinimumMagnitude for: aMaximumMagnitude) atRandom
 ]
 
 { #category : 'effect' }

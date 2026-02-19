@@ -1,3 +1,6 @@
+"
+This class represent a SkipCard
+"
 Class {
 	#name : 'SkipCard',
 	#superclass : 'Card',
@@ -8,7 +11,7 @@ Class {
 { #category : 'playing' }
 SkipCard >> applyEffectPlayedBy: aPlayingShip affecting: anAffectedCard and: anAffectedShip in: aGame [
 
-	aGame applySkipPenalty.
+	aGame skipNextPlayer.
 	aGame lastPlayedCard: self.
 
 ]

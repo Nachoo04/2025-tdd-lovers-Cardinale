@@ -29,7 +29,7 @@ Dice class >> with: numberOfSides [
 { #category : 'functions' }
 Dice >> roll [
 
-	^ (initialSide to: numberOfSides) atRandom
+	^ (initialSide for: numberOfSides) atRandom
 ]
 
 { #category : 'functions' }
