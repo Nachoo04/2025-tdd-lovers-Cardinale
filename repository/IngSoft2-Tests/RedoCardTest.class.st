@@ -252,6 +252,120 @@ RedoCardTest >> testWhenAnRedoCardIsUsedAfterACancellationCardThenTheEffectIsApp
 ]
 
 { #category : 'tests' }
+RedoCardTest >> testWhenAnRedoCardIsUsedAfterADoubleCardThenTheEffectIsAppliedProperly [
+
+	| sideToRoll aLoadedDice aDistribution someDices aGame expectedPositionOfBlueShip expectedPositionOfBlackShip aDoubleCard aDoubleCardProbabilisticEvent |
+	
+	sideToRoll := #( 3 1 3 ) asOrderedCollection.
+
+	expectedPositionOfBlueShip := Position at: 4 in: 1.
+	expectedPositionOfBlackShip := Position at: 6 in: 1.
+
+	aLoadedDice := LoadedDice toRoll: sideToRoll.
+
+	aDistribution := aDistributionManager generateFor: twentySquares.
+
+	aBoard := Board
+		          with: twentySquares
+		          and: aWormHole
+		          distributedBy: aDistribution.
+
+
+	aDoubleCard := DoubleCard new.
+	aDoubleCardProbabilisticEvent := ProbabilisticEvent
+		                                    for: aDoubleCard
+		                                    with: aProbabilityOfOne.
+
+	aSetCardManager add: aDoubleCardProbabilisticEvent.
+
+	someDices := OrderedCollection new.
+	someDices add: aLoadedDice.
+
+	aGameBuilder setBoard: aBoard.
+	aGameBuilder setDices: someDices.
+	aGameBuilder setAvailableCards: aSetCardManager.
+	aGame := aGameBuilder build.
+
+	aGame
+		play: aDoubleCard
+		by: aBlueShip
+		affecting: aNullCard
+		and: aBlackShip.
+	aGame nextTurnPlay.
+	aGame
+		play: aRedoCard
+		by: aBlackShip
+		affecting: aNullCard
+		and: aBlueShip.
+	aGame nextTurnPlay.
+
+	self assert: (aBlueShip currentPositionEquals: expectedPositionOfBlueShip).
+	self assert: (aBlackShip currentPositionEquals: expectedPositionOfBlackShip)
+]
+
+{ #category : 'tests' }
+RedoCardTest >> testWhenAnRedoCardIsUsedAfterAFreedomCardThenTheEffectIsAppliedProperly [
+
+	| sideToRoll aLoadedDice aDistribution someDices aGame expectedPositionOfBlueShip expectedPositionOfBlackShip aSetJailSquare aSetJailSquareProbabilisticEvent aFreedomCard aFreedomCardProbabilisticEvent |
+	sideToRoll := #( 3 1 3 ) asOrderedCollection.
+
+	expectedPositionOfBlueShip := Position at: 6 in: 1.
+	expectedPositionOfBlackShip := Position at: 4 in: 1.
+
+	aLoadedDice := LoadedDice toRoll: sideToRoll.
+	someDices := OrderedCollection new.
+	someDices add: aLoadedDice.
+
+
+	aSetJailSquare := JailSquare with: someDices.
+	aSetJailSquareProbabilisticEvent := ProbabilisticEvent
+		                                    for: aSetJailSquare
+		                                    with: aProbabilityOfOne.
+
+	aDistributionManager := ProbablisiticEventsManager new.
+	aDistributionManager add: aSetJailSquareProbabilisticEvent.
+	aDistribution := aDistributionManager generateFor: twentySquares.
+
+	aBoard := Board
+		          with: twentySquares
+		          and: aWormHole
+		          distributedBy: aDistribution.
+
+
+	aFreedomCard := FreedomCard new.
+	aFreedomCardProbabilisticEvent := ProbabilisticEvent
+		                                  for: aFreedomCard
+		                                  with: aProbabilityOfOne.
+
+	aSetCardManager add: aFreedomCardProbabilisticEvent.
+
+	aGameBuilder setBoard: aBoard.
+	aGameBuilder setDices: someDices.
+	aGameBuilder setAvailableCards: aSetCardManager.
+	aGame := aGameBuilder build.
+
+	aGame nextTurnPlay.
+	aGame
+		play: aFreedomCard
+		by: aBlueShip
+		affecting: aNullCard
+		and: aBlackShip.
+	aGame nextTurnPlay.
+	aGame
+		play: aRedoCard
+		by: aBlackShip
+		affecting: aNullCard
+		and: aBlueShip.
+	aGame nextTurnPlay.
+	aGame nextTurnPlay.
+
+	self assert:
+		(aBlueShip currentPositionEquals: expectedPositionOfBlueShip).
+	self assert:
+		(aBlackShip currentPositionEquals: expectedPositionOfBlackShip)
+]
+
+{ #category : 'tests' }
 RedoCardTest >> testWhenAnRedoCardIsUsedAfterAPermanentCardAndItsNotYourTurnThenItFails [
 
 	| sideToRoll aLoadedDice aDistribution someDices aGame anAccelerationCard anAccelerationCardProbabilisticEvent |
@@ -410,6 +524,107 @@ RedoCardTest >> testWhenAnRedoCardIsUsedAfterARepeatCardThenTheEffectIsAppliedPr
 		and: aBlueShip.
 
 	self assert: aBlueShip amountOfCards equals: expectedSize
+]
+
+{ #category : 'tests' }
+RedoCardTest >> testWhenAnRedoCardIsUsedAfterAReverseCardThenTheEffectIsAppliedProperly [
+
+	| sideToRoll expectedPosition aLoadedDice aDistribution someDices aGame aReverseCard aReverseCardProbabilisticEvent |
+	
+	sideToRoll := #( 3 1 3 ) asOrderedCollection.
+
+	expectedPosition := Position at: 4 in: 1.
+
+	aLoadedDice := LoadedDice toRoll: sideToRoll.
+
+	aDistribution := aDistributionManager generateFor: twentySquares.
+
+	aBoard := Board
+		          with: twentySquares
+		          and: aWormHole
+		          distributedBy: aDistribution.
+
+
+	aReverseCard := ReverseCard new.
+	aReverseCardProbabilisticEvent := ProbabilisticEvent
+		                                    for: aReverseCard
+		                                    with: aProbabilityOfOne.
+
+	aSetCardManager add: aReverseCardProbabilisticEvent.
+
+	someDices := OrderedCollection new.
+	someDices add: aLoadedDice.
+
+	aGameBuilder setBoard: aBoard.
+	aGameBuilder setDices: someDices.
+	aGameBuilder setAvailableCards: aSetCardManager.
+	aGame := aGameBuilder build.
+
+	aGame
+		play: aReverseCard
+		by: aBlueShip
+		affecting: aNullCard
+		and: aBlackShip.
+	aGame nextTurnPlay.
+	aGame
+		play: aRedoCard
+		by: aBlackShip
+		affecting: aNullCard
+		and: aBlueShip.
+	aGame nextTurnPlay.
+
+	self assert: (aBlackShip currentPositionEquals: expectedPosition).
+]
+
+{ #category : 'tests' }
+RedoCardTest >> testWhenAnRedoCardIsUsedAfterASkipCardThenTheEffectIsAppliedProperly [
+
+	| sideToRoll expectedPosition aLoadedDice aDistribution someDices aGame aSkipCard aSkipCardProbabilisticEvent |
+	
+	sideToRoll := #( 3 1 3 ) asOrderedCollection.
+
+	expectedPosition := Position at: 0 in: 1.
+
+	aLoadedDice := LoadedDice toRoll: sideToRoll.
+
+	aDistribution := aDistributionManager generateFor: twentySquares.
+
+	aBoard := Board
+		          with: twentySquares
+		          and: aWormHole
+		          distributedBy: aDistribution.
+
+
+	aSkipCard := SkipCard new.
+	aSkipCardProbabilisticEvent := ProbabilisticEvent
+		                                    for: aSkipCard
+		                                    with: aProbabilityOfOne.
+
+	aSetCardManager add: aSkipCardProbabilisticEvent.
+
+	someDices := OrderedCollection new.
+	someDices add: aLoadedDice.
+
+	aGameBuilder setBoard: aBoard.
+	aGameBuilder setDices: someDices.
+	aGameBuilder setAvailableCards: aSetCardManager.
+	aGame := aGameBuilder build.
+
+	aGame
+		play: aSkipCard
+		by: aBlueShip
+		affecting: aNullCard
+		and: aBlackShip.
+	aGame nextTurnPlay.
+	aGame
+		play: aRedoCard
+		by: aBlackShip
+		affecting: aNullCard
+		and: aBlueShip.
+	aGame nextTurnPlay.
+
+	self assert: (aBlueShip currentPositionEquals: expectedPosition).
+	self assert: (aBlackShip currentPositionEquals: expectedPosition)
 ]
 
 { #category : 'tests' }

@@ -4,7 +4,7 @@ This class represents a state
 "
 Class {
 	#name : 'DoesntHaveFuelState',
-	#superclass : 'Object',
+	#superclass : 'FuelState',
 	#category : 'IngSoft2-Model',
 	#package : 'IngSoft2-Model'
 }

@@ -23,24 +23,24 @@ Dice class >> numberOfSidesGreaterThanTwo: numberOfSides [
 Dice class >> with: numberOfSides [
 
 	self numberOfSidesGreaterThanTwo: numberOfSides.
-	^ self new initializeWith: numberOfSides
-]
-
-{ #category : 'initialization' }
-Dice >> initializeWith: sides [
-
-	numberOfSides := sides.
-	initialSide := 1
+	^ self new with: numberOfSides
 ]
 
 { #category : 'functions' }
 Dice >> roll [
 
-	^ (initialSide to: numberOfSides) atRandom
+	^ (initialSide for: numberOfSides) atRandom
 ]
 
 { #category : 'functions' }
 Dice >> rollMaximum [
 
 	^ numberOfSides
+]
+
+{ #category : 'initialization' }
+Dice >> with: sides [
+
+	numberOfSides := sides.
+	initialSide := 1
 ]
